@@ -12,22 +12,159 @@ description: 'Example section for showcasing API endpoints'
 
 There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
-
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+To get an authentication token, log into [Anagram’s Web App](https://provider.anagram.care/) and go to “Settings” -> “API Tokens”. Click “Generate new token” and follow the instructions. If you can’t find the “API Tokens” section in the settings, please contact our support team and request to activate Public API access.
+
+All API endpoints are authenticated using Bearer tokens in the authentication header.
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+Authorization: API <your token>
 ```
+
+`API` is the bearer name and is case sensitive. Requests without a valid token will be denied with a `401` status and an error message:
+
+```json
+{"detail": "Invalid authentication token."}
+```
+
+## Testing and sandboxes
+
+No sandbox environment is provided at this time. For testing purposes, submit claims against the demo insurer: `insurer:vision:demo`.
+
+## Request IDs
+
+The API assigns identifiers to all requests, available in `x-request-id` response header. Our support team may ask for request IDs when handling a case.
+
+## Object IDs
+
+Objects are identified by strings, often called "codes".
+
+```json
+{
+  ...
+  "insurer_code": "insurer:vision:demo",
+  ...
+}
+```
+
+**Note:**
+
+* Diagnosis and services are identified by a list of codes
+
+* For services the API currently requires a single code, specified as a JSON array with a single value
+
+```json
+...
+"services": [{
+  "codes": ["V2020"],
+  ...
+}]
+```
+
+## Types
+
+We use standard types:
+
+* `string` values are generally limited to 255 characters
+
+* `int` an signed integer number limited to 32 bits
+
+* `date` is an ISO string, `YYYY-MM-DD`
+
+* `money`: decimal as a string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
+
+* `percent`: decimal as s string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
+
+* Optional fields are denoted as `<type> | null`, can be omitted
+
+* Arrays are denoted with `[]`
+
+## Error handling
+
+Errors are signaled via an appropriate 4xx/5xx response code and JSON response body.
+
+There are 2 possible error responses:
+
+* Validation error with `Error` object,
+
+* General error with the string field `detail`.
+
+### General error (string field "detail")
+
+The error is related to the request itself. The field `detail` contains a human-readable error message.
+
+Example:
+
+```json
+{
+    "detail": "Unknown authentication token type."
+}
+```
+
+
+
+
+
+
+### Validation error (error object in field "errors")
+
+Errors related to the request body object itself are validation errors with a status code `400 BAD_REQUEST`.
+
+Validation errors return a response object with a field `errors`, organized in a structure matching the request object (similar to GraphQL), containing error messages related to specific fields. For errors related to specific array elements, array indices are used as object keys.
+
+Examples:
+
+One error in the field `quantity` of the first service object in the `services` array field:
+
+`{`
+`    `**`"errors"`**`: {`
+`        `**`"services"`**`: {`
+`            `**`"0"`**`: {`
+`                `**`"quantity"`**`: {`
+`                    `**`"$"`**`: ["This field cannot be null."]`
+`                }`
+`            }`
+`        }`
+`    }`
+`}`
+
+
+Three errors in the field `last_name` of object `primary_member`:
+
+`{`
+`    `**`"errors"`**`: {`
+`        `**`"primary_member"`**`: {`
+`            `**`"last_name"`**`: {`
+`                `**`"$"`**`: [`
+`                    "This field cannot be null.",`
+`                    "Required to access with Member ID.",`
+`                    "Required to access with SSN last four."`
+`                ]`
+`            }`
+`        }`
+`    }`
+`}`
+
+
+Validation errors in multiple fields:
+
+`{`
+`    `**`"errors"`**`: {`
+`        `**`"patient"`**`: {`
+`            `**`"last_name"`**`: {`
+`                `**`"$"`**`: ["Required to access with SSN last four."]`
+`            }`
+`        },`
+`        `**`"primary_member"`**`: {`
+`            `**`"ssn_last_four"`**`: {`**`"$"`**`: ["Invalid SSN format."]`
+`        },`
+`        `**`"services"`**`: {`
+`            `**`"1"`**`: {`
+`                `**`"quantity"`**`: {`
+`                    `**`"$"`**`: ["This field cannot be null."]`
+`                }`
+`            }`
+`        }`
+`    }`
+`}`
