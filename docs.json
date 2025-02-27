@@ -49,7 +49,12 @@
             "pages": [
               "api-reference/endpoint/eligibility_request",
               "api-reference/endpoint/eligibility_details_request",
-              "api-reference/endpoint/get"
+              "api-reference/endpoint/eligibility_result",
+              "api-reference/endpoint/create_claim",
+              "api-reference/endpoint/create_patient",
+              "api-reference/endpoint/list_patients",
+              "api-reference/endpoint/patient_details",
+              "api-reference/endpoint/get",
             ]
           }
         ]
