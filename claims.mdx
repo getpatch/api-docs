@@ -1,0 +1,135 @@
+---
+title: "Claims"
+description: "Description of your new file."
+---
+
+The claim object contains all information required to send a claim to an insurer:
+
+* insurer
+
+* patient details
+
+* primary member details (can be same as patient details)
+
+* list of services
+
+Note that although the VSP claim form allows arbitrary CPS/HCPCS codes and our API supports the majority of them, we recommend using only the codes specified below to reduce the chance of claim rejection. Contact Anagram customer support if you need to use other codes.
+
+During claim submission the API validates the claim payload against known insurer requirements and will reject a claim that we know will be rejected by the insurer, but does not guarantee the opposite (i.e. a claim accepted by API can still be rejected by insurer).
+
+It is possible for insurers to change their requirements without notifying us. In these events as soon as we understand the new requirements we will update the validation rules and notify you. It is advizable to be prepared to adopt the updated rules as quickly as possible.
+
+## Object types
+
+The main fields of claim are:
+
+* `patient`: JSON object, representing patient details
+
+* `primary_member`: JSON object, representing primary patient member
+
+* `services`: list of JSON objects, representing services that can be reimbursed
+
+Also, there are fields in nested objects:
+
+* `address`: JSON object, represents the mailing address in `patient` and `primary_member` fields.
+
+Both `patient` and `primary_member` must be provided even if claim is created for a primary member. In this case, both the `patient` object and `primary_member` object must contain the same data.
+
+### `address` (object)
+
+Mailing address:
+
+| Field name | Field type | Constraints | Description         | Examples                   |                            |
+| ---------- | ---------- | ----------- | ------------------- | -------------------------- | -------------------------- |
+| zipcode    | `string`   | \`\d{5}     | \d{5}-\d{4}\`       | Standard ZIP code or ZIP+4 | `99577`; `99577-0727`      |
+| state      | `string`   | `[A-X]{2}`  | Alpha code of state | `AL`; `CA`                 |                            |
+| city       | `string`   |             | City name           | `New York`; `Santa Monica` |                            |
+| recipient  | \`string   | null\`      |                     | Recipient name             | `Mr Smith`; `Anagram Care` |
+| line1      | `string`   |             | Address line        | `Long st. 65`              |                            |
+| line2      | \`string   | null\`      |                     | Additional address line    | `ap. 231`                  |
+
+Example:
+
+**`"address"`**`: {`
+`    `**`"city"`**`: "City",`
+`    `**`"line1"`**`: "String name",`
+`    `**`"line2"`**`: `**`null`**`,`
+`    `**`"state"`**`: "CA",`
+`    `**`"zipcode"`**`: "12332"`
+`}`
+
+### `services` (list of objects)
+
+The services (and materials) received by the patient are a list of service objects. Each service object has a type that must be described by a valid CPT/HCPCS code (see "CPT/HCPC codes" for the full list of available codes).
+
+Note that diagnosis codes can be supplied both as global diagnosis (via top-level `diagnosis_codes` field) or per service, via an optional `diagnosis_codes` field in the service object.
+
+| Field name       | Field type  | Constraints       | Description                         | Examples     |   |
+| ---------------- | ----------- | ----------------- | ----------------------------------- | ------------ | - |
+| codes            | `[string]`  | CPT codes         | List of CPT predefined codes        |              |   |
+| diagnosis\_codes | \`\[string] | null\`            | HCPCS diagnosis codes (per service) |              |   |
+| quantity         | `integer`   | greater than zero | number of services                  | `1`; `2`     |   |
+| cost             | `money`     | greater than zero | cost of one service                 | `12.2217`    |   |
+| date             | `date`      |                   | date of service                     | `2022-08-12` |   |
+
+Unknown codes will result in an error.
+
+### `primary_member` object
+
+This object contains information about the primary member on the insurance plan. In most cases, the primary member will also be the patient.
+
+| Field name             | Field type       | Constraints     | Description        | Examples                   |                 |                  |
+| ---------------------- | ---------------- | --------------- | ------------------ | -------------------------- | --------------- | ---------------- |
+| insurer\_code          | `string`         |                 | Insurer identifier | `insurer:vision:vsp`       |                 |                  |
+| member\_id             | \`string         | null\`          | depend on insurer  | Member ID or Subscriber ID | `M1328422`      |                  |
+| ssn\_last\_four        | \`string         | null\`          | `\d\d\d\d`         | SSN Last Four              | `2747`          |                  |
+| first\_name            | `string`         |                 | First name         | `John`                     |                 |                  |
+| last\_name             | `string`         |                 | Last name          | `Smith`                    |                 |                  |
+| dob                    | `date`           | iso date format | Date of Birth      | `1985-03-15`               |                 |                  |
+| sex                    | \`string         | null\`          | \`male             | female\`                   | Member sex      | `male`; `female` |
+| email                  | \`string         | null\`          | email format       | Member email               | `foo@gmail.com` |                  |
+| address                | `address object` |                 | Member address     | see address object         |                 |                  |
+| phone                  | \`string         | null\`          | `\d{10}`           | Member phone               | `1234567890`    |                  |
+| employer               | \`string         | null\`          |                    | Member employer name       | `Anagram LCT`   |                  |
+| individual\_plan\_name | \`string         | null\`          |                    |                            | `Vision plan`   |                  |
+
+Constraints:
+
+* Either `member_id` or `ssn_last_four` must be specified
+
+Details:
+
+* employer name or individual plan name can be part of group name (see insurance card for details)
+
+### `patient` object
+
+The patient object contains all of the information relating to the actual human patient. This must be provided, even if the patient happens to be the primary member on the insurance plan.
+
+| Field name      | Field type       | Constraints     | Description       | Examples                                     |                 |                                                 |          |
+| --------------- | ---------------- | --------------- | ----------------- | -------------------------------------------- | --------------- | ----------------------------------------------- | -------- |
+| member\_id      | \`string         | null\`          | depend on insurer | Member ID or Subscriber ID                   | `M1328422`      |                                                 |          |
+| ssn\_last\_four | \`string         | null\`          | `\d\d\d\d`        | SSN Last Four                                | `2747`          |                                                 |          |
+| first\_name     | `string`         |                 | First name        | `John`                                       |                 |                                                 |          |
+| last\_name      | `string`         |                 | Last name         | `Smith`                                      |                 |                                                 |          |
+| dob             | `date`           | ISO date format | Date of Birth     | `1985-03-15`                                 |                 |                                                 |          |
+| sex             | \`string         | null\`          | \`male            | female\`                                     | Member sex      | `male`; `female`                                |          |
+| email           | \`string         | null\`          | email format      | Member email                                 | `foo@gmail.com` |                                                 |          |
+| address         | `address object` |                 | Member address    | see address object                           |                 |                                                 |          |
+| phone           | \`string         | null\`          | `\d{10}`          | Member phone                                 | `1234567890`    |                                                 |          |
+| type            | `string`         | \`self          | spouse            | child                                        | other\`         | Type of patient. Self in case of primary member | `spouse` |
+| account\_number | \`string         | null\`          | 25 characters max | Patient account number in an external system | `XYZ1234567890` |                                                 |          |
+
+### Claim object
+
+A main object contains all information about a claim.
+
+| Field name       | Field type              | Constraints                 | Description                      | Examples                                                             |   |
+| ---------------- | ----------------------- | --------------------------- | -------------------------------- | -------------------------------------------------------------------- | - |
+| patient          | `patient object`        | see `patient` object        | information about patient        | see `patient` object                                                 |   |
+| primary\_member  | `primary_member object` | see `primary_member` object | information about primary member | see `primary_member` object                                          |   |
+| diagnosis\_codes | \`\[string]             | null\`                      | HCPCS diagnosis codes (global)   |                                                                      |   |
+| services         | `[service object]`      | see `service` object        | list of services in claim        | see `service` object                                                 |   |
+| paid\_amount     | `money`                 | required                    | amount paid by patient           |                                                                      |   |
+| is\_aob\_enabled | \`boolean               | null\`                      | Available only for VSP           | whether to accept the assignment of the benefits. `false` by default |   |
+
+The internal ID can be used only for customer support and should not be stored.

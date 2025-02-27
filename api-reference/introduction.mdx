@@ -102,11 +102,6 @@ Example:
 }
 ```
 
-
-
-
-
-
 ### Validation error (error object in field "errors")
 
 Errors related to the request body object itself are validation errors with a status code `400 BAD_REQUEST`.
@@ -117,54 +112,62 @@ Examples:
 
 One error in the field `quantity` of the first service object in the `services` array field:
 
-`{`
-`    `**`"errors"`**`: {`
-`        `**`"services"`**`: {`
-`            `**`"0"`**`: {`
-`                `**`"quantity"`**`: {`
-`                    `**`"$"`**`: ["This field cannot be null."]`
-`                }`
-`            }`
-`        }`
-`    }`
-`}`
+
+
+```json
+{
+    "errors": {
+        "services": {
+            "0": {
+                "quantity": {
+                    "$": ["This field cannot be null."]
+                }
+            }
+        }
+    }
+}
+```
+
 
 
 Three errors in the field `last_name` of object `primary_member`:
 
-`{`
-`    `**`"errors"`**`: {`
-`        `**`"primary_member"`**`: {`
-`            `**`"last_name"`**`: {`
-`                `**`"$"`**`: [`
-`                    "This field cannot be null.",`
-`                    "Required to access with Member ID.",`
-`                    "Required to access with SSN last four."`
-`                ]`
-`            }`
-`        }`
-`    }`
-`}`
-
+```
+{
+    "errors": {
+        "primary_member": {
+            "last_name": {
+                "$": [
+                    "This field cannot be null.",
+                    "Required to access with Member ID.",
+                    "Required to access with SSN last four."
+                ]
+            }
+        }
+    }
+}
+```
 
 Validation errors in multiple fields:
 
-`{`
-`    `**`"errors"`**`: {`
-`        `**`"patient"`**`: {`
-`            `**`"last_name"`**`: {`
-`                `**`"$"`**`: ["Required to access with SSN last four."]`
-`            }`
-`        },`
-`        `**`"primary_member"`**`: {`
-`            `**`"ssn_last_four"`**`: {`**`"$"`**`: ["Invalid SSN format."]`
-`        },`
-`        `**`"services"`**`: {`
-`            `**`"1"`**`: {`
-`                `**`"quantity"`**`: {`
-`                    `**`"$"`**`: ["This field cannot be null."]`
-`                }`
-`            }`
-`        }`
-`    }`
-`}`
+```
+{
+    "errors": {
+        "patient": {
+            "last_name": {
+                "$": ["Required to access with SSN last four."]
+            }
+        },
+        "primary_member": {
+            "ssn_last_four": {"$": ["Invalid SSN format."]
+        },
+        "services": {
+            "1": {
+                "quantity": {
+                    "$": ["This field cannot be null."]
+                }
+            }
+        }
+    }
+}
+```
