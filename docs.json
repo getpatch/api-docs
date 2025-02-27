@@ -47,9 +47,9 @@
           {
             "group": "Endpoint Examples",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
+              "api-reference/endpoint/eligibility_request",
+              "api-reference/endpoint/eligibility_details_request",
+              "api-reference/endpoint/get"
             ]
           }
         ]
