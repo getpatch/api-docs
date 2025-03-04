@@ -2068,8 +2068,8 @@
         "tags": [
           "public-auth_Patient"
         ],
-        "summary": "List of  Patient",
-        "description": "",
+        "summary": "List Patients",
+        "description": "List patients created.",
         "parameters": [
           {
             "in": "query",
@@ -2255,7 +2255,7 @@
           "public-auth_Patient"
         ],
         "summary": "Patient details",
-        "description": "",
+        "description": "Show patient details.",
         "responses": {
           "200": {
             "description": "JSON object response",
@@ -2423,7 +2423,7 @@
           "public-auth_Patient eligibility link"
         ],
         "summary": "List of  Patient eligibility link",
-        "description": "",
+        "description": "Show patient eligibility links",
         "parameters": [
           {
             "in": "query",
