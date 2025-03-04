@@ -49,6 +49,13 @@
             ]
           },
           {
+            "group": "Endpoints",
+            "openapi": {
+              "source": "/openapi.json",
+              "directory": "api-reference"
+            }
+          },
+          {
             "group": "Endpoint Examples",
             "pages": [
               "api-reference/endpoint/eligibility_request",
