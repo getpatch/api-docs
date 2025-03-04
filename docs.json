@@ -17,8 +17,11 @@
             "group": "Get Started",
             "pages": [
               "introduction",
-              "quickstart",
-              "development"
+              "eligibility",
+              "claims",
+              "integrating with the anagram app",
+              "supported payers and coding",
+              "coming soon"
             ]
           },
           {
