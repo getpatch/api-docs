@@ -1,195 +1,2837 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
+  "x-tagGroups": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
+      "name": "Public-auth",
+      "tags": [
+        "public-auth_Eligibility Details Request",
+        "public-auth_Eligibility Request",
+        "public-auth_Eligibility Result",
+        "public-auth_Patient",
+        "public-auth_Patient eligibility link"
+      ]
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+    "/api/auth/v1/eligibility/": {
+      "post": {
+        "tags": [
+          "public-auth_Eligibility Request"
         ],
+        "summary": "Eligibility Request wrapper",
+        "description": "",
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
+                  "type": "object"
+                },
+                "examples": {}
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "insurer_code",
+                  "patient"
+                ],
+                "properties": {
+                  "insurer_code": {
+                    "type": "string",
+                    "description": "Example: insurer:vision:vsp"
+                  },
+                  "request_uid": {
+                    "type": "string",
+                    "description": "Any string value. Max length: 256"
+                  },
+                  "patient": {
+                    "type": "object",
+                    "required": [
+                      "first_name",
+                      "last_name",
+                      "dob"
+                    ],
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters."
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "Min length: 2, max length of full name: 46"
+                      },
+                      "dob": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Date of birth in ISO format (YYYY-MM-DD)"
+                      },
+                      "ssn_last_four": {
+                        "type": "string",
+                        "description": "Last four digits from SSN"
+                      },
+                      "zip": {
+                        "type": "string",
+                        "description": "Zip code with 5 or 9 digits. Example: 12345-6789"
+                      },
+                      "member_id": {
+                        "type": "string",
+                        "description": "Insurer specific member identifier"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/v1/eligibility/{request_uid}/": {
+      "get": {
+        "tags": [
+          "public-auth_Eligibility Result"
+        ],
+        "summary": "Eligibility Result details",
+        "description": "",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "request_uid",
+                    "status"
+                  ],
+                  "properties": {
+                    "request_uid": {
+                      "type": "string",
+                      "description": "UID provided on request creation or auto generated"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Possible values: complete, processing, error"
+                    },
+                    "error_code": {
+                      "type": "string"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "persons"
+                        ],
+                        "properties": {
+                          "insurer_code": {
+                            "type": "string",
+                            "description": "Example: insurer:vision:vsp"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "plan_is_active": {
+                            "type": "boolean",
+                            "description": "Is insurer plan active at the moment"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "plan_name": {
+                            "type": "string"
+                          },
+                          "plan_group": {
+                            "type": "string"
+                          },
+                          "plan_group_id": {
+                            "type": "string"
+                          },
+                          "plan_begin_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "plan_end_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "plan_refresh_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "persons": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "plan"
+                              ],
+                              "properties": {
+                                "first_name": {
+                                  "type": "string"
+                                },
+                                "last_name": {
+                                  "type": "string"
+                                },
+                                "dob": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "sex": {
+                                  "type": "string"
+                                },
+                                "member_id": {
+                                  "type": "string"
+                                },
+                                "ssn_last_four": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "address": {
+                                  "type": "object",
+                                  "required": [],
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string"
+                                    },
+                                    "line2": {
+                                      "type": "string"
+                                    },
+                                    "city": {
+                                      "type": "string"
+                                    },
+                                    "zipcode": {
+                                      "type": "string"
+                                    },
+                                    "state": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "email": {
+                                  "type": "string"
+                                },
+                                "phone": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "integer"
+                                },
+                                "full_name": {
+                                  "type": "string",
+                                  "description": "Can be used instead of first and last names"
+                                },
+                                "is_active": {
+                                  "type": "boolean",
+                                  "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
+                                },
+                                "plan": {
+                                  "type": "object",
+                                  "required": [
+                                    "insurer_state",
+                                    "items"
+                                  ],
+                                  "properties": {
+                                    "refresh_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "insurer_state": {
+                                      "type": "string",
+                                      "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
+                                    },
+                                    "begin_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "end_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "required": [
+                                          "network_type",
+                                          "is_authorization_required",
+                                          "limits",
+                                          "subitem_limits"
+                                        ],
+                                        "properties": {
+                                          "code": {
+                                            "type": "string",
+                                            "description": "Unique benefit code"
+                                          },
+                                          "copay": {
+                                            "type": "number",
+                                            "format": "double"
+                                          },
+                                          "network_type": {
+                                            "type": "string"
+                                          },
+                                          "is_authorization_required": {
+                                            "type": "boolean"
+                                          },
+                                          "refresh_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "description": "Refresh date of benefit if it's different from plan refresh date"
+                                          },
+                                          "limits": {
+                                            "type": "object",
+                                            "required": [],
+                                            "properties": {
+                                              "quantity": {
+                                                "type": "integer"
+                                              },
+                                              "total_coverage": {
+                                                "type": "number",
+                                                "format": "double",
+                                                "description": "Total coverage of benefit for period"
+                                              },
+                                              "quantity_remain": {
+                                                "type": "integer"
+                                              },
+                                              "quantity_reserved": {
+                                                "type": "integer"
+                                              },
+                                              "total_coverage_remain": {
+                                                "type": "number",
+                                                "format": "double"
+                                              }
+                                            }
+                                          },
+                                          "subitem_limits": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "required": [
+                                                "code"
+                                              ],
+                                              "properties": {
+                                                "code": {
+                                                  "type": "string",
+                                                  "description": "code of sub benefit inside benefit"
+                                                },
+                                                "quantity": {
+                                                  "type": "integer",
+                                                  "description": "Maximum amount of services"
+                                                },
+                                                "total_coverage": {
+                                                  "type": "number",
+                                                  "format": "double",
+                                                  "description": "Total coverage of benefit for period"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example#1": {
+                    "value": {
+                      "request_uid": "1233ab2dc4dj5bs",
+                      "status": "complete",
+                      "error_code": null,
+                      "results": [
+                        {
+                          "insurer_code": "insurer:vision:vsp",
+                          "id": 0,
+                          "plan_is_active": true,
+                          "status": "active",
+                          "plan_name": "VSP Choice Plan",
+                          "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+                          "plan_group_id": "30057697-0001",
+                          "plan_begin_date": "2023-02-01",
+                          "plan_end_date": null,
+                          "plan_refresh_date": null,
+                          "persons": [
+                            {
+                              "first_name": "DAN L",
+                              "last_name": "CAMPUS",
+                              "dob": "1963-07-11",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": "1234",
+                              "type": "self",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 0,
+                              "full_name": "DAN L CAMPUS",
+                              "is_active": null,
+                              "plan": {
+                                "refresh_date": null,
+                                "insurer_state": "oon",
+                                "begin_date": null,
+                                "end_date": null,
+                                "items": [
+                                  {
+                                    "code": "EXAM",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": null,
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": null,
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "EXAM",
+                                    "copay": "10.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "45.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "45.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "70.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "70.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_1F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "30.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "30.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_2F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_3F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "65.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "65.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_PROG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": "0.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": "105.0000",
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "105.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_1F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_1F",
+                                        "quantity": 2,
+                                        "total_coverage": "30.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_2F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_2F",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_3F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_3F",
+                                        "quantity": 2,
+                                        "total_coverage": "65.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_PROG_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_PROG",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Result with primary member only"
+                  },
+                  "Example#2": {
+                    "value": {
+                      "request_uid": "1233ab2dc4dj5bs",
+                      "status": "complete",
+                      "error_code": null,
+                      "results": [
+                        {
+                          "insurer_code": "insurer:vision:vsp",
+                          "id": 0,
+                          "plan_is_active": true,
+                          "status": "active",
+                          "plan_name": "VSP Choice Plan",
+                          "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+                          "plan_group_id": "30057697-0001",
+                          "plan_begin_date": "2023-02-01",
+                          "plan_end_date": null,
+                          "plan_refresh_date": null,
+                          "persons": [
+                            {
+                              "first_name": "SAMUEL R",
+                              "last_name": "CAMPUS",
+                              "dob": "1995-12-06",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": null,
+                              "type": "child",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 0,
+                              "full_name": "SAMUEL R CAMPUS",
+                              "is_active": null,
+                              "plan": {
+                                "refresh_date": null,
+                                "insurer_state": "oon",
+                                "begin_date": null,
+                                "end_date": null,
+                                "items": [
+                                  {
+                                    "code": "EXAM",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": null,
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": null,
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "EXAM",
+                                    "copay": "10.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "45.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "45.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "70.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "70.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_1F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "30.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "30.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_2F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_3F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "65.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "65.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_PROG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": "0.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": "105.0000",
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "105.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_1F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_1F",
+                                        "quantity": 2,
+                                        "total_coverage": "30.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_2F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_2F",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_3F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_3F",
+                                        "quantity": 2,
+                                        "total_coverage": "65.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_PROG_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_PROG",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "first_name": "DAN L",
+                              "last_name": "CAMPUS",
+                              "dob": "1963-07-11",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": "1234",
+                              "type": "self",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 1,
+                              "full_name": "DAN L CAMPUS",
+                              "is_active": null,
+                              "plan": null
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Result with dependent and primary member"
+                  },
+                  "Example#3": {
+                    "value": {
+                      "request_uid": "1233ab2dc4dj5bs",
+                      "status": "complete",
+                      "error_code": null,
+                      "results": [
+                        {
+                          "insurer_code": "insurer:vision:vsp",
+                          "id": 0,
+                          "plan_is_active": true,
+                          "status": "active",
+                          "plan_name": "VSP Choice Plan",
+                          "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+                          "plan_group_id": "30057697-0001",
+                          "plan_begin_date": "2023-02-01",
+                          "plan_end_date": null,
+                          "plan_refresh_date": null,
+                          "persons": [
+                            {
+                              "first_name": "SAMUEL R",
+                              "last_name": "CAMPUS",
+                              "dob": "1995-12-06",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": null,
+                              "type": "child",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 0,
+                              "full_name": "SAMUEL R CAMPUS",
+                              "is_active": null,
+                              "plan": {
+                                "refresh_date": null,
+                                "insurer_state": "oon",
+                                "begin_date": null,
+                                "end_date": null,
+                                "items": [
+                                  {
+                                    "code": "EXAM",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": null,
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": null,
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "EXAM",
+                                    "copay": "10.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "45.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "45.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "70.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "70.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_1F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "30.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "30.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_2F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_3F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "65.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "65.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_PROG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": "0.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": "105.0000",
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "105.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_1F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_1F",
+                                        "quantity": 2,
+                                        "total_coverage": "30.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_2F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_2F",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_3F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_3F",
+                                        "quantity": 2,
+                                        "total_coverage": "65.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_PROG_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_PROG",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Result with dependent but without primary member"
+                  },
+                  "Example#4": {
+                    "value": {
+                      "request_uid": "1233ab2dc4dj5bs",
+                      "status": "complete",
+                      "error_code": null,
+                      "results": [
+                        {
+                          "insurer_code": "insurer:vision:vsp",
+                          "id": 0,
+                          "plan_is_active": true,
+                          "status": "active",
+                          "plan_name": "VSP Choice Plan",
+                          "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+                          "plan_group_id": "30057697-0001",
+                          "plan_begin_date": "2023-02-01",
+                          "plan_end_date": null,
+                          "plan_refresh_date": null,
+                          "persons": [
+                            {
+                              "first_name": "DAN L",
+                              "last_name": "CAMPUS",
+                              "dob": "1963-07-11",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": "1234",
+                              "type": "self",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 0,
+                              "full_name": "DAN L CAMPUS",
+                              "is_active": null,
+                              "plan": {
+                                "refresh_date": null,
+                                "insurer_state": "oon",
+                                "begin_date": null,
+                                "end_date": null,
+                                "items": [
+                                  {
+                                    "code": "EXAM",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 0,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 1,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": null,
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": null,
+                                    "network_type": "inn",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": null,
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "EXAM",
+                                    "copay": "10.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "45.0000",
+                                      "quantity_remain": 0,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "45.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": "70.0000",
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 1,
+                                      "total_coverage_remain": "70.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_1F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "30.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "30.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_2F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_3F",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "65.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "65.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_PROG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 2,
+                                      "total_coverage": "50.0000",
+                                      "quantity_remain": 2,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "50.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "LENS_CONTACT",
+                                    "copay": "0.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 999,
+                                      "total_coverage": "105.0000",
+                                      "quantity_remain": 999,
+                                      "quantity_reserved": 0,
+                                      "total_coverage_remain": "105.0000"
+                                    },
+                                    "subitem_limits": []
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_1F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 1,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_1F",
+                                        "quantity": 2,
+                                        "total_coverage": "30.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_2F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 1,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_2F",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_3F_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 1,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_3F",
+                                        "quantity": 2,
+                                        "total_coverage": "65.0000"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "code": "FRAME_LENS_PROG_PKG",
+                                    "copay": "25.0000",
+                                    "network_type": "oon",
+                                    "is_authorization_required": false,
+                                    "refresh_date": null,
+                                    "limits": {
+                                      "quantity": 1,
+                                      "total_coverage": null,
+                                      "quantity_remain": 1,
+                                      "quantity_reserved": 1,
+                                      "total_coverage_remain": null
+                                    },
+                                    "subitem_limits": [
+                                      {
+                                        "code": "FRAME",
+                                        "quantity": 1,
+                                        "total_coverage": "70.0000"
+                                      },
+                                      {
+                                        "code": "LENS_PROG",
+                                        "quantity": 2,
+                                        "total_coverage": "50.0000"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Result there EXAM was used and FRAME was reserved"
+                  },
+                  "Example#5": {
+                    "value": {
+                      "request_uid": "2437abcd13def",
+                      "status": "processing",
+                      "error_code": null,
+                      "results": null
+                    },
+                    "summary": "Request still in progress"
+                  },
+                  "Example#6": {
+                    "value": {
+                      "request_uid": "2437abcd13def",
+                      "status": "error",
+                      "error_code": "unexpected_error",
+                      "results": null
+                    },
+                    "summary": "Unexpected error, request could not be processed"
+                  },
+                  "Example#7": {
+                    "value": {
+                      "request_uid": "2437abcd13def",
+                      "status": "error",
+                      "error_code": "insurer_problem",
+                      "results": null
+                    },
+                    "summary": "Insurer could not process request"
+                  },
+                  "Example#8": {
+                    "value": {
+                      "request_uid": "2437abcd13def",
+                      "status": "error",
+                      "error_code": "api_not_found",
+                      "results": null
+                    },
+                    "summary": "No results found for request"
+                  },
+                  "Example#9": {
+                    "value": {
+                      "request_uid": "2437abcd13def",
+                      "status": "error",
+                      "error_code": "api_multiple_results",
+                      "results": null
+                    },
+                    "summary": "Multiple results found for request"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "detail"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "detail": "Eligibility not found (unknown-id)"
+                    },
+                    "summary": "Unknown request ID"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "request_uid",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/auth/v1/eligibility/{request_uid}/details/": {
+      "post": {
+        "tags": [
+          "public-auth_Eligibility Details Request"
+        ],
+        "summary": "Eligibility Details Request wrapper",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {}
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "result_id",
+                  "person_id"
+                ],
+                "properties": {
+                  "request_uid": {
+                    "type": "string",
+                    "description": "Any string value. Max length: 256"
+                  },
+                  "result_id": {
+                    "type": "integer",
+                    "description": "Eligibility result id from results of initial eligibility request"
+                  },
+                  "person_id": {
+                    "type": "integer",
+                    "description": "Person id from selected result of initial eligibility request"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "request_uid",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/auth/v1/patients/": {
+      "post": {
+        "tags": [
+          "public-auth_Patient"
+        ],
+        "summary": "Create Patient",
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "first_name",
+                  "last_name",
+                  "dob"
+                ],
+                "properties": {
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "middle_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "dob": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "sex": {
+                    "type": "string"
+                  },
+                  "ssn_last_four": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "required": [
+                      "line1",
+                      "city",
+                      "zipcode",
+                      "state"
+                    ],
+                    "properties": {
+                      "line1": {
+                        "type": "string"
+                      },
+                      "line2": {
+                        "type": "string"
+                      },
+                      "recipient": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "zipcode": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "account_number": {
+                    "type": "string"
+                  },
+                  "force_similar": {
+                    "type": "boolean",
+                    "description": "Allow to save a new object which is similar to others"
+                  }
+                }
+              },
+              "examples": {
+                "Example": {
+                  "value": {
+                    "first_name": "Michael",
+                    "last_name": "Enslin",
+                    "dob": "1950-02-28",
+                    "ssn_last_four": "1234",
+                    "sex": "male",
+                    "email": "mike@foo.bar",
+                    "phone": "1234567890",
+                    "address": {
+                      "line1": "61st Street, Dolphin Hotel",
+                      "line2": "Room 1408",
+                      "city": "New York",
+                      "state": "NY",
+                      "zipcode": "10065"
+                    }
+                  },
+                  "summary": "Create success"
+                },
+                "Example#1": {
+                  "value": {},
+                  "summary": "Bad request"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "created_at",
+                    "first_name",
+                    "last_name",
+                    "dob",
+                    "code"
+                  ],
+                  "properties": {
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "middle_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "dob": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "sex": {
+                      "type": "string"
+                    },
+                    "ssn_last_four": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "object",
+                      "required": [
+                        "line1",
+                        "city",
+                        "zipcode",
+                        "state"
+                      ],
+                      "properties": {
+                        "line1": {
+                          "type": "string"
+                        },
+                        "line2": {
+                          "type": "string"
+                        },
+                        "recipient": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "zipcode": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "account_number": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string",
+                      "format": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "created_at": "2025-03-04T10:20:04.080539+00:00",
+                      "first_name": "michael",
+                      "middle_name": null,
+                      "last_name": "enslin",
+                      "dob": "1950-02-28",
+                      "sex": "male",
+                      "ssn_last_four": "1234",
+                      "address": {
+                        "line1": "61st Street, Dolphin Hotel",
+                        "line2": "Room 1408",
+                        "recipient": null,
+                        "city": "New York",
+                        "zipcode": "10065",
+                        "state": "NY"
+                      },
+                      "email": "mike@foo.bar",
+                      "phone": "1234567890",
+                      "account_number": null,
+                      "code": "PAT21T"
+                    },
+                    "summary": "Create success"
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
+            "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "type": "object"
+                },
+                "examples": {
+                  "Example#1": {
+                    "value": {
+                      "errors": {
+                        "first_name": {
+                          "$": [
+                            "This field cannot be null."
+                          ]
+                        },
+                        "last_name": {
+                          "$": [
+                            "This field cannot be null."
+                          ]
+                        },
+                        "dob": {
+                          "$": [
+                            "This field cannot be null."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Bad request"
+                  }
                 }
               }
             }
           }
         }
       },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+      "get": {
+        "tags": [
+          "public-auth_Patient"
+        ],
+        "summary": "List of  Patient",
+        "description": "",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
+            "in": "query",
+            "name": "_page_number",
+            "required": false,
             "schema": {
               "type": "integer",
-              "format": "int64"
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "required": [
+                    "result"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "created_at",
+                          "first_name",
+                          "last_name",
+                          "dob",
+                          "code"
+                        ],
+                        "properties": {
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "middle_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "dob": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "sex": {
+                            "type": "string"
+                          },
+                          "ssn_last_four": {
+                            "type": "string"
+                          },
+                          "address": {
+                            "type": "object",
+                            "required": [
+                              "line1",
+                              "city",
+                              "zipcode",
+                              "state"
+                            ],
+                            "properties": {
+                              "line1": {
+                                "type": "string"
+                              },
+                              "line2": {
+                                "type": "string"
+                              },
+                              "recipient": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "zipcode": {
+                                "type": "string"
+                              },
+                              "state": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          },
+                          "account_number": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string",
+                            "format": "string"
+                          }
+                        }
+                      }
+                    },
+                    "prev": {
+                      "type": "string"
+                    },
+                    "previous": {
+                      "type": "string"
+                    },
+                    "next": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "result": [
+                        {
+                          "created_at": "2025-03-03T10:20:03.926469+00:00",
+                          "first_name": "michael",
+                          "middle_name": null,
+                          "last_name": "enslin",
+                          "dob": "1950-02-28",
+                          "sex": "male",
+                          "ssn_last_four": "1234",
+                          "address": {
+                            "line1": "61st Street, Dolphin Hotel",
+                            "line2": "Room 1408",
+                            "recipient": null,
+                            "city": "New York",
+                            "zipcode": "10065",
+                            "state": "NY"
+                          },
+                          "email": "mike@foo.bar",
+                          "phone": "1234567890",
+                          "account_number": null,
+                          "code": "PAT19T"
+                        },
+                        {
+                          "created_at": "2025-03-02T10:20:03.935461+00:00",
+                          "first_name": "jane",
+                          "middle_name": null,
+                          "last_name": "doe",
+                          "dob": "2008-02-28",
+                          "sex": "female",
+                          "ssn_last_four": "1234",
+                          "address": {
+                            "line1": "69 1st Street",
+                            "line2": "Apt. 14",
+                            "recipient": null,
+                            "city": "New York",
+                            "zipcode": "10066",
+                            "state": "NY"
+                          },
+                          "email": "jane@foo.bar",
+                          "phone": "1234567890",
+                          "account_number": null,
+                          "code": "PAT20T"
+                        }
+                      ]
+                    },
+                    "summary": "Get list"
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
+    },
+    "/api/auth/v1/patients/{code}/": {
+      "get": {
+        "tags": [
+          "public-auth_Patient"
         ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+        "summary": "Patient details",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "created_at",
+                    "first_name",
+                    "last_name",
+                    "dob",
+                    "code"
+                  ],
+                  "properties": {
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "middle_name": {
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "dob": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "sex": {
+                      "type": "string"
+                    },
+                    "ssn_last_four": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "object",
+                      "required": [
+                        "line1",
+                        "city",
+                        "zipcode",
+                        "state"
+                      ],
+                      "properties": {
+                        "line1": {
+                          "type": "string"
+                        },
+                        "line2": {
+                          "type": "string"
+                        },
+                        "recipient": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "zipcode": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "account_number": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string",
+                      "format": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "created_at": "2025-03-02T10:20:03.542660+00:00",
+                      "first_name": "michael",
+                      "middle_name": null,
+                      "last_name": "enslin",
+                      "dob": "1950-02-28",
+                      "sex": "male",
+                      "ssn_last_four": "1234",
+                      "address": {
+                        "line1": "61st Street, Dolphin Hotel",
+                        "line2": "Room 1408",
+                        "recipient": null,
+                        "city": "New York",
+                        "zipcode": "10065",
+                        "state": "NY"
+                      },
+                      "email": "mike@foo.bar",
+                      "phone": "1234567890",
+                      "account_number": null,
+                      "code": "PAT17T"
+                    },
+                    "summary": "Get details"
+                  }
+                }
+              }
+            }
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+          "404": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "Example#1": {
+                    "value": {
+                      "detail": "Patient not found (18)"
+                    },
+                    "summary": "Wrong location"
+                  }
+                }
               }
             }
           }
-        ]
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
+      "parameters": [
+        {
+          "name": "code",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
             "type": "string"
           }
         }
-      }
+      ]
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+    "/api/auth/v1/patients/{patient_code}/eligibility/": {
+      "post": {
+        "tags": [
+          "public-auth_Patient eligibility link"
+        ],
+        "summary": "Patient eligibility link wrapper",
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "public-auth_Patient eligibility link"
+        ],
+        "summary": "List of  Patient eligibility link",
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "_page_number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "result"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "request_uid",
+                          "provider_app_url"
+                        ],
+                        "properties": {
+                          "request_uid": {
+                            "type": "string",
+                            "description": "UID provided on request"
+                          },
+                          "provider_app_url": {
+                            "type": "string",
+                            "description": "An URL that allows getting access to the eligibility results in Anagram Provider App"
+                          },
+                          "results": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "persons"
+                              ],
+                              "properties": {
+                                "insurer_code": {
+                                  "type": "string",
+                                  "description": "Example: insurer:vision:vsp"
+                                },
+                                "id": {
+                                  "type": "integer"
+                                },
+                                "plan_is_active": {
+                                  "type": "boolean",
+                                  "description": "Is insurer plan active at the moment"
+                                },
+                                "status": {
+                                  "type": "string"
+                                },
+                                "plan_name": {
+                                  "type": "string"
+                                },
+                                "plan_group": {
+                                  "type": "string"
+                                },
+                                "plan_group_id": {
+                                  "type": "string"
+                                },
+                                "plan_begin_date": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "plan_end_date": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "plan_refresh_date": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "persons": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "required": [
+                                      "plan"
+                                    ],
+                                    "properties": {
+                                      "first_name": {
+                                        "type": "string"
+                                      },
+                                      "last_name": {
+                                        "type": "string"
+                                      },
+                                      "dob": {
+                                        "type": "string",
+                                        "format": "date"
+                                      },
+                                      "sex": {
+                                        "type": "string"
+                                      },
+                                      "member_id": {
+                                        "type": "string"
+                                      },
+                                      "ssn_last_four": {
+                                        "type": "string"
+                                      },
+                                      "type": {
+                                        "type": "string"
+                                      },
+                                      "address": {
+                                        "type": "object",
+                                        "required": [],
+                                        "properties": {
+                                          "line1": {
+                                            "type": "string"
+                                          },
+                                          "line2": {
+                                            "type": "string"
+                                          },
+                                          "city": {
+                                            "type": "string"
+                                          },
+                                          "zipcode": {
+                                            "type": "string"
+                                          },
+                                          "state": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      },
+                                      "email": {
+                                        "type": "string"
+                                      },
+                                      "phone": {
+                                        "type": "string"
+                                      },
+                                      "id": {
+                                        "type": "integer"
+                                      },
+                                      "full_name": {
+                                        "type": "string",
+                                        "description": "Can be used instead of first and last names"
+                                      },
+                                      "is_active": {
+                                        "type": "boolean",
+                                        "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
+                                      },
+                                      "plan": {
+                                        "type": "object",
+                                        "required": [
+                                          "insurer_state",
+                                          "items"
+                                        ],
+                                        "properties": {
+                                          "refresh_date": {
+                                            "type": "string",
+                                            "format": "date"
+                                          },
+                                          "insurer_state": {
+                                            "type": "string",
+                                            "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
+                                          },
+                                          "begin_date": {
+                                            "type": "string",
+                                            "format": "date"
+                                          },
+                                          "end_date": {
+                                            "type": "string",
+                                            "format": "date"
+                                          },
+                                          "items": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "required": [
+                                                "network_type",
+                                                "is_authorization_required",
+                                                "limits",
+                                                "subitem_limits"
+                                              ],
+                                              "properties": {
+                                                "code": {
+                                                  "type": "string",
+                                                  "description": "Unique benefit code"
+                                                },
+                                                "copay": {
+                                                  "type": "number",
+                                                  "format": "double"
+                                                },
+                                                "network_type": {
+                                                  "type": "string"
+                                                },
+                                                "is_authorization_required": {
+                                                  "type": "boolean"
+                                                },
+                                                "refresh_date": {
+                                                  "type": "string",
+                                                  "format": "date",
+                                                  "description": "Refresh date of benefit if it's different from plan refresh date"
+                                                },
+                                                "limits": {
+                                                  "type": "object",
+                                                  "required": [],
+                                                  "properties": {
+                                                    "quantity": {
+                                                      "type": "integer"
+                                                    },
+                                                    "total_coverage": {
+                                                      "type": "number",
+                                                      "format": "double",
+                                                      "description": "Total coverage of benefit for period"
+                                                    },
+                                                    "quantity_remain": {
+                                                      "type": "integer"
+                                                    },
+                                                    "quantity_reserved": {
+                                                      "type": "integer"
+                                                    },
+                                                    "total_coverage_remain": {
+                                                      "type": "number",
+                                                      "format": "double"
+                                                    }
+                                                  }
+                                                },
+                                                "subitem_limits": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "required": [
+                                                      "code"
+                                                    ],
+                                                    "properties": {
+                                                      "code": {
+                                                        "type": "string",
+                                                        "description": "code of sub benefit inside benefit"
+                                                      },
+                                                      "quantity": {
+                                                        "type": "integer",
+                                                        "description": "Maximum amount of services"
+                                                      },
+                                                      "total_coverage": {
+                                                        "type": "number",
+                                                        "format": "double",
+                                                        "description": "Total coverage of benefit for period"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "prev": {
+                      "type": "string"
+                    },
+                    "previous": {
+                      "type": "string"
+                    },
+                    "next": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "result": [
+                        {
+                          "request_uid": null,
+                          "provider_app_url": "https://anagram.care/patients/24",
+                          "results": [
+                            {
+                              "insurer_code": "insurer:vision:test",
+                              "id": 0,
+                              "plan_is_active": true,
+                              "status": "active",
+                              "plan_name": "PLAN",
+                              "plan_group": "PLAN GROUP",
+                              "plan_group_id": null,
+                              "plan_begin_date": "2024-01-01",
+                              "plan_end_date": "2025-12-31",
+                              "plan_refresh_date": "2025-01-01",
+                              "persons": [
+                                {
+                                  "first_name": "John",
+                                  "last_name": "Doe",
+                                  "dob": "1988-04-01",
+                                  "sex": "male",
+                                  "member_id": "R000000",
+                                  "ssn_last_four": "9999",
+                                  "type": "self",
+                                  "address": {
+                                    "line1": "1234 Main St",
+                                    "line2": "Apt 1",
+                                    "city": "Los Angeles",
+                                    "zipcode": "90210",
+                                    "state": "CA"
+                                  },
+                                  "email": "example@anagram.care",
+                                  "phone": "1999999999",
+                                  "id": 0,
+                                  "full_name": "John Doe",
+                                  "is_active": true,
+                                  "plan": {
+                                    "refresh_date": null,
+                                    "insurer_state": "inn",
+                                    "begin_date": null,
+                                    "end_date": null,
+                                    "items": []
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Retrieve list of eligibilities for patient"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "patient_code",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/auth/v1/patients/{patient_code}/eligibility/overview/": {
+      "parameters": [
+        {
+          "name": "patient_code",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/auth/v1/patients/overview/": {}
+  },
+  "info": {
+    "title": "Anagram backend",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "public-auth_Eligibility Request",
+      "x-displayName": "Eligibility Request",
+      "description": "Requesting patient's eligibility uses the following parameters:\n\n- First name (required)\n- Last name (required)\n- Date of birth (required)\n- Last four digits from SSN (optional)\n- Zip code (optional)\n- Insurer Member ID (optional)\n- Request UID (optional)\n\nThis call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request.\nThe result will be returned in two ways:\n- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred.\nRequest UID will be included in payload.\n- By calling the \"Eligibility Result\" endpoint - only to be used as fallback. Request UID is required.\n\nIf specifying a UID, ensure it is unique. If omitted one will be generated automatically\nand included in the response for this API call.\n\nAuthentication is required for this endpoint. Access token can be obtained\nin [provider app](https://provider.anagram.care/). Access token must be sent in `Authorization` header,\nprefaced with `API `:\n\n`Authorization: Api <key generated in provider app>`\n\nThe response will contain the request UID or a validation error.\n\nError examples:\n```\n{\n    \"errors\": {\"$\": [\"Wrong insurer code\"]}\n}\n```\n```\n{\n    \"errors\": {\n        \"patient\": {\n            \"first_name\": {\"$\": [\"This field cannot be blank.\"]}\n        }\n    }\n}\n```\n\nFor testing purposes, you can include cheat codes in the request. Cheat codes can be provided in the fields\n`first_name`, `last_name`, and `member_id`. Here are some examples of cheat codes:\n\n- `mark_used`: This cheat code marks all benefits as used.\n\n- `dt_exam_used`: This cheat code marks exam benefit as used.\n\n- `no_oon`: Removes all out-of-network benefits from the plan.\n\n- `no_inn`: Removes all in-network benefits from the plan. You can use both `no_oon` and `no_inn` codes together to\ngenerate a plan without any benefits.\n\n- `delay_10`, `delay_30`: These codes introduce a delay in the response, causing it to wait for either 10 or 30\nseconds before providing an answer.\n\n- `big_family`: This cheat code adds multiple persons to the result.\n\n- `not_found`: Using this cheat code will delete all results.\n\n- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error`."
+    },
+    {
+      "name": "public-auth_Eligibility Result",
+      "x-displayName": "Eligibility Result",
+      "description": "Eligibility search result will be sent to all active webhooks once available.\nAs a fallback, you may call this endpoint to check result status and obtain the result.\n\n### Status\n\nThe `status` field in the response can have one of the following values:\n\n`complete` - Indicates that the search has been completed.\n\n`processing` - Signifies that the search is currently in progress, and it is recommended to retry the request later.\n\n`error` - Suggests that the search dit not finished successfully, and you can find descriptions of error codes\nbelow.\n\n### Error codes\n\n`insurer_problem` – Insurer not available, please try again later\n\n`unexpected_error` – Unknown error\n\n### Webhooks\n\nAdd webhooks to receive results in the [provider app](https://provider.anagram.care/webhooks).\nWebhook payload will be identical to the response of this endpoint.\n\nWhen configuring a webhook you can provide a secret to sign the webhook payload\nand check the signature on the server side.\n\nSignature will be sent in `X-Signature` header in request to webhook endpoint.\n\nSignature is a request raw data signed with secret by HMAC SHA256 algorithm. Python example:\n\n```\nimport hashlib\nimport hmac\n\ndef get_signature(secret_key: str, payload: str) -> str:\n    return hmac.new(secret_key.encode(), payload.encode(), hashlib.sha256).hexdigest()\n```"
+    },
+    {
+      "name": "public-auth_Eligibility Details Request",
+      "x-displayName": "Eligibility Details Request",
+      "description": "Requesting plan for patient's eligibility uses the following parameters:\n\n- Initial request uid (required)\n- Result id from initial request (required)\n- Person id from initial request (required)\n- Details request UID (optional)"
+    },
+    {
+      "name": "public-auth_Patient",
+      "x-displayName": "Patient"
+    },
+    {
+      "name": "public-auth_Patient eligibility link",
+      "x-displayName": "Patient eligibility link"
     }
-  }
+  ],
+  "openapi": "3.0.2",
+  "servers": [
+    {
+      "url": "https://api.anagram.care"
+    }
+  ],
+  "components": {}
 }
