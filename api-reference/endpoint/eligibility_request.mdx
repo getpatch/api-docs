@@ -1,8 +1,11 @@
 ---
 title: "Eligibility Request"
 openapi: "POST /v1/eligibility"
-description: "Description"
+description: "Eligibility request endpoint"
 ---
+
+
+## Query Parameters
 
 <ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
   Example: insurer:vision:vsp
@@ -10,7 +13,7 @@ description: "Description"
   <ParamField query="request_uid" path="request_uid" type="string">
     Any string value. Max length: 256
   </ParamField>
-  ## Patient (object) `required`
+  ### Patient (object) `required`
 
   <ParamField query="first_name" path="first_name" type="string" required="required">
     Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
@@ -33,7 +36,6 @@ description: "Description"
           </ParamField>
         </ParamField>
       </ParamField>
-      Patient (object)
     </ParamField>
   </ParamField>
 </ParamField>
