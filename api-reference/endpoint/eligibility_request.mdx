@@ -3,3 +3,37 @@ title: "Eligibility Request"
 openapi: "POST /v1/eligibility"
 description: "Description"
 ---
+
+<ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
+  Example: insurer:vision:vsp
+
+  <ParamField query="request_uid" path="request_uid" type="string">
+    Any string value. Max length: 256
+  </ParamField>
+  ## Patient (object) `required`
+
+  <ParamField query="first_name" path="first_name" type="string" required="required">
+    Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
+
+    <ParamField query="last_name" path="last_name" type="string" required="required">
+      Min length: 2, max length of full name: 46
+
+      <ParamField query="dob" path="dob" type="string <date>" required="required">
+        Date of birth in ISO format (YYYY-MM-DD)
+
+        <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+          Last four digits from the patient's Social Security Number
+
+          <ParamField query="zip" path="zip" type="string">
+            Zip code with 5 or 9 digits. Example: 12345-6789
+
+            <ParamField query="member_id" path="member_id" type="string">
+              Insurer specific member identifier
+            </ParamField>
+          </ParamField>
+        </ParamField>
+      </ParamField>
+      Patient (object)
+    </ParamField>
+  </ParamField>
+</ParamField>
