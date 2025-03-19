@@ -6,6 +6,25 @@ description: "Eligibility request endpoint"
 
 https://api.anagram.care/api/auth/v1/eligibility/
 
+<RequestExample>
+
+``` filename
+{
+	"insurer_code": "string",
+	"request_uid": "string",
+	"patient": {
+		"first_name": "string",
+		"last_name": "string",
+		"dob": "2019-08-24",
+		"ssn_last_four": "string",
+		"zip": "string",
+		"member_id": "string"
+	}
+}
+```
+
+</RequestExample>
+
 ## Query Parameters
 
 <ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
