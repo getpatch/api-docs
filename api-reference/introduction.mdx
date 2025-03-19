@@ -14,49 +14,6 @@ The Anagram API is organized around [**REST**](http://en.wikipedia.org/wiki/Repr
 
 The Anagram API does not have a test mode. The API key you use to [**authenticate**](https://docs.stripe.com/api/authentication) requests is live. You can use the Anagram API with a demo payer for testing purposes, which doesn’t affect live data or interact with real insurance companies.
 
-## Testing
-
-There is no testing environment. For testing, use the`insurer:vision:demo`payer in the request parameters. This payer provides mock responses and does not interact with live data.
-
-## Request IDs
-
-The API assigns identifiers to all requests, available in `x-request-id` response header. Our support team may ask for request IDs when handling a case.
-
-## Object IDs
-
-Objects are identified by strings, often called "codes".
-
-```json
-{
-  ...
-  "insurer_code": "insurer:vision:demo",
-  ...
-}
-```
-
-**Note:**
-
-- Diagnosis and services are identified by a list of codes
-- For services the API currently requires a single code, specified as a JSON array with a single value
-
-```json
-...
-"services": [{
-  "codes": ["V2020"],
-  ...
-}]
-```
-
-## Types
-
-We use standard types:
-
-- `string` values are generally limited to 255 characters
-- `int` an signed integer number limited to 32 bits
-- `date` is an ISO string, `YYYY-MM-DD`
-- `money`: decimal as a string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
-- `percent`: decimal as s string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
-- Optional fields are denoted as `<type> | null`, can be omitted
-- Arrays are denoted with `[]`
+## 
 
 ## 
