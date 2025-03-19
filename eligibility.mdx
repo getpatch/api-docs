@@ -5,9 +5,17 @@ description: "The Eligibility section of the Anagram API provides tools for veri
 
 ## Workflow
 
-### Sequence of Requests:
-
-The eligibility request process begins with an `Eligibility Request`. The request returns a `request_uid` that can be used to fetch the eligibility result `Eligibility Result`. Afterward, detailed eligibility and plan information can be retrieved using the `Eligibility Details Request`.
+<Steps>
+  <Step title="Eligibility Request">
+    The eligibility check process is initiated in this step with the patient's information being sent to the payer. This request returns a unique `request_uid` that can be used to fetch the eligibility result.
+  </Step>
+  <Step title="Eligibility Result">
+    The eligibility result is fetch`request_uid` and is the outcome of the eligibility requiest. This result contains limited information about the patient's plan. To get the full insurance plan, the Eligibility Details request needs to be run. 
+  </Step>
+  <Step title="Eligibility Details">
+    The detailed eligbility and benefits information is obtained by running the Eligibility Details endpoint.
+  </Step>
+</Steps>
 
 ### Webhooks
 
@@ -15,35 +23,26 @@ The API supports both webhooks and polling to notify you of eligibility check re
 
 Matching search results
 
-
-
 When performing an eligibility check, the Anagram API uses basic patient information, such as the name (first and last) and date of birth, to search for a match with the insurer’s records. However, the insurer's response may include multiple potential matches, often due to slight variations in the data. These variations can include:
 
-* **Middle Name Initials**: A record might include a middle name initial or the full middle name.
-
-* **First Name Variations**: A person named “Robert” might appear as “Bob” in the insurer's records.
-
-* **Date of Birth Differences**: There may be cases where a patient’s date of birth is entered differently, such as a typo or format discrepancy.
+- **Middle Name Initials**: A record might include a middle name initial or the full middle name.
+- **First Name Variations**: A person named “Robert” might appear as “Bob” in the insurer's records.
+- **Date of Birth Differences**: There may be cases where a patient’s date of birth is entered differently, such as a typo or format discrepancy.
 
 The **matching algorithm** for selecting the correct record is ultimately up to you. You can choose to apply a strict matching strategy, requiring an exact match on all fields—such as a perfect name and birthdate match—or opt for a looser approach, where slight variations (e.g., first name vs. nickname, middle initial) are allowed.
 
 It’s important for you to consider the trade-offs of your chosen matching strategy:
 
-* **Strict Matching**: While this reduces the risk of selecting the wrong member, it may result in no match being found when minor discrepancies exist.
-
-* **Looser Matching**: This increases the likelihood of finding a match even with minor discrepancies, but it may occasionally pull in results that do not perfectly align with the intended member.
+- **Strict Matching**: While this reduces the risk of selecting the wrong member, it may result in no match being found when minor discrepancies exist.
+- **Looser Matching**: This increases the likelihood of finding a match even with minor discrepancies, but it may occasionally pull in results that do not perfectly align with the intended member.
 
 You should carefully develop a matching strategy that aligns with your business needs and data quality, keeping in mind the potential impact of their chosen strategy on both **accuracy** and **efficiency**. You should also implement additional checks or verification steps (such as confirming the member's address or other identifiers) when possible to reduce the risk of selecting the wrong member, especially when the data is ambiguous or incomplete.
-
 
 ## Plan Interpretation
 
 When analyzing a patient's insurance plan details retrieved via the Anagram API, it's essential to understand the distinctions between in-network (INN) and out-of-network (OON) services, as well as the associated costs.​
 
-* **In-Network (INN) vs. Out-of-Network (OON)**: plans are distinguished by 'oon' for out-of-network and 'inn' for in-network.
-
-* **Copays and Coinsurance**: The API response includes information on copayments (fixed amounts paid for specific services) and coinsurance (a percentage of the service cost the patient must pay after meeting their deductible).​ Out-of-network copays are effectively deductibles and should be treated as such.
-
-* **Items and Services**: Detailed descriptions of covered items (e.g., exams, frames, lenses) are provided, along with their respective costs and coverage details.​
-
-* **Packages and Bundled Benefits**: .​
+- **In-Network (INN) vs. Out-of-Network (OON)**: plans are distinguished by 'oon' for out-of-network and 'inn' for in-network.
+- **Copays and Coinsurance**: The API response includes information on copayments (fixed amounts paid for specific services) and coinsurance (a percentage of the service cost the patient must pay after meeting their deductible).​ Out-of-network copays are effectively deductibles and should be treated as such.
+- **Items and Services**: Detailed descriptions of covered items (e.g., exams, frames, lenses) are provided, along with their respective costs and coverage details.​
+- **Packages and Bundled Benefits**: .​
