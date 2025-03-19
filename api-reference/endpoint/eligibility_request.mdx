@@ -1,7 +1,7 @@
 ---
 title: "Eligibility Request"
 openapi: "POST /v1/eligibility"
-description: "Eligibility request endpoint"
+description: "Initiating an eligibility check for a patient"
 ---
 
 `POST` /eligibility
@@ -25,7 +25,7 @@ If specifying a UID, ensure it is unique. If omitted, one will be generated auto
 
 Authentication is required for this endpoint. The API key can be obtained in the[ app](https://provider.anagram.care/). The API key must be sent in the `Authorization` header, prefaced with `Api `:
 
-`Authorization: Api <key generated in provider app>`
+`Authorization: Api <your api key>`
 
 The response will contain the request UID or a validation error.
 
@@ -73,33 +73,34 @@ The response will contain the request UID or a validation error.
 
 <ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
   Example: insurer:vision:vsp
+</ParamField>
 
-  <ParamField query="request_uid" path="request_uid" type="string">
-    Any string value. Max length: 256
-  </ParamField>
-  ### Patient (object) `required`
+<ParamField query="request_uid" path="request_uid" type="string">
+  Any string value. Max length: 256
+</ParamField>
 
-  <ParamField query="first_name" path="first_name" type="string" required="required">
-    Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
+### Patient (object) `required`
 
-    <ParamField query="last_name" path="last_name" type="string" required="required">
-      Min length: 2, max length of full name: 46
+<ParamField query="first_name" path="first_name" type="string" required="required">
+  Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
+</ParamField>
 
-      <ParamField query="dob" path="dob" type="string <date>" required="required">
-        Date of birth in ISO format (YYYY-MM-DD)
+<ParamField query="last_name" path="last_name" type="string" required="required">
+  Min length: 2, max length of full name: 46
+</ParamField>
 
-        <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
-          Last four digits from the patient's Social Security Number
+<ParamField query="dob" path="dob" type="string <date>" required="required">
+  Date of birth in ISO format (YYYY-MM-DD)
+</ParamField>
 
-          <ParamField query="zip" path="zip" type="string">
-            Zip code with 5 or 9 digits. Example: 12345-6789
+<ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+  Last four digits from the patient's Social Security Number
+</ParamField>
 
-            <ParamField query="member_id" path="member_id" type="string">
-              Insurer specific member identifier
-            </ParamField>
-          </ParamField>
-        </ParamField>
-      </ParamField>
-    </ParamField>
-  </ParamField>
+<ParamField query="zip" path="zip" type="string">
+  Zip code with 5 or 9 digits. Example: 12345-6789
+</ParamField>
+
+<ParamField query="member_id" path="member_id" type="string">
+  Insurer specific member identifier
 </ParamField>

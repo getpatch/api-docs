@@ -14,7 +14,7 @@ All API requests must be made over [**HTTPS**](http://en.wikipedia.org/wiki/HTTP
 All API endpoints are authenticated using Bearer tokens in the authentication header.
 
 ```json
-Authorization: Api <your token>
+Authorization: Api <your api key>
 ```
 
 `Api` is the bearer name and is case sensitive. Requests without a valid token will be denied with a `401` status and an error message:
@@ -25,7 +25,7 @@ Authorization: Api <your token>
 
 <RequestExample>
 
-``` Authenticated Request
+```Authenticated Request
 curl https://api.anagram.care/v1/eligibility \
   -u 6FB02106ADF1D956B1147F95F455B9AD
 ```
