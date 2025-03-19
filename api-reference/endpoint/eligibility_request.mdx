@@ -4,9 +4,30 @@ openapi: "POST /v1/eligibility"
 description: "Eligibility request endpoint"
 ---
 
-> https://api.anagram.care/api/auth/v1/eligibility/
+`POST` /eligibility
 
-https://api.anagram.care/api/auth/v1/eligibility/
+Requesting a patient's eligibility uses the following parameters:
+
+- First name (required)
+- Last name (required)
+- Date of birth (required)
+- Last four digits from SSN (optional)
+- Zip code (optional)
+- Insurer Member ID (optional)
+- Request UID (optional)
+
+This call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request. The result will be returned in two ways:
+
+- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred. Request UID will be included in payload.
+- By calling the "Eligibility Result" endpoint - only to be used as fallback. Request UID is required.
+
+If specifying a UID, ensure it is unique. If omitted, one will be generated automatically and included in the response for this API call.
+
+Authentication is required for this endpoint. The API key can be obtained in the[ app](https://provider.anagram.care/). The API key must be sent in the `Authorization` header, prefaced with `Api `:
+
+`Authorization: Api <key generated in provider app>`
+
+The response will contain the request UID or a validation error.
 
 <RequestExample>
 
@@ -26,6 +47,27 @@ https://api.anagram.care/api/auth/v1/eligibility/
 ```
 
 </RequestExample>
+
+<ResponseExample>
+
+```json error
+{
+    "errors": {"$": ["Wrong insurer code"]}
+}
+```
+
+
+```json error 2
+{
+    "errors": {
+        "patient": {
+            "first_name": {"$": ["This field cannot be blank."]}
+        }
+    }
+}
+```
+
+</ResponseExample>
 
 ## Query Parameters
 
