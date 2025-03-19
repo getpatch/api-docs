@@ -1,0 +1,45 @@
+---
+title: "IDs and Types"
+description: "Description of your new file."
+---
+
+## Request IDs
+
+The API assigns identifiers to all requests, available in the `x-request-id` response header. Our support team may ask you for request IDs when handling a ticket.
+
+## Object IDs
+
+Objects are identified by strings, often called "codes".
+
+```json
+{
+  ...
+  "insurer_code": "insurer:vision:demo",
+  ...
+}
+```
+
+**Note:**
+
+- Diagnosis and services are identified by a list of codes
+- For services the API currently requires a single code, specified as a JSON array with a single value
+
+```json
+...
+"services": [{
+  "codes": ["V2020"],
+  ...
+}]
+```
+
+## Types
+
+We use standard types:
+
+- `string` values are generally limited to 255 characters
+- `int` an signed integer number limited to 32 bits
+- `date` is an ISO string, `YYYY-MM-DD`
+- `money`: decimal as a string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
+- `percent`: decimal as s string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
+- Optional fields are denoted as `<type> | null`, can be omitted
+- Arrays are denoted with `[]`

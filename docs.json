@@ -35,6 +35,7 @@
               "api-reference/introduction",
               "api-reference/authentication",
               "api-reference/testing",
+              "api-reference/ids-and-types",
               "api-reference/errors"
             ]
           },
