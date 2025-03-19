@@ -1,6 +1,6 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "Example section for showcasing API endpoints"
 ---
 
 <Note>
@@ -10,27 +10,35 @@ description: 'Example section for showcasing API endpoints'
 
 ## Welcome
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+The Anagram API is organized around [**REST**](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable resource-oriented URLs, accepts [**form-encoded**](https://en.wikipedia.org/wiki/POST_\(HTTP\)#Use_for_submitting_web_forms) request bodies, returns [**JSON-encoded**](http://www.json.org/) responses, and uses standard HTTP response codes, authentication, and verbs.
+
+The Anagram API does not have a test mode. The API key you use to [**authenticate**](https://docs.stripe.com/api/authentication) requests is live. You can use the Anagram API with a demo payer for testing purposes, which doesn’t affect live data or interact with real insurance companies. 
 
 ## Authentication
 
-To get an authentication token, log into [Anagram’s Web App](https://provider.anagram.care/) and go to “Settings” -> “API Tokens”. Click “Generate new token” and follow the instructions. If you can’t find the “API Tokens” section in the settings, please contact our support team and request to activate Public API access.
+The Anagram API uses **API keys** to authenticate requests. You can view and manage your API keys in [**the Anagram App**](https://provider.anagram.care/) by navigating to "settings" -> "API tokens". Click “Generate new token” and follow the instructions. If you can’t find the “API Tokens” section in the settings, please contact our support team and request to activate Public API access.
+
+Your API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.
+
+Authentication to the API is performed via [**HTTP Basic Auth**](http://en.wikipedia.org/wiki/Basic_access_authentication). Provide your API key as the basic auth username value. You do not need to provide a password.
+
+All API requests must be made over [**HTTPS**](http://en.wikipedia.org/wiki/HTTP_Secure). Calls made over plain HTTP will fail. API requests without authentication will also fail.
 
 All API endpoints are authenticated using Bearer tokens in the authentication header.
 
 ```json
-Authorization: API <your token>
+Authorization: Api <your token>
 ```
 
-`API` is the bearer name and is case sensitive. Requests without a valid token will be denied with a `401` status and an error message:
+`Api` is the bearer name and is case sensitive. Requests without a valid token will be denied with a `401` status and an error message:
 
 ```json
 {"detail": "Invalid authentication token."}
 ```
 
-## Testing and sandboxes
+## Testing
 
-No sandbox environment is availible at this time. For testing purposes, submit claims against the demo insurer: `insurer:vision:demo`.
+There is no testing environment. For testing, use the`insurer:vision:demo`payer in the request parameters. This payer provides mock responses and does not interact with live data.
 
 ## Request IDs
 
@@ -50,9 +58,8 @@ Objects are identified by strings, often called "codes".
 
 **Note:**
 
-* Diagnosis and services are identified by a list of codes
-
-* For services the API currently requires a single code, specified as a JSON array with a single value
+- Diagnosis and services are identified by a list of codes
+- For services the API currently requires a single code, specified as a JSON array with a single value
 
 ```json
 ...
@@ -66,19 +73,13 @@ Objects are identified by strings, often called "codes".
 
 We use standard types:
 
-* `string` values are generally limited to 255 characters
-
-* `int` an signed integer number limited to 32 bits
-
-* `date` is an ISO string, `YYYY-MM-DD`
-
-* `money`: decimal as a string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
-
-* `percent`: decimal as s string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
-
-* Optional fields are denoted as `<type> | null`, can be omitted
-
-* Arrays are denoted with `[]`
+- `string` values are generally limited to 255 characters
+- `int` an signed integer number limited to 32 bits
+- `date` is an ISO string, `YYYY-MM-DD`
+- `money`: decimal as a string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
+- `percent`: decimal as s string (not an integer or a float number to avoid round error), up to 4 digits in the fraction part
+- Optional fields are denoted as `<type> | null`, can be omitted
+- Arrays are denoted with `[]`
 
 ## Error handling
 
@@ -86,9 +87,8 @@ Errors are signaled via an appropriate 4xx/5xx response code and JSON response b
 
 There are 2 possible error responses:
 
-* Validation error with `Error` object,
-
-* General error with the string field `detail`.
+- Validation error with `Error` object,
+- General error with the string field `detail`.
 
 ### General error (string field "detail")
 
