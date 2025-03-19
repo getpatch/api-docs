@@ -44,6 +44,9 @@
             "group": "API Documentation",
             "pages": [
               "api-reference/introduction",
+              "api-reference/authentication",
+              "api-reference/testing",
+              "api-reference/errors",
               "api-reference/claims"
             ]
           },
