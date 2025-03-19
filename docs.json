@@ -19,20 +19,9 @@
               "introduction",
               "eligibility",
               "claims",
-              "integrating with the anagram app",
-              "supported payers and coding",
+              "integrating with anagram's app",
+              "payers and coding",
               "coming soon"
-            ]
-          },
-          {
-            "group": "Essentials",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
             ]
           }
         ]
@@ -46,12 +35,11 @@
               "api-reference/introduction",
               "api-reference/authentication",
               "api-reference/testing",
-              "api-reference/errors",
-              "api-reference/claims"
+              "api-reference/errors"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Resources",
             "pages": [
               "api-reference/endpoint/eligibility_request",
               "api-reference/endpoint/eligibility_details_request",
