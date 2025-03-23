@@ -1,4 +1,46 @@
 ---
-title: 'Eligibility Details Request'
-openapi: 'POST /v1/eligibility/{request_uid}/details'
+title: "Eligibility Details Request"
+openapi: "POST /v1/eligibility/{request_uid}/details"
+description: "Requesting a detailed insurance plan from a successful eligibility request"
 ---
+
+<CodeGroup>
+
+```json Endpoint
+`POST` /eligibility/{request_uid}/details/
+```
+
+</CodeGroup>
+
+This endpoint is used upon the eligibiltiy request's success. Requesting the plan for a patient's eligibility uses the following parameters:
+
+- Initial request uid (required)
+- Result id from initial request (required)
+- Person id from initial request (required)
+- Details request UID (optional)
+
+<RequestExample>
+
+```json Request Example
+{
+"request_uid": "string",
+"result_id": 0,
+"person_id": 0
+}
+```
+
+</RequestExample>
+
+## Query Parameters
+
+<ParamField query="request_uid" path="request_uid" type="string" required>
+  Any string value. Max length: 256
+</ParamField>
+
+<ParamField query="result_id" path="result_id" type="string" required>
+  Eligibility result id from results of initial eligibility request
+</ParamField>
+
+<ParamField query="person_id" path="person_id" type="string" required>
+  Person id from selected result of initial eligibility request
+</ParamField>
