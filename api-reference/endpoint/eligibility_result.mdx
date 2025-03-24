@@ -1041,7 +1041,7 @@ def get_signature(secret_key: str, payload: str) -> str:
 ```
 
 
-``` Result with used Exam and reserved Frame benefit
+```json with used Exam and reserved Frame benefit
 {
   "request_uid": "1233ab2dc4dj5bs",
   "status": "complete",
@@ -1427,3 +1427,31 @@ def get_signature(secret_key: str, payload: str) -> str:
 <ParamField query="request_uid" path="request_uid" type="string" required>
   Any string value. Max length: 256
 </ParamField>
+
+## Responses
+
+<AccordionGroup>
+  <Accordion title="200" description="Successful response schema" icon="check">
+    <ParamField query="request_uid" path="request_uid" type="string" required>
+      UID provided on request creation or auto generated
+      </ParamField>
+
+      <ParamField query="error" path="error" type="string" required>
+        Possible values: complete, processing, error
+        </ParamField>
+
+        <ParamField query="error_code" path="error_code" type="string">
+          Enter a description
+           </ParamField>
+
+          ### Results (object)
+
+          <ParamField path="param" type="string">
+            Enter a description
+          </ParamField>
+    
+  </Accordion>
+  <Accordion title="New Accordion" icon="sparkles">
+    
+  </Accordion>
+</AccordionGroup>
