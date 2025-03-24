@@ -1,5 +1,726 @@
 ---
-title: 'Eligibility Result'
-openapi: 'GET /v1/eligibility/{request_uid}/'
+title: "Eligibility Result"
+openapi: "GET /v1/eligibility/{request_uid}/"
 ---
 
+<CodeGroup>
+
+```json Endpoint
+`GET` /eligibility/{request_uid}
+```
+
+</CodeGroup>
+
+The Eligibility request result will be sent to all active webhooks once available. As a fallback, you may call this endpoint to check result status and obtain the result.
+
+### Status
+
+The `status` field in the response can have one of the following values:
+
+| Status Code  | Details                                                                                                     |
+| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| `complete`   | Indicates that the search has been completed.                                                               |
+| `processing` | Signifies that the search is currently in progress, and it is recommended to retry the request later.       |
+| `error`      | Suggests that the search dit not finished successfully, and you can find descriptions of error codes below. |
+
+### Error codes
+
+| Error code         | Details                                |
+| ------------------ | -------------------------------------- |
+| `insurer_problem`  | Insurer not available, try again later |
+| `unexpected_error` | Unknown error                          |
+
+### Webhooks
+
+Add webhooks to receive results in the [provider app](https://provider.anagram.care/webhooks). Webhook payload will be identical to the response of this endpoint.
+
+When configuring a webhook you can provide a secret to sign the webhook payload and check the signature on the server side.
+
+Signature will be sent in `X-Signature` header in request to webhook endpoint.
+
+Signature is a request raw data signed with secret by HMAC SHA256 algorithm. Python example:
+
+```python
+import hashlib
+import hmac
+
+def get_signature(secret_key: str, payload: str) -> str:
+    return hmac.new(secret_key.encode(), payload.encode(), hashlib.sha256).hexdigest()
+```
+
+<ResponseExample>
+
+```json Result with primary member only
+{
+  "request_uid": "1233ab2dc4dj5bs",
+  "status": "complete",
+  "error_code": null,
+  "results": [
+    {
+      "insurer_code": "insurer:vision:vsp",
+      "id": 0,
+      "plan_is_active": true,
+      "status": "active",
+      "plan_name": "VSP Choice Plan",
+      "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+      "plan_group_id": "30057697-0001",
+      "plan_begin_date": "2023-02-01",
+      "plan_end_date": null,
+      "plan_refresh_date": null,
+      "persons": [
+        {
+          "first_name": "DAN L",
+          "last_name": "CAMPUS",
+          "dob": "1963-07-11",
+          "sex": "male",
+          "member_id": null,
+          "ssn_last_four": "1234",
+          "type": "self",
+          "address": {
+            "line1": "39 CAN ROAD",
+            "line2": null,
+            "city": "WALLER",
+            "zipcode": "77484-3862",
+            "state": "TX"
+          },
+          "email": null,
+          "phone": "8324579375",
+          "id": 0,
+          "full_name": "DAN L CAMPUS",
+          "is_active": null,
+          "plan": {
+            "refresh_date": null,
+            "insurer_state": "oon",
+            "begin_date": null,
+            "end_date": null,
+            "items": [
+              {
+                "code": "EXAM",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "FRAME",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": null,
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_CONTACT",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 999,
+                  "total_coverage": null,
+                  "quantity_remain": 999,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "EXAM",
+                "copay": "10.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": "45.0000",
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "45.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "FRAME",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": "70.0000",
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "70.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_1F",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "30.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "30.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_2F",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "50.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "50.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_3F",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "65.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "65.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_PROG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "50.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "50.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_CONTACT",
+                "copay": "0.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 999,
+                  "total_coverage": "105.0000",
+                  "quantity_remain": 999,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "105.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "FRAME_LENS_1F_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_1F",
+                    "quantity": 2,
+                    "total_coverage": "30.0000"
+                  }
+                ]
+              },
+              {
+                "code": "FRAME_LENS_2F_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_2F",
+                    "quantity": 2,
+                    "total_coverage": "50.0000"
+                  }
+                ]
+              },
+              {
+                "code": "FRAME_LENS_3F_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_3F",
+                    "quantity": 2,
+                    "total_coverage": "65.0000"
+                  }
+                ]
+              },
+              {
+                "code": "FRAME_LENS_PROG_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_PROG",
+                    "quantity": 2,
+                    "total_coverage": "50.0000"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+
+```json Result with primary member and dependent
+{
+  "request_uid": "1233ab2dc4dj5bs",
+  "status": "complete",
+  "error_code": null,
+  "results": [
+    {
+      "insurer_code": "insurer:vision:vsp",
+      "id": 0,
+      "plan_is_active": true,
+      "status": "active",
+      "plan_name": "VSP Choice Plan",
+      "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+      "plan_group_id": "30057697-0001",
+      "plan_begin_date": "2023-02-01",
+      "plan_end_date": null,
+      "plan_refresh_date": null,
+      "persons": [
+        {
+          "first_name": "SAMUEL R",
+          "last_name": "CAMPUS",
+          "dob": "1995-12-06",
+          "sex": "male",
+          "member_id": null,
+          "ssn_last_four": null,
+          "type": "child",
+          "address": {
+            "line1": "39 CAN ROAD",
+            "line2": null,
+            "city": "WALLER",
+            "zipcode": "77484-3862",
+            "state": "TX"
+          },
+          "email": null,
+          "phone": "8324579375",
+          "id": 0,
+          "full_name": "SAMUEL R CAMPUS",
+          "is_active": null,
+          "plan": {
+            "refresh_date": null,
+            "insurer_state": "oon",
+            "begin_date": null,
+            "end_date": null,
+            "items": [
+              {
+                "code": "EXAM",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "FRAME",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": null,
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_CONTACT",
+                "copay": null,
+                "network_type": "inn",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 999,
+                  "total_coverage": null,
+                  "quantity_remain": 999,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "EXAM",
+                "copay": "10.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": "45.0000",
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "45.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "FRAME",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": "70.0000",
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "70.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_1F",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "30.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "30.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_2F",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "50.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "50.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_3F",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "65.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "65.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_PROG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 2,
+                  "total_coverage": "50.0000",
+                  "quantity_remain": 2,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "50.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "LENS_CONTACT",
+                "copay": "0.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 999,
+                  "total_coverage": "105.0000",
+                  "quantity_remain": 999,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": "105.0000"
+                },
+                "subitem_limits": []
+              },
+              {
+                "code": "FRAME_LENS_1F_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_1F",
+                    "quantity": 2,
+                    "total_coverage": "30.0000"
+                  }
+                ]
+              },
+              {
+                "code": "FRAME_LENS_2F_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_2F",
+                    "quantity": 2,
+                    "total_coverage": "50.0000"
+                  }
+                ]
+              },
+              {
+                "code": "FRAME_LENS_3F_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_3F",
+                    "quantity": 2,
+                    "total_coverage": "65.0000"
+                  }
+                ]
+              },
+              {
+                "code": "FRAME_LENS_PROG_PKG",
+                "copay": "25.0000",
+                "network_type": "oon",
+                "is_authorization_required": false,
+                "refresh_date": null,
+                "limits": {
+                  "quantity": 1,
+                  "total_coverage": null,
+                  "quantity_remain": 1,
+                  "quantity_reserved": 0,
+                  "total_coverage_remain": null
+                },
+                "subitem_limits": [
+                  {
+                    "code": "FRAME",
+                    "quantity": 1,
+                    "total_coverage": "70.0000"
+                  },
+                  {
+                    "code": "LENS_PROG",
+                    "quantity": 2,
+                    "total_coverage": "50.0000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "first_name": "DAN L",
+          "last_name": "CAMPUS",
+          "dob": "1963-07-11",
+          "sex": "male",
+          "member_id": null,
+          "ssn_last_four": "1234",
+          "type": "self",
+          "address": {
+            "line1": "39 CAN ROAD",
+            "line2": null,
+            "city": "WALLER",
+            "zipcode": "77484-3862",
+            "state": "TX"
+          },
+          "email": null,
+          "phone": "8324579375",
+          "id": 1,
+          "full_name": "DAN L CAMPUS",
+          "is_active": null,
+          "plan": null
+        }
+      ]
+    }
+  ]
+}
+```
+
+</ResponseExample>
+
+## Query Parameters
+
+<ParamField query="request_uid" path="request_uid" type="string" required>
+  Any string value. Max length: 256
+</ParamField>
