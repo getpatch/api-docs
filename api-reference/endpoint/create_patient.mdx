@@ -1,5 +1,146 @@
 ---
-title: 'Create Patient'
-openapi: 'POST /v1/patients/'
+title: "Create Patient"
+openapi: "POST /v1/patients/"
 ---
 
+<CodeGroup>
+
+```json Endpoint
+`POST` /patients
+```
+
+</CodeGroup>
+
+Requesting a patient's eligibility uses the following parameters:
+
+- First name (required)
+- Last name (required)
+- Date of birth (required)
+- Last four digits from SSN (optional)
+- Zip code (optional)
+- Insurer Member ID (optional)
+- Request UID (optional)
+
+This call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request. The result will be returned in two ways:
+
+- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred. Request UID will be included in payload.
+- By calling the "Eligibility Result" endpoint - only to be used as fallback. Request UID is required.
+
+If specifying a UID, ensure it is unique. If omitted, one will be generated automatically and included in the response for this API call.
+
+Authentication is required for this endpoint. The API key can be obtained in the[ app](https://provider.anagram.care/). The API key must be sent in the `Authorization` header, prefaced with `Api `:
+
+`Authorization: Api <your api key>`
+
+The response will contain the request UID or a validation error.
+
+<RequestExample>
+
+```json Request Example
+{
+	"insurer_code": "string",
+	"request_uid": "string",
+	"patient": {
+		"first_name": "string",
+		"last_name": "string",
+		"dob": "2019-08-24",
+		"ssn_last_four": "string",
+		"zip": "string",
+		"member_id": "string"
+	}
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json error
+{
+    "errors": {"$": ["Wrong insurer code"]}
+}
+```
+
+
+```json error 2
+{
+    "errors": {
+        "patient": {
+            "first_name": {"$": ["This field cannot be blank."]}
+        }
+    }
+}
+```
+
+</ResponseExample>
+
+## Query Parameters
+
+<ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
+  Example: insurer:vision:vsp
+</ParamField>
+
+<ParamField query="request_uid" path="request_uid" type="string">
+  Any string value. Max length: 256
+</ParamField>
+
+### Patient (object) `required`
+
+<ParamField query="first_name" path="first_name" type="string" required="required">
+  Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
+</ParamField>
+
+<ParamField query="last_name" path="last_name" type="string" required="required">
+  Min length: 2, max length of full name: 46
+</ParamField>
+
+<ParamField query="dob" path="dob" type="string <date>" required="required">
+  Date of birth in ISO format (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+  Last four digits from the patient's Social Security Number
+</ParamField>
+
+<ParamField query="sex" path="sex" type="string">
+  Sex of the patient as defined by the insurer
+</ParamField>
+
+<ParamField query="email" path="email" type="string">
+  The patient's email
+</ParamField>
+
+<ParamField query="phone" path="phone" type="string">
+  The patient's phone number
+</ParamField>
+
+<ParamField query="account_number" path="account_number" type="string">
+  A unique number identifying your patient in your systems
+</ParamField>
+
+<ParamField query="force_similar" path="force_similar" type="boolean">
+  Save a new patient object even though it is identical (or similar) to an existing patient
+</ParamField>
+
+<ParamField query="address" path="address" type="object">
+  <Expandable title="Address Properties" defaultOpen="true">
+    <ParamField query="line1" path="line1" type="string" required>
+      
+    </ParamField>
+    <ParamField query="line2" path="line2" type="string">
+      
+    </ParamField>
+    <ParamField query="recipient" path="recipient" type="string">
+      
+    </ParamField>
+    <ParamField query="city" path="city" type="string" required>
+      
+    </ParamField>
+    <ParamField query="zipcode" path="zipcode" type="string" required>
+      
+    </ParamField>
+    <ParamField query="state" path="state" type="string" required>
+      
+    </ParamField>
+  </Expandable>
+</ParamField>

@@ -85,28 +85,25 @@ The response will contain the request UID or a validation error.
   Any string value. Max length: 256
 </ParamField>
 
-### Patient (object) `required`
-
-<ParamField query="first_name" path="first_name" type="string" required="required">
-  Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
-</ParamField>
-
-<ParamField query="last_name" path="last_name" type="string" required="required">
-  Min length: 2, max length of full name: 46
-</ParamField>
-
-<ParamField query="dob" path="dob" type="string <date>" required="required">
-  Date of birth in ISO format (YYYY-MM-DD)
-</ParamField>
-
-<ParamField query="ssn_last_four" path="ssn_last_four" type="string">
-  Last four digits from the patient's Social Security Number
-</ParamField>
-
-<ParamField query="zip" path="zip" type="string">
-  Zip code with 5 or 9 digits. Example: 12345-6789
-</ParamField>
-
-<ParamField query="member_id" path="member_id" type="string">
-  Insurer specific member identifier
+<ParamField query="patient" path="patient" type="object" required>
+  <Expandable title="Patient Properties" defaultOpen="true">
+    <ParamField query="first_name" path="first_name" type="string" required>
+      Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
+    </ParamField>
+    <ParamField query="last_name" path="last_name" type="string" required="required">
+      Min length: 2, max length of full name: 46
+    </ParamField>
+    <ParamField query="dob" path="dob" type="string <date>" required="required">
+      Date of birth in ISO format (YYYY-MM-DD)
+    </ParamField>
+    <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+      Last four digits from the patient's Social Security Number
+    </ParamField>
+    <ParamField query="zip" path="zip" type="string">
+      Zip code with 5 or 9 digits. Example: 12345-6789
+    </ParamField>
+    <ParamField query="member_id" path="member_id" type="string">
+      Insurer specific member identifier
+    </ParamField>
+  </Expandable>
 </ParamField>
