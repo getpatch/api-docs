@@ -6,48 +6,31 @@ openapi: "POST /v1/patients/"
 <CodeGroup>
 
 ```json Endpoint
-`POST` /patients
+`POST` /patients/
 ```
 
 </CodeGroup>
 
-Requesting a patient's eligibility uses the following parameters:
-
-- First name (required)
-- Last name (required)
-- Date of birth (required)
-- Last four digits from SSN (optional)
-- Zip code (optional)
-- Insurer Member ID (optional)
-- Request UID (optional)
-
-This call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request. The result will be returned in two ways:
-
-- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred. Request UID will be included in payload.
-- By calling the "Eligibility Result" endpoint - only to be used as fallback. Request UID is required.
-
-If specifying a UID, ensure it is unique. If omitted, one will be generated automatically and included in the response for this API call.
-
-Authentication is required for this endpoint. The API key can be obtained in the[ app](https://provider.anagram.care/). The API key must be sent in the `Authorization` header, prefaced with `Api `:
-
-`Authorization: Api <your api key>`
-
-The response will contain the request UID or a validation error.
+Creating a patient via this endpoint populates a patient record in the Anagram Web App and allows you to tie the eligibility request and result with that record. Only use this resource if you plan on interacting with the Anagram Web App. 
 
 <RequestExample>
 
 ```json Request Example
 {
-	"insurer_code": "string",
-	"request_uid": "string",
-	"patient": {
-		"first_name": "string",
-		"last_name": "string",
-		"dob": "2019-08-24",
-		"ssn_last_four": "string",
-		"zip": "string",
-		"member_id": "string"
-	}
+  "first_name": "Michael",
+  "last_name": "Enslin",
+  "dob": "1950-02-28",
+  "ssn_last_four": "1234",
+  "sex": "male",
+  "email": "mike@foo.bar",
+  "phone": "1234567890",
+  "address": {
+    "line1": "61st Street, Dolphin Hotel",
+    "line2": "Room 1408",
+    "city": "New York",
+    "state": "NY",
+    "zipcode": "10065"
+  }
 }
 ```
 
@@ -55,20 +38,57 @@ The response will contain the request UID or a validation error.
 
 <ResponseExample>
 
-```json error
+```json 200
 {
-    "errors": {"$": ["Wrong insurer code"]}
+  "created_at": "2025-03-25T12:14:40.829051+00:00",
+  "location_id": 57,
+  "first_name": "michael",
+  "middle_name": null,
+  "last_name": "enslin",
+  "dob": "1950-02-28",
+  "sex": "male",
+  "ssn_last_four": "1234",
+  "address": {
+    "line1": "61st Street, Dolphin Hotel",
+    "line2": "Room 1408",
+    "recipient": null,
+    "city": "New York",
+    "zipcode": "10065",
+    "state": "NY"
+  },
+  "email": "mike@foo.bar",
+  "phone": "1234567890",
+  "account_number": null,
+  "code": "PAT21T",
+  "location": {
+    "id": 57,
+    "status": "enabled",
+    "title": "Title 56",
+    "code": "LOC57T"
+  }
 }
 ```
 
 
-```json error 2
+```json 400
 {
-    "errors": {
-        "patient": {
-            "first_name": {"$": ["This field cannot be blank."]}
-        }
+  "errors": {
+    "first_name": {
+      "$": [
+        "This field cannot be null."
+      ]
+    },
+    "last_name": {
+      "$": [
+        "This field cannot be null."
+      ]
+    },
+    "dob": {
+      "$": [
+        "This field cannot be null."
+      ]
     }
+  }
 }
 ```
 
