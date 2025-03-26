@@ -1,5 +1,140 @@
 ---
-title: 'Patient Details'
-openapi: 'GET /v1/patients/{code}/'
+title: "Patient Details"
+openapi: "GET /v1/patients/{code}/"
+description: "Returns all details for a specific patient"
 ---
 
+<CodeGroup>
+
+```json Endpoint
+`GET` /patients/{code}/
+```
+
+</CodeGroup>
+
+<ResponseExample>
+
+```json 200
+{
+  "created_at": "2025-03-23T12:14:39.941251+00:00",
+  "location_id": 53,
+  "first_name": "michael",
+  "middle_name": null,
+  "last_name": "enslin",
+  "dob": "1950-02-28",
+  "sex": "male",
+  "ssn_last_four": "1234",
+  "address": {
+    "line1": "61st Street, Dolphin Hotel",
+    "line2": "Room 1408",
+    "recipient": null,
+    "city": "New York",
+    "zipcode": "10065",
+    "state": "NY"
+  },
+  "email": "mike@foo.bar",
+  "phone": "1234567890",
+  "account_number": null,
+  "code": "PAT17T",
+  "location": {
+    "id": 53,
+    "status": "enabled",
+    "title": "Title 52",
+    "code": "LOC53T"
+  }
+}
+```
+
+
+```json 404
+{
+  "detail": "Patient not found (18)"
+}
+```
+
+</ResponseExample>
+
+## Query Parameters
+
+<ParamField query="code" path="code" type="string" required>
+  
+</ParamField>
+
+## Responses
+
+<Accordion title="200 JSON Object Response Schema" icon="check">
+  <ParamField query="created_at" path="created_at" type="string" required>
+    
+  </ParamField>
+  <ParamField query="location_id" path="location_id" type="integer" required>
+    
+  </ParamField>
+  <ParamField query="first_name" path="first_name" type="string" required>
+    
+  </ParamField>
+  <ParamField query="middle_name" path="middle_name" type="string">
+    
+  </ParamField>
+  <ParamField query="last_name" path="last_name" type="string" required>
+    
+  </ParamField>
+  <ParamField query="dob" path="dob" type="string" required>
+    
+  </ParamField>
+  <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+    
+  </ParamField>
+  <ParamField query="address" path="address" type="object">
+    <Expandable title="Address Properties" defaultOpen="true">
+      <ParamField query="line1" path="line1" type="string" required>
+        
+      </ParamField>
+      <ParamField query="line2" path="line2" type="string">
+        
+      </ParamField>
+      <ParamField query="recipient" path="recipient" type="string">
+        
+      </ParamField>
+      <ParamField query="city" path="city" type="string" required>
+        
+      </ParamField>
+      <ParamField query="zipcode" path="zipcode" type="string" required>
+        
+      </ParamField>
+      <ParamField query="state" path="state" type="string" required>
+        
+      </ParamField>
+    </Expandable>
+  </ParamField>
+  <ParamField query="sex" path="sex" type="string">
+    Sex of the patient as defined by the insurer
+  </ParamField>
+  <ParamField query="email" path="email" type="string">
+    The patient's email
+  </ParamField>
+  <ParamField query="phone" path="phone" type="string">
+    The patient's phone number
+  </ParamField>
+  <ParamField query="account_number" path="account_number" type="string">
+    A unique number identifying your patient in your systems
+  </ParamField>
+  <ParamField query="code" path="code" type="string" required>
+    
+  </ParamField>
+  <ParamField query="Location" path="Location" type="object">
+    <Expandable title="Location Properties" defaultOpen="true">
+      <ParamField query="id" path="id" type="integer" required>
+        
+      </ParamField>
+      <ParamField query="status" path="status" type="string" required>
+        
+      </ParamField>
+      <ParamField query="title" path="title" type="string" required>
+        Used for emails and UI (can be edited by provider)
+      </ParamField>
+      <ParamField query="code" path="code" type="string" required>
+        
+      </ParamField>
+    </Expandable>
+  </ParamField>
+</Accordion>

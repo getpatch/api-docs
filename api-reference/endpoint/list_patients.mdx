@@ -15,7 +15,7 @@ Returns a list of patients that you have created.
 
 <ResponseExample>
 
-```json filename
+```json Response Example
 {
   "result": [
     {
@@ -93,9 +93,84 @@ Returns a list of patients that you have created.
 ## Responses
 
 <AccordionGroup>
-  <Accordion title="200" description="Successful response schema" icon="check">
+  <Accordion title="200" description="JSON Object Response Schema" icon="check">
     <ParamField query="result" path="result" type="object" required>
-      
+      <Expandable title="Result Array" defaultOpen="true">
+        <ParamField query="created_at" path="created_at" type="string" required>
+          
+        </ParamField>
+        <ParamField query="location_id" path="location_id" type="integer" required>
+          
+        </ParamField>
+        <ParamField query="first_name" path="first_name" type="string" required>
+          
+        </ParamField>
+        <ParamField query="middle_name" path="middle_name" type="string">
+          
+        </ParamField>
+        <ParamField query="last_name" path="last_name" type="string" required>
+          
+        </ParamField>
+        <ParamField query="dob" path="dob" type="string" required>
+          
+        </ParamField>
+        <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+          
+        </ParamField>
+        <ParamField query="address" path="address" type="object">
+          <Expandable title="Address Properties" defaultOpen="true">
+            <ParamField query="line1" path="line1" type="string" required>
+              
+            </ParamField>
+            <ParamField query="line2" path="line2" type="string">
+              
+            </ParamField>
+            <ParamField query="recipient" path="recipient" type="string">
+              
+            </ParamField>
+            <ParamField query="city" path="city" type="string" required>
+              
+            </ParamField>
+            <ParamField query="zipcode" path="zipcode" type="string" required>
+              
+            </ParamField>
+            <ParamField query="state" path="state" type="string" required>
+              
+            </ParamField>
+          </Expandable>
+        </ParamField>
+        <ParamField query="sex" path="sex" type="string">
+          
+        </ParamField>
+        <ParamField query="email" path="email" type="string">
+          
+        </ParamField>
+        <ParamField query="phone" path="phone" type="string">
+          
+        </ParamField>
+        <ParamField query="account_number" path="account_number" type="string">
+          
+        </ParamField>
+        <ParamField query="code" path="code" type="string" required>
+          
+        </ParamField>
+        <ParamField query="Location" path="Location" type="object">
+          <Expandable title="Location Properties" defaultOpen="true">
+            <ParamField query="id" path="id" type="integer" required>
+              
+            </ParamField>
+            <ParamField query="status" path="status" type="string" required>
+              
+            </ParamField>
+            <ParamField query="title" path="title" type="string" required>
+              
+            </ParamField>
+            <ParamField query="code" path="code" type="string" required>
+              
+            </ParamField>
+          </Expandable>
+        </ParamField>
+      </Expandable>
     </ParamField>
     <ParamField query="prev" path="prev" type="string">
       
