@@ -1,5 +1,110 @@
 ---
-title: 'List Patients'
-openapi: 'GET /v1/patients'
+title: "List Patients"
+openapi: "GET /v1/patients"
 ---
 
+<CodeGroup>
+
+```json Endpoint
+`GET` /patients
+```
+
+</CodeGroup>
+
+Returns a list of patients that you have created.
+
+<ResponseExample>
+
+```json filename
+{
+  "result": [
+    {
+      "created_at": "2025-03-24T12:14:40.668711+00:00",
+      "location_id": 56,
+      "first_name": "michael",
+      "middle_name": null,
+      "last_name": "enslin",
+      "dob": "1950-02-28",
+      "sex": "male",
+      "ssn_last_four": "1234",
+      "address": {
+        "line1": "61st Street, Dolphin Hotel",
+        "line2": "Room 1408",
+        "recipient": null,
+        "city": "New York",
+        "zipcode": "10065",
+        "state": "NY"
+      },
+      "email": "mike@foo.bar",
+      "phone": "1234567890",
+      "account_number": null,
+      "code": "PAT19T",
+      "location": {
+        "id": 56,
+        "status": "enabled",
+        "title": "Title 55",
+        "code": "LOC56T"
+      }
+    },
+    {
+      "created_at": "2025-03-23T12:14:40.681738+00:00",
+      "location_id": 56,
+      "first_name": "jane",
+      "middle_name": null,
+      "last_name": "doe",
+      "dob": "2008-02-28",
+      "sex": "female",
+      "ssn_last_four": "1234",
+      "address": {
+        "line1": "69 1st Street",
+        "line2": "Apt. 14",
+        "recipient": null,
+        "city": "New York",
+        "zipcode": "10066",
+        "state": "NY"
+      },
+      "email": "jane@foo.bar",
+      "phone": "1234567890",
+      "account_number": null,
+      "code": "PAT20T",
+      "location": {
+        "id": 56,
+        "status": "enabled",
+        "title": "Title 55",
+        "code": "LOC56T"
+      }
+    }
+  ]
+}
+```
+
+</ResponseExample>
+
+## Query Parameters
+
+<ParamField query="page_number" path="page_number" default="0" type="integer">
+  Default: `0`
+</ParamField>
+
+<ParamField query="page_size" path="page_size" default="10" type="integer">
+  Default: `10`
+</ParamField>
+
+## Responses
+
+<AccordionGroup>
+  <Accordion title="200" description="Successful response schema" icon="check">
+    <ParamField query="result" path="result" type="object" required>
+      
+    </ParamField>
+    <ParamField query="prev" path="prev" type="string">
+      
+    </ParamField>
+    <ParamField query="previous" path="previous" type="string">
+      
+    </ParamField>
+    <ParamField query="next" path="next" type="string">
+      
+    </ParamField>
+  </Accordion>
+</AccordionGroup>
