@@ -1,6 +1,6 @@
 ---
 title: "Eligibility Result"
-openapi: "GET /v1/eligibility/{request_uid}/"
+openapi: "GET /eligibility/{request_uid}/"
 ---
 
 <CodeGroup>
@@ -1431,27 +1431,23 @@ def get_signature(secret_key: str, payload: str) -> str:
 ## Responses
 
 <AccordionGroup>
-  <Accordion title="200" description="Successful response schema" icon="check">
+  <Accordion title="200" description="JSON Object Response Schema" icon="check">
     <ParamField query="request_uid" path="request_uid" type="string" required>
       UID provided on request creation or auto generated
-      </ParamField>
-
-      <ParamField query="error" path="error" type="string" required>
-        Possible values: complete, processing, error
-        </ParamField>
-
-        <ParamField query="error_code" path="error_code" type="string">
-          Enter a description
-           </ParamField>
-
-          ### Results (object)
-
-          <ParamField path="param" type="string">
-            Enter a description
-          </ParamField>
-    
+    </ParamField>
+    <ParamField query="error" path="error" type="string" required>
+      Possible values: complete, processing, error
+    </ParamField>
+    <ParamField query="error_code" path="error_code" type="string">
+      Enter a description
+    </ParamField>
+    <ParamField query="results" path="results" type="array">
+      Array of objects
+    </ParamField>
   </Accordion>
-  <Accordion title="New Accordion" icon="sparkles">
-    
+  <Accordion title="404" description="JSON Object Response Schema" icon="X">
+    <ParamField path="detail" type="string" required>
+      
+    </ParamField>
   </Accordion>
 </AccordionGroup>

@@ -1,5 +1,252 @@
 ---
-title: 'Create Claim'
-openapi: 'POST /v1/claims'
+title: "Create Claim"
+openapi: "POST /claims"
+description: "Creating and submitting an out-of-network vision claim"
 ---
 
+<CodeGroup>
+
+```json Endpoint
+`POST` /claims/
+```
+
+</CodeGroup>
+
+Some text here
+
+<RequestExample>
+
+```json Request Example
+{
+    "diagnosis_codes": ["H52.10"],
+    "patient": {
+        "dob": "1998-02-11",
+        "first_name": "Max",
+        "last_name": "Smith",
+        "type": "child",
+        "address": {
+            "line1": "String name",
+            "city": "City",
+            "zipcode": "12332",
+            "state": "CA",
+        },
+    },
+    "primary_member": {
+        "address": {
+            "city": "City",
+            "line1": "String name",
+            "state": "CA",
+            "zipcode": "12332"
+        },
+        "dob": "1988-10-11",
+        "first_name": "John",
+        "insurer_code": "insurer:demo:vision",
+        "last_name": "Smith",
+        "member_id": "A123455",
+        "phone": "0987654321",
+        "ssn_last_four": "1242"
+    },
+    "services": [{
+        "codes": ["S0504"],
+        "cost": "12.22",
+        "date": "2022-02-11",
+        "quantity": "2"
+    }, {
+        "codes": ["V2781"],
+        "cost": "44.21",
+        "date": "2022-02-11",
+        "quantity": "1"
+    }]
+}
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+    "diagnosis_codes": ["H52.10"],
+    "id": 21,
+    "paid_amount": null,
+    "patient": {
+        "address": {
+            "city": "City",
+            "line1": "String name",
+            "line2": null,
+            "recipient": null,
+            "state": "CA",
+            "zipcode": "12332"
+        },
+        "dob": "1998-02-11",
+        "email": null,
+        "first_name": "Max",
+        "last_name": "Smith",
+        "member_id": null,
+        "phone": null,
+        "sex": null,
+        "ssn_last_four": null,
+        "type": "child"
+    },
+    "primary_member": {
+        "address": {
+            "city": "City",
+            "line1": "String name",
+            "line2": null,
+            "recipient": null,
+            "state": "CA",
+            "zipcode": "12332"
+        },
+        "dob": "1988-10-11",
+        "email": null,
+        "employer": null,
+        "first_name": "John",
+        "individual_plan_name": null,
+        "insurer_code": "insurer:demo:vision",
+        "last_name": "Smith",
+        "member_id": "A123455",
+        "phone": "0987654321",
+        "sex": null,
+        "ssn_last_four": "1242"
+    },
+    "services": [{
+        "codes": ["S0504"],
+        "cost": "12.2200",
+        "date": "2022-02-11",
+        "quantity": 2
+    }, {
+        "codes": ["V2781"],
+        "cost": "44.2100",
+        "date": "2022-02-11",
+        "quantity": 1
+    }],
+    "status": "ready"
+}
+```
+
+
+```json 400: unknown insurer
+{
+    "errors": {
+        "primary_member": {
+            "insurer_code": {
+                "$": ["Unknown code"]
+            }
+        }
+    }
+}
+```
+
+
+```json 400: unkonwn service type
+{
+    "errors": {
+        "services": {
+            "0": {
+                "codes": {
+                    "$": ["Unknown code"]
+                }
+            }
+        }
+    }
+}
+```
+
+
+```json 400: empty primary member details
+{
+    "errors": {
+        "primary_member": {
+            "$": [
+                "Either member ID or SSN last four are required",
+                "Member ID or SSN last four are required"
+            ],
+            "dob": {
+                "$": ["This field cannot be null."]
+            },
+            "first_name": {
+                "$": ["This field cannot be null."]
+            },
+            "insurer_code": {
+                "$": ["This field cannot be null."]
+            },
+            "insurer_id": {
+                "$": ["This field cannot be null."]
+            },
+            "last_name": {
+                "$": ["This field cannot be null."]
+            }
+        }
+    }
+}
+```
+
+</ResponseExample>
+
+## Query Parameters
+
+The main fields of claim are:
+
+- `patient`: JSON object, representing patient details
+- `primary_member`: JSON object, representing primary patient member
+- `services`: list of JSON objects, representing services that can be reimbursed
+
+Also, there are fields in nested objects:
+
+- `address`: JSON object, represents the mailing address in `patient` and `primary_member` fields.
+
+Both `patient` and `primary_member` must be provided even if the claim is created for a primary member. In this case, both the `patient` object and `primary_member` object must contain the same data.
+
+<ParamField query="address" path="address" type="object">
+  <Expandable title="Address Properties" defaultOpen="true">
+    <ParamField query="line1" path="line1" type="string" required>
+      
+    </ParamField>
+    <ParamField query="line2" path="line2" type="string">
+      
+    </ParamField>
+    <ParamField query="recipient" path="recipient" type="string">
+      
+    </ParamField>
+    <ParamField query="city" path="city" type="string" required>
+      
+    </ParamField>
+    <ParamField query="zipcode" path="zipcode" type="string" required>
+      
+    </ParamField>
+    <ParamField query="state" path="state" type="string" required>
+      
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
+  Example: insurer:vision:vsp
+</ParamField>
+
+<ParamField query="request_uid" path="request_uid" type="string">
+  Any string value. Max length: 256
+</ParamField>
+
+<ParamField query="patient" path="patient" type="object" required>
+  <Expandable title="Patient Properties" defaultOpen="true">
+    <ParamField query="first_name" path="first_name" type="string" required>
+      Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
+    </ParamField>
+    <ParamField query="last_name" path="last_name" type="string" required="required">
+      Min length: 2, max length of full name: 46
+    </ParamField>
+    <ParamField query="dob" path="dob" type="string <date>" required="required">
+      Date of birth in ISO format (YYYY-MM-DD)
+    </ParamField>
+    <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
+      Last four digits from the patient's Social Security Number
+    </ParamField>
+    <ParamField query="zip" path="zip" type="string">
+      Zip code with 5 or 9 digits. Example: 12345-6789
+    </ParamField>
+    <ParamField query="member_id" path="member_id" type="string">
+      Insurer specific member identifier
+    </ParamField>
+  </Expandable>
+</ParamField>
