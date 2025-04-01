@@ -1,5 +1,302 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Support Payers and Coding Guidelines"
+description: "Description of your new file."
 ---
 
+## Supported Payers
+
+| Payer                     | API code                      |
+| ------------------------- | ----------------------------- |
+| VSP                       | `insurer:vision:vsp`          |
+| EyeMed                    | `insurer:vision:eye_med`      |
+| Spectera                  | `insurer:vision:spectera`     |
+| Davis Vision              | `insurer:vision:davis_vision` |
+| Superior Vision           | `insurer:vision:superior`     |
+| Anagram Vision Demo Payer | `insurer:demo:vision`         |
+| Cigna Vision              | `insurer:vision:cigna_vision` |
+| Aetna Vision              | `insurer:vision:aetna_vision` |
+| Blue View                 | `insurer:vision:blue_view`    |
+
+### **VSP**
+
+- Insurer code: `insurer:vision:vsp`
+
+Features:
+
+- supports claim submission using member ID (subscription ID) or SSN last four
+
+Additional claim constraints:
+
+- patient/primary member sex must be provided
+- diagnosis must be provided
+- either employer or individual_plan_name is required
+- sex must be provided for both relationship and member
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                       | **Description**                    |
+| :---------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, S0620, S0621 | medical examination and evaluation |
+| 92071, 92072, 92310, 92314                      | contact lens fit                   |
+| S0500                                           | contact lens                       |
+| V2020, V2025                                    | frames                             |
+| V21##                                           | Sphere, single vision lens         |
+| V22##                                           | Sphere, bifocal lens               |
+| V23##                                           | Sphere, trifocal lens              |
+| V24##                                           | asphericity lens                   |
+| V25##                                           | contact lens                       |
+| V27##                                           | add-ons                            |
+
+### **Anagram Vision Demo**
+
+The Anagram Vision Demo insurer should be used for testing only. It does not interface with real insurance companies.
+
+- Insurer code: `insurer:demo:vision`
+- Claim form: out-of-network claim form
+
+Features:
+
+- supports claim submission using member ID (subscription ID) or SSN last four
+
+We recommend using the same service types as `VSP`.
+
+### **Eyemed**
+
+- Insurer code: `insurer:vision:eye_med`
+
+Features:
+
+- supports claim submission using member ID (subscription ID)
+
+Additional claim constraints:
+
+- member id of primary member must be provided
+- patient member id must be provided if type is not `self`
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                                                                                                                                | **Description**                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, 92015-TG, 92225, 92226, 92230, 92250, 92260, 92265, S0592, S0620, S0621                                               | Medical examination and evaluation |
+| 92071, 92072, 92310, 92310-21, 92310-22, 92314                                                                                                           | Contact lens fit                   |
+| S0500, S0512, V2500, V2501, V2502, V2503, V2510, V2511, V2512, V2513, V2520, V2521, V2522, V2523, V2530, V2531, V2599, V2627                             | Contact lens                       |
+| V2020, V2025, S0516, S0518                                                                                                                               | Frames                             |
+| S0504, V2100. V2101, V2102, V2103, V2104, V2105, V2106, V2107, V2108, V2109, V2110, V2111, V2112, V2113, V2114, V2115, V2118, V2121, V2199, V2410        | Sphere, single vision lens         |
+| S0506, V2200, V2201, V2202, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2210, V2211, V2212, V2213, V2214, V2215, V2218, V2219, V2220, V2221, V2299 | Sphere, bifocal lens               |
+| S0508, V2300, V2301, V2302, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2310, V2311, V2312, V2313, V2314, V2315, V2318, V2319, V2320, V2321, V2399 | Sphere, trifocal lens              |
+| V2410, V2430, V2499                                                                                                                                      | Variable asphericity lens          |
+| V2781, S0581, V2781-26                                                                                                                                   | Progressive lens                   |
+| V2760, V2745, V2755                                                                                                                                      | Add-ons                            |
+
+### **Spectera**
+
+- Insurer code: `insurer:vision:spectera`
+
+Features:
+
+- supports claim submission using member ID (subscription ID)
+
+Additional claim constraints:
+
+- member id of primary member must be provided
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                                                                                                                                | **Description**                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, 92015-TG, 92225, 92226, 92230, 92250, 92260, 92265, S0592, S0620, S0621                                               | Medical examination and evaluation |
+| 92071, 92072, 92310, 92310-21, 92310-22, 92314                                                                                                           | Contact lens fit                   |
+| S0500, S0512, V2500, V2501, V2502, V2503, V2510, V2511, V2512, V2513, V2520, V2521, V2522, V2523, V2530, V2531, V2599, V2627                             | Contact lens                       |
+| V2020, V2025, S0516, S0518                                                                                                                               | Frames                             |
+| S0504, V2100. V2101, V2102, V2103, V2104, V2105, V2106, V2107, V2108, V2109, V2110, V2111, V2112, V2113, V2114, V2115, V2118, V2121, V2199, V2410        | Sphere, single vision lens         |
+| S0506, V2200, V2201, V2202, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2210, V2211, V2212, V2213, V2214, V2215, V2218, V2219, V2220, V2221, V2299 | Sphere, bifocal lens               |
+| S0508, V2300, V2301, V2302, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2310, V2311, V2312, V2313, V2314, V2315, V2318, V2319, V2320, V2321, V2399 | Sphere, trifocal lens              |
+| V2410, V2430, V2499                                                                                                                                      | Variable asphericity lens          |
+| V2781, S0581, V2781-26                                                                                                                                   | Progressive lens                   |
+| V2760, V2761, V2744, V2745                                                                                                                               | Coating                            |
+| V2744                                                                                                                                                    | Photochromatic                     |
+| V2755                                                                                                                                                    | UV Lens                            |
+
+### **Davis Vision**
+
+- Insurer code: `insurer:vision:davis_vision`
+
+Features:
+
+- supports claim submission using member ID (subscription ID)
+
+Additional claim constraints:
+
+- member id of primary member must be provided
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                                                                                                                                | **Description**                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, 92015-TG, 92225, 92226, 92230, 92250, 92260, 92265, S0592, S0620, S0621                                               | Medical examination and evaluation |
+| 92071, 92072, 92310, 92310-21, 92310-22, 92314                                                                                                           | Contact lens fit                   |
+| S0500, S0512, V2500, V2501, V2502, V2503, V2510, V2511, V2512, V2513, V2520, V2521, V2522, V2523, V2530, V2531, V2599, V2627                             | Contact lens                       |
+| V2020, V2025, S0516, S0518                                                                                                                               | Frames                             |
+| S0504, V2100. V2101, V2102, V2103, V2104, V2105, V2106, V2107, V2108, V2109, V2110, V2111, V2112, V2113, V2114, V2115, V2118, V2121, V2199, V2410        | Sphere, single vision lens         |
+| S0506, V2200, V2201, V2202, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2210, V2211, V2212, V2213, V2214, V2215, V2218, V2219, V2220, V2221, V2299 | Sphere, bifocal lens               |
+| S0508, V2300, V2301, V2302, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2310, V2311, V2312, V2313, V2314, V2315, V2318, V2319, V2320, V2321, V2399 | Sphere, trifocal lens              |
+
+### **Cigna Vision**
+
+- Insurer code: `insurer:vision:cigna_vision`
+
+Features:
+
+- supports claim submission using member ID (subscription ID) or SSN last four
+
+Additional claim constraints:
+
+- patient/primary member sex must be provided
+- diagnosis must be provided
+- either employer or individual_plan_name is required
+- sex must be provided for both relationship and member
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                       | **Description**                    |
+| :---------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, S0620, S0621 | medical examination and evaluation |
+| 92071, 92072, 92310, 92314                      | contact lens fit                   |
+| S0500                                           | contact lens                       |
+| V2020, V2025                                    | frames                             |
+| V21##                                           | Sphere, single vision lens         |
+| V22##                                           | Sphere, bifocal lens               |
+| V23##                                           | Sphere, trifocal lens              |
+| V24##                                           | asphericity lens                   |
+| V25##                                           | contact lens                       |
+| V27##                                           | add-ons                            |
+
+### **Aetna Vision**
+
+- Insurer code: `insurer:vision:aetna_vision`
+
+Features:
+
+- supports claim submission using member ID (subscription ID)
+
+Additional claim constraints:
+
+- member id of primary member must be provided
+- patient member id must be provided if type is not `self`
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                                                                                                                                | **Description**                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, 92015-TG, 92225, 92226, 92230, 92250, 92260, 92265, S0592, S0620, S0621                                               | Medical examination and evaluation |
+| 92071, 92072, 92310, 92310-21, 92310-22, 92314                                                                                                           | Contact lens fit                   |
+| S0500, S0512, V2500, V2501, V2502, V2503, V2510, V2511, V2512, V2513, V2520, V2521, V2522, V2523, V2530, V2531, V2599, V2627                             | Contact lens                       |
+| V2020, V2025, S0516, S0518                                                                                                                               | Frames                             |
+| S0504, V2100. V2101, V2102, V2103, V2104, V2105, V2106, V2107, V2108, V2109, V2110, V2111, V2112, V2113, V2114, V2115, V2118, V2121, V2199, V2410        | Sphere, single vision lens         |
+| S0506, V2200, V2201, V2202, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2210, V2211, V2212, V2213, V2214, V2215, V2218, V2219, V2220, V2221, V2299 | Sphere, bifocal lens               |
+| S0508, V2300, V2301, V2302, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2310, V2311, V2312, V2313, V2314, V2315, V2318, V2319, V2320, V2321, V2399 | Sphere, trifocal lens              |
+| V2410, V2430, V2499                                                                                                                                      | Variable asphericity lens          |
+| V2781, S0581, V2781-26                                                                                                                                   | Progressive lens                   |
+| V2760, V2745, V2755                                                                                                                                      | Add-ons                            |
+
+### **Blue View**
+
+- Insurer code: `insurer:vision:blue_view`
+
+Features:
+
+- supports claim submission using member ID (subscription ID)
+
+Additional claim constraints:
+
+- member id of primary member must be provided
+- patient member id must be provided if type is not `self`
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                                                                                                                                | **Description**                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015, 92015-TG, 92225, 92226, 92230, 92250, 92260, 92265, S0592, S0620, S0621                                               | Medical examination and evaluation |
+| 92071, 92072, 92310, 92310-21, 92310-22, 92314                                                                                                           | Contact lens fit                   |
+| S0500, S0512, V2500, V2501, V2502, V2503, V2510, V2511, V2512, V2513, V2520, V2521, V2522, V2523, V2530, V2531, V2599, V2627                             | Contact lens                       |
+| V2020, V2025, S0516, S0518                                                                                                                               | Frames                             |
+| S0504, V2100. V2101, V2102, V2103, V2104, V2105, V2106, V2107, V2108, V2109, V2110, V2111, V2112, V2113, V2114, V2115, V2118, V2121, V2199, V2410        | Sphere, single vision lens         |
+| S0506, V2200, V2201, V2202, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2210, V2211, V2212, V2213, V2214, V2215, V2218, V2219, V2220, V2221, V2299 | Sphere, bifocal lens               |
+| S0508, V2300, V2301, V2302, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2310, V2311, V2312, V2313, V2314, V2315, V2318, V2319, V2320, V2321, V2399 | Sphere, trifocal lens              |
+| V2410, V2430, V2499                                                                                                                                      | Variable asphericity lens          |
+| V2781, S0581, V2781-26                                                                                                                                   | Progressive lens                   |
+| V2760, V2745, V2755                                                                                                                                      | Add-ons                            |
+
+### **Superior**
+
+- Insurer code: `insurer:vision:superior`
+
+Additional claim constraints:
+
+- member id of primary member must be provided
+
+List of recommended CPT/HCPCS codes:
+
+| **Codes**                                                                                                                                                                     | **Description**                    |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| 92002, 92004, 92012, 92014, 92015-TG, S0592, S0620, S0621                                                                                                                     | Medical examination and evaluation |
+| 92310, 92314, S0592                                                                                                                                                           | Contact lens fit                   |
+| V2500, V2501, V2502, V2503, V2510, V2511, V2512, V2513, V2520, V2521, V2522, V2523, V2530, V2531, V2599                                                                       | Contact lens                       |
+| V2020, V2025, S0516, S0518                                                                                                                                                    | Frames                             |
+| V2100, V2101, V2102, V2103, V2104, V2105, V2106, V2107, V2108, V2109, V2110, V2111, V2112, V2113, V2114, V2115, V2118, V2121, V2199, V2410                                    | Sphere, single vision lens         |
+| V2200, V2201, V2202, V2203, V2204, V2205, V2206, V2207, V2208, V2209, V2210, V2211, V2212, V2213, V2214, V2215, V2218, V2219, V2220, V2221, V2299, V2430                      | Sphere, bifocal lens               |
+| V2300, V2301, V2302, V2303, V2304, V2305, V2306, V2307, V2308, V2309, V2310, V2311, V2312, V2313, V2314, V2315, V2318, V2319, V2320, V2321, V2399                             | Sphere, trifocal lens              |
+| V2781                                                                                                                                                                         | Progressive lens                   |
+| V2700, V2702, V2710, V2715, V2718, V2730, V2744, V2745, V2750, V2755, V2756, V2760, V2762, V2770, V2780, V2782, V2783, V2784, V2785, V2786, V2787, V2788, V2790, V2797, V2799 | Add-ons                            |
+| V2115, V2121, V2215, V2221, V2315, V2321, V2410, V2430                                                                                                                        | Other (Lens)                       |
+| V2744, V2745, V2755, V2760, V2799, S0580                                                                                                                                      | Other (Coating)                    |
+| V2799, S0580, S0581                                                                                                                                                           | Other                              |
+
+## **Frequently used ICD10 codes**
+
+| **Code** | **Description**                                                                 |
+| :------- | :------------------------------------------------------------------------------ |
+| H04.121  | Dry eye syndrome of right lacrimal gland (H04.121)                              |
+| H04.122  | Dry eye syndrome of left lacrimal gland (H04.122)                               |
+| H04.123  | Dry eye syndrome of bilateral lacrimal glands (H04.123)                         |
+| H04.129  | Dry eye syndrome of unspecified lacrimal gland (H04.129)                        |
+| H11.151  | Pinguecula, right eye (H11.151)                                                 |
+| H11.152  | Pinguecula, left eye (H11.152)                                                  |
+| H11.153  | Pinguecula, bilateral (H11.153)                                                 |
+| H11.159  | Pinguecula, unspecified eye (H11.159)                                           |
+| H25.011  | Cortical age-related cataract, right eye (H25.011)                              |
+| H25.012  | Cortical age-related cataract, left eye (H25.012)                               |
+| H25.013  | Cortical age-related cataract, bilateral (H25.013)                              |
+| H25.019  | Cortical age-related cataract, unspecified eye (H25.019)                        |
+| H44.20   | Degenerative myopia, unspecified eye (H44.20)                                   |
+| H44.21   | Degenerative myopia, right eye (H44.21)                                         |
+| H44.22   | Degenerative myopia, left eye (H44.22)                                          |
+| H44.23   | Degenerative myopia, bilateral (H44.23)                                         |
+| H52.00   | Hypermetropia, unspecified eye (H52.00)                                         |
+| H52.01   | Hypermetropia, right eye (H52.01)                                               |
+| H52.02   | Hypermetropia, left eye (H52.02)                                                |
+| H52.03   | Hypermetropia, bilateral (H52.03)                                               |
+| H52.10   | Myopia, unspecified eye (H52.10)                                                |
+| H52.11   | Myopia, right eye (H52.11)                                                      |
+| H52.12   | Myopia, left eye (H52.12)                                                       |
+| H52.13   | Myopia, bilateral (H52.13)                                                      |
+| H52.201  | Unspecified astigmatism, right eye (H52.201)                                    |
+| H52.202  | Unspecified astigmatism, left eye (H52.202)                                     |
+| H52.203  | Unspecified astigmatism, bilateral (H52.203)                                    |
+| H52.209  | Unspecified astigmatism, unspecified eye (H52.209)                              |
+| H52.211  | Irregular astigmatism, right eye (H52.211)                                      |
+| H52.212  | Irregular astigmatism, left eye (H52.212)                                       |
+| H52.213  | Irregular astigmatism, bilateral (H52.213)                                      |
+| H52.219  | Irregular astigmatism, unspecified eye (H52.219)                                |
+| H52.221  | Regular astigmatism, right eye (H52.221)                                        |
+| H52.222  | Regular astigmatism, left eye (H52.222)                                         |
+| H52.223  | Regular astigmatism, bilateral (H52.223)                                        |
+| H52.229  | Regular astigmatism, unspecified eye (H52.229)                                  |
+| H52.31   | Anisometropia (H52.31)                                                          |
+| H52.32   | Aniseikonia (H52.32)                                                            |
+| H52.4    | Presbyopia (H52.4)                                                              |
+| H52.6    | Other disorders of refraction (H52.6)                                           |
+| H52.7    | Unspecified disorder of refraction (H52.7)                                      |
+| Z01.00   | Encounter for examination of eyes and vision without abnormal findings (Z01.00) |
+| Z01.01   | Encounter for examination of eyes and vision with abnormal findings (Z01.01)    |
+| Z46.0    | Encounter for fitting and adjustment of spectacles and contact lenses (Z46.0)   |

@@ -1,88 +1,24 @@
 ---
-title: Introduction
+title: "Introduction"
 description: "Welcome to the home of Anagram's API documentation"
 ---
 
-The Anagram API enables you to integrate vision insurance eligibility checks, benefit retreival, claim submissions, and other processes into your healthcare application. It provides RESTful endpoints to interact with various services such as patient eligibility, claims, and integration with the Anagram app.
+The Anagram API enables you to integrate vision insurance eligibility checks, benefit retrieval, claim submissions, and other processes into your healthcare application. It provides RESTful endpoints to interact with various services such as patient eligibility, claims, and integration with the Anagram app.
 
 ## Use Cases
-The Anagram API supports a range of use cases designed to accommodate various business models and workflows. Whether you're operating entirely online, combining online and in-store experiences, or running a brick-and-mortar location, the API provides flexible integrations for eligibility checks, claims processing, and patient management.
 
-### Pure API (e.g. e-commerce)
-In a fully digital environment, the Anagram API streamlines the patient shopping experience by handling eligibility verification, benefits interpretation, and claims submission automatically. Customers can check their eligibility for vision plans while shopping, get real-time estimates of their coverage, and submit claims upon checkout. This approach offers a seamless, hands-off experience for both patients and online retailers, with no human intervention needed.
+The Anagram API supports a range of use cases designed to accommodate various business models and workflows. Whether you operate entirely online, combine online and in-store experiences, or run a brick-and-mortar location, the API provides flexible integrations for eligibility checks, claims processing, and patient management.
+
+### Online Retail
+
+The Anagram API streamlines the patient shopping experience in a fully digital environment by automatically handling eligibility verification, benefit interpretation, and claims submission. Customers can check their eligibility for vision plans while shopping, get real-time coverage estimates, and submit claims upon checkout. This approach offers patients and online retailers a seamless, hands-off experience without human intervention.
 
 ### Hybrid API and Anagram App
-In some cases providers may prefer to send eligibility requests automatically via the API and manage the benefit interpretation and claim submission process in the Anagram App. Anagram's App has a rich plan interpretation and claim submission experience that can make it easier for staff to use.
 
-### Brick-and-mortar using the Anagram App
-For cases where staff are in-store and using the Anagram App, the API can facilitate the transfer of data and minimize double entry. Patient data can be transfered directly from the PM system to Anagram's App via the API, not requiring any human intervetion. 
+Sometimes, you may prefer to send patient information and eligibility requests automatically via the API but manage the complex benefit interpretation and claim submission process in the Anagram App. Anagram's App has a rich plan interpretation and claim submission experience that makes it easy for your staff and doesn't require you to build out custom workflows.
 
+Some examples of this use case:
 
-
-
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.png"
-  alt="Hero Dark"
-/>
-
-## Setting up
-
-The first step to world-class documentation is setting up your editing environments.
-
-<CardGroup cols={2}>
-  <Card
-    title="Edit Your Docs"
-    icon="pen-to-square"
-    href="https://mintlify.com/docs/quickstart"
-  >
-    Get your docs set up locally for easy development
-  </Card>
-  <Card
-    title="Preview Changes"
-    icon="image"
-    href="https://mintlify.com/docs/development"
-  >
-    Preview your changes before you push to make sure they're perfect
-  </Card>
-</CardGroup>
-
-## Make it yours
-
-Update your docs to your brand and add valuable content for the best user conversion.
-
-<CardGroup cols={2}>
-  <Card
-    title="Customize Style"
-    icon="palette"
-    href="https://mintlify.com/docs/settings/global"
-  >
-    Customize your docs to your company's colors and brands
-  </Card>
-  <Card
-    title="Reference APIs"
-    icon="code"
-    href="https://mintlify.com/docs/api-playground/openapi"
-  >
-    Automatically generate endpoints from an OpenAPI spec
-  </Card>
-  <Card
-    title="Add Components"
-    icon="screwdriver-wrench"
-    href="https://mintlify.com/docs/content/components/accordions"
-  >
-    Build interactive features and designs to guide your users
-  </Card>
-  <Card
-    title="Get Inspiration"
-    icon="stars"
-    href="https://mintlify.com/customers"
-  >
-    Check out our showcase of our favorite documentation
-  </Card>
-</CardGroup>
+1. Sending patients and eligibility requests directly via the API from the PM schedule 24-48 hours before patient appointments. When staff log in, the patient information, including eligibility, is already there waiting for them.
+2. Sending the patient and eligibility request data directly from the PM system upon request from a staff member. This reduces double entry. Staff continue the benefit interpretation and claim submission in the Anagram App.
+3. Running batch eligibility checks for a group of patients
