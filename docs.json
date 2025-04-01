@@ -58,7 +58,7 @@
         {
           "anchor": "Home",
           "href": "https://anagram.care",
-          "icon": "book-open-cover"
+          "icon": "home"
         },
         {
           "anchor": "Slack",
@@ -74,7 +74,7 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
+    "light": "/logo/logotype_dark.svg",
     "dark": "/logo/logotype_dark.svg"
   },
   "navbar": {
