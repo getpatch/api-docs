@@ -21,9 +21,20 @@ The claim object contains all information required to send a claim to an insurer
 
 Note that although the VSP claim form allows arbitrary CPS/HCPCS codes and our API supports the majority of them, we recommend using only the codes specified below to reduce the chance of claim rejection. Contact Anagram customer support if you need to use other codes.
 
-During claim submission the API validates the claim payload against known insurer requirements and will reject a claim that we know will be rejected by the insurer, but does not guarantee the opposite (i.e. a claim accepted by API can still be rejected by insurer).
+During claim submission, the API validates the claim payload against known insurer requirements and will reject a claim that we know will be rejected by the insurer, but it does not guarantee the opposite (i.e., a claim accepted by the API can still be rejected by the insurer).
 
-It is possible for insurers to change their requirements without notifying us. In these events as soon as we understand the new requirements we will update the validation rules and notify you. It is advizable to be prepared to adopt the updated rules as quickly as possible.
+Insurers can change their requirements without notifying us. In these cases, as soon as we understand the new requirements, we will update the validation rules and notify you. It is advisable to be prepared to adopt the updated rules as quickly as possible.
+
+## Main Claim Object
+
+| Field name      | Field type              | Constraints                    | Description                                                          | Examples                    |
+| :-------------- | :---------------------- | :----------------------------- | :------------------------------------------------------------------- | :-------------------------- |
+| patient         | `patient object`        | see `patient` object           | information about patient                                            | see `patient` object        |
+| primary_member  | `primary_member object` | see `primary_member` object    | information about primary member                                     | see `primary_member` object |
+| diagnosis_codes | `[string] | null`       | HCPCS diagnosis codes (global) |                                                                      |                             |
+| services        | `[service object]`      | see `service` object           | list of services in claim                                            | see `service` object        |
+| paid_amount     | `money`                 | required                       | amount paid by patient                                               |                             |
+| is_aob_enabled  | `boolean | null`        | Available only for VSP         | whether to accept the assignment of the benefits. `false` by default |                             |
 
 <RequestExample>
 
