@@ -47,7 +47,9 @@
               "api-reference/endpoint/create_claim",
               "api-reference/endpoint/create_patient",
               "api-reference/endpoint/list_patients",
-              "api-reference/endpoint/patient_details"
+              "api-reference/endpoint/patient_details",
+              "api-reference/endpoint/patient_eligibility_link",
+              "api-reference/endpoint/list_patient_eligibility_links"
             ]
           }
         ]
