@@ -12,7 +12,18 @@ description: "Creating and submitting an out-of-network vision claim"
 
 </CodeGroup>
 
-Some text here
+The claim object contains all information required to send a claim to an insurer:
+
+- insurer
+- patient details
+- primary member details (can be same as patient details)
+- list of services
+
+Note that although the VSP claim form allows arbitrary CPS/HCPCS codes and our API supports the majority of them, we recommend using only the codes specified below to reduce the chance of claim rejection. Contact Anagram customer support if you need to use other codes.
+
+During claim submission the API validates the claim payload against known insurer requirements and will reject a claim that we know will be rejected by the insurer, but does not guarantee the opposite (i.e. a claim accepted by API can still be rejected by insurer).
+
+It is possible for insurers to change their requirements without notifying us. In these events as soon as we understand the new requirements we will update the validation rules and notify you. It is advizable to be prepared to adopt the updated rules as quickly as possible.
 
 <RequestExample>
 
@@ -198,6 +209,20 @@ Also, there are fields in nested objects:
 Both `patient` and `primary_member` must be provided even if the claim is created for a primary member. In this case, both the `patient` object and `primary_member` object must contain the same data.
 
 <ParamField query="address" path="address" type="object">
+  This is the mailing address of the patient.
+
+  Example:
+
+  ```
+  "address": {
+      "city": "City",
+      "line1": "String name",
+      "line2": null,
+      "state": "CA",
+      "zipcode": "12332"
+  }
+  ```
+
   <Expandable title="Address Properties" defaultOpen="true">
     <ParamField query="line1" path="line1" type="string" required>
       
@@ -213,6 +238,39 @@ Both `patient` and `primary_member` must be provided even if the claim is create
     </ParamField>
     <ParamField query="zipcode" path="zipcode" type="string" required>
       
+    </ParamField>
+    <ParamField query="state" path="state" type="string" required>
+      
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField query="services" path="services" type="list of objects">
+  The services (and materials) received by the patient are a list of service objects. Each service object has a type that must be described by a valid CPT/HCPCS code (see "[**<u>Supported Payers and Coding</u>**](/Supported-payers-and-coding)" for the full list of available codes).
+
+  Note that diagnosis codes can be supplied both as global diagnosis (via top-level diagnosis_codes field) or per service, via an optional diagnosis_codes field in the service object.
+
+  Unknown codes will result in an error.
+
+  <Expandable title="Services Properties" defaultOpen="true">
+    <ParamField query="codes" path="codes" type="[string]" required>
+      List of ore-defined CPT codes
+      Constraints: CPT codes
+    </ParamField>
+    <ParamField query="diagnosis_codes" path="diagnosis_codes" type="[string] | null">
+      ICD10 HCPCS diagnosis codes (per service)
+    </ParamField>
+    <ParamField query="quantity" path="quantity" type="integer">
+      Number of services or materials received
+      Constraints: greater than `0`
+    </ParamField>
+    <ParamField query="cost" path="cost" type="money" required>
+      Cost of a single service line item
+      Constraints: greater than `0.00`
+    </ParamField>
+    <ParamField query="date" path="date" type="date" required>
+      Date of service
+      Example: `2025-03-01`
     </ParamField>
     <ParamField query="state" path="state" type="string" required>
       
