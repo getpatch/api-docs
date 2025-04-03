@@ -2,3 +2,30 @@
 title: "Integrating with the Anagram App"
 description: "Description of your new file."
 ---
+
+Anagram's app robustly handles all aspects of the eligibility and claim submission flow. In some instances you may desire to use elements of the Anagram App while still leveraging the API to minimize double data entry. Some elements of the anagram app:
+
+1. Eligibility via direct or universal search
+2. Display all eligibility results
+3. Matching results with the search
+4. Out-of-network benefit interpretation and calculator
+5. In-network benefit detail breakdown
+6. Out-of-network claim submission with validation
+7. View past eligibility checks and claims
+
+Sending Patient data to anagram
+
+<Card title="Pushing Patients to Anagram APP via API" icon="file-import">
+  <Steps>
+    <Step title="Create Patient">
+      You must do this for the patient record to appear in the Anagram App. Initiating an eligibility request by itself does not. Creating a Patient returns a unique code. Save this code to use in the next step. [Create Patient resources here.](/api-reference/endpoint/create_patient)
+    </Step>
+    <Step title="Initiate Eligibility Request">
+      fewfewfewf
+
+      fewf
+
+      Patient eligibility link wrapper https://api.anagram.care/api/auth/v1/patients/{patient_code}/eligibility/
+    </Step>
+  </Steps>
+</Card>
