@@ -1,31 +1,43 @@
 ---
 title: "Integrating with the Anagram App"
-description: "Description of your new file."
+description: "How to use Anagram's API and still leverage the Anagram App"
 ---
 
-Anagram's app robustly handles all aspects of the eligibility and claim submission flow. In some instances you may desire to use elements of the Anagram App while still leveraging the API to minimize double data entry. Some elements of the anagram app:
+Anagram's app robustly handles all aspects of the eligibility and claim submission flow. In some instances, you may desire to use elements of the Anagram App while leveraging the API to minimize double data entry. Anagram's app has user interfaces for the full cycle of vision plan billing:
 
 1. Eligibility via direct or universal search
-2. Display all eligibility results
-3. Matching results with the search
-4. Out-of-network benefit interpretation and calculator
-5. In-network benefit detail breakdown
-6. Out-of-network claim submission with validation
-7. View past eligibility checks and claims
-
-Sending Patient data to anagram
+2. Displaying all eligibility results and details
+3. Flows to match results with the initial eligibility search
+4. Benefit interpretation 
+   1. Out-of-network benefit calculator
+   2. In-network benefit details
+5. Out-of-network claim submission
+6. View past eligibility checks and claim details
 
 <Card title="Pushing Patients to Anagram APP via API" icon="file-import">
   <Steps>
     <Step title="Create Patient">
-      You must do this for the patient record to appear in the Anagram App. Initiating an eligibility request by itself does not. Creating a Patient returns a unique code. Save this code to use in the next step. [Create Patient resources here.](/api-reference/endpoint/create_patient)
+      You must do this for the patient record to appear in the Anagram App. Initiating an eligibility request by itself does not. Creating a Patient returns a unique code. Save this code to use in the next step. [**<u>Create Patient</u>** resources here.](/api-reference/endpoint/create_patient)
     </Step>
-    <Step title="Initiate Eligibility Request">
-      fewfewfewf
+    <Step title="Initiate Eligibility Request using the Patient Eligibility Link">
+      Use the `code` from the previous request to initiate an eligibility request using the [**<u>Patient Eligibility Link</u>**](/api-reference/endpoint/patient_eligibility_link) endpoint. 
+    </Step>
+    <Step title="Fetch Results">
+      Acquire the eligibility results using the [**<u>Eligibility Results</u>**](/api-reference/endpoint/eligibility_results) endpoint and submit an [**<u>Eligibility Details Request</u>**](/api-reference/endpoint/eligibility_details_request) for more plan information. 
+    </Step>
+  </Steps>
+</Card>
 
-      fewf
-
-      Patient eligibility link wrapper https://api.anagram.care/api/auth/v1/patients/{patient_code}/eligibility/
+<Card title="Continue in the Anagram App" icon="laptop-binary">
+  <Steps>
+    <Step title="View Patients and Eligibiltiy Results">
+      Staff can log in to the Anagram App and view all patients and corresponding eligibility results sent via the API.
+    </Step>
+    <Step title="Matching Eligibility Results">
+      All eligibility results will be returned for each patient. If more than one result is returned, staff should interpret it and identify the correct patient.
+    </Step>
+    <Step title="Benefit Interpretation and Claim Submission">
+      Staff can view and interpret the plan benefits and initiate out-of-network vision claims in a few easy steps. 
     </Step>
   </Steps>
 </Card>
