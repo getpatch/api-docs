@@ -257,10 +257,10 @@ Both `patient` and `primary_member` must be provided even if the claim is create
       List of ore-defined CPT codes
       Constraints: CPT codes
     </ParamField>
-    <ParamField query="diagnosis_codes" path="diagnosis_codes" type="[string] | null">
+    <ParamField query="diagnosis_codes" path="diagnosis_codes" type="[string] | null" required>
       ICD10 HCPCS diagnosis codes (per service)
     </ParamField>
-    <ParamField query="quantity" path="quantity" type="integer">
+    <ParamField query="quantity" path="quantity" type="integer" required>
       Number of services or materials received
       Constraints: greater than `0`
     </ParamField>
