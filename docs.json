@@ -39,7 +39,7 @@
             ]
           },
           {
-            "group": "Resources",
+            "group": "Endpoints",
             "pages": [
               "api-reference/endpoint/eligibility_request",
               "api-reference/endpoint/eligibility_result",

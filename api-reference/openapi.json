@@ -102,6 +102,7 @@
         "description": "",
         "responses": {
           "200": {
+            "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
@@ -197,7 +198,6 @@
                                 },
                                 "address": {
                                   "type": "object",
-                                  "required": [],
                                   "properties": {
                                     "line1": {
                                       "type": "string"
@@ -288,7 +288,6 @@
                                           },
                                           "limits": {
                                             "type": "object",
-                                            "required": [],
                                             "properties": {
                                               "quantity": {
                                                 "type": "integer"
@@ -1708,6 +1707,7 @@
             }
           },
           "404": {
+            "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1926,15 +1926,20 @@
                   "type": "object",
                   "required": [
                     "created_at",
+                    "location_id",
                     "first_name",
                     "last_name",
                     "dob",
-                    "code"
+                    "code",
+                    "location"
                   ],
                   "properties": {
                     "created_at": {
                       "type": "string",
                       "format": "date-time"
+                    },
+                    "location_id": {
+                      "type": "integer"
                     },
                     "first_name": {
                       "type": "string"
@@ -1996,13 +2001,39 @@
                     "code": {
                       "type": "string",
                       "format": "string"
+                    },
+                    "location": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "status",
+                        "title",
+                        "code"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Used for emails and UI (can be edited by provider)"
+                        },
+                        "code": {
+                          "type": "string",
+                          "format": "string"
+                        }
+                      }
                     }
                   }
                 },
                 "examples": {
                   "Example": {
                     "value": {
-                      "created_at": "2025-03-04T10:20:04.080539+00:00",
+                      "created_at": "2025-03-18T13:51:16.926798+00:00",
+                      "location_id": 57,
                       "first_name": "michael",
                       "middle_name": null,
                       "last_name": "enslin",
@@ -2020,7 +2051,13 @@
                       "email": "mike@foo.bar",
                       "phone": "1234567890",
                       "account_number": null,
-                      "code": "PAT21T"
+                      "code": "PAT21T",
+                      "location": {
+                        "id": 57,
+                        "status": "enabled",
+                        "title": "Title 56",
+                        "code": "LOC57T"
+                      }
                     },
                     "summary": "Create success"
                   }
@@ -2068,8 +2105,8 @@
         "tags": [
           "public-auth_Patient"
         ],
-        "summary": "List Patients",
-        "description": "List patients created.",
+        "summary": "List of  Patient",
+        "description": "",
         "parameters": [
           {
             "in": "query",
@@ -2107,15 +2144,20 @@
                         "type": "object",
                         "required": [
                           "created_at",
+                          "location_id",
                           "first_name",
                           "last_name",
                           "dob",
-                          "code"
+                          "code",
+                          "location"
                         ],
                         "properties": {
                           "created_at": {
                             "type": "string",
                             "format": "date-time"
+                          },
+                          "location_id": {
+                            "type": "integer"
                           },
                           "first_name": {
                             "type": "string"
@@ -2177,6 +2219,31 @@
                           "code": {
                             "type": "string",
                             "format": "string"
+                          },
+                          "location": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "status",
+                              "title",
+                              "code"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string",
+                                "description": "Used for emails and UI (can be edited by provider)"
+                              },
+                              "code": {
+                                "type": "string",
+                                "format": "string"
+                              }
+                            }
                           }
                         }
                       }
@@ -2197,7 +2264,8 @@
                     "value": {
                       "result": [
                         {
-                          "created_at": "2025-03-03T10:20:03.926469+00:00",
+                          "created_at": "2025-03-17T13:51:16.700206+00:00",
+                          "location_id": 56,
                           "first_name": "michael",
                           "middle_name": null,
                           "last_name": "enslin",
@@ -2215,10 +2283,17 @@
                           "email": "mike@foo.bar",
                           "phone": "1234567890",
                           "account_number": null,
-                          "code": "PAT19T"
+                          "code": "PAT19T",
+                          "location": {
+                            "id": 56,
+                            "status": "enabled",
+                            "title": "Title 55",
+                            "code": "LOC56T"
+                          }
                         },
                         {
-                          "created_at": "2025-03-02T10:20:03.935461+00:00",
+                          "created_at": "2025-03-16T13:51:16.712693+00:00",
+                          "location_id": 56,
                           "first_name": "jane",
                           "middle_name": null,
                           "last_name": "doe",
@@ -2236,7 +2311,13 @@
                           "email": "jane@foo.bar",
                           "phone": "1234567890",
                           "account_number": null,
-                          "code": "PAT20T"
+                          "code": "PAT20T",
+                          "location": {
+                            "id": 56,
+                            "status": "enabled",
+                            "title": "Title 55",
+                            "code": "LOC56T"
+                          }
                         }
                       ]
                     },
@@ -2255,7 +2336,7 @@
           "public-auth_Patient"
         ],
         "summary": "Patient details",
-        "description": "Show patient details.",
+        "description": "",
         "responses": {
           "200": {
             "description": "JSON object response",
@@ -2265,15 +2346,20 @@
                   "type": "object",
                   "required": [
                     "created_at",
+                    "location_id",
                     "first_name",
                     "last_name",
                     "dob",
-                    "code"
+                    "code",
+                    "location"
                   ],
                   "properties": {
                     "created_at": {
                       "type": "string",
                       "format": "date-time"
+                    },
+                    "location_id": {
+                      "type": "integer"
                     },
                     "first_name": {
                       "type": "string"
@@ -2335,13 +2421,39 @@
                     "code": {
                       "type": "string",
                       "format": "string"
+                    },
+                    "location": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "status",
+                        "title",
+                        "code"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Used for emails and UI (can be edited by provider)"
+                        },
+                        "code": {
+                          "type": "string",
+                          "format": "string"
+                        }
+                      }
                     }
                   }
                 },
                 "examples": {
                   "Example": {
                     "value": {
-                      "created_at": "2025-03-02T10:20:03.542660+00:00",
+                      "created_at": "2025-03-16T13:51:16.219467+00:00",
+                      "location_id": 53,
                       "first_name": "michael",
                       "middle_name": null,
                       "last_name": "enslin",
@@ -2359,7 +2471,13 @@
                       "email": "mike@foo.bar",
                       "phone": "1234567890",
                       "account_number": null,
-                      "code": "PAT17T"
+                      "code": "PAT17T",
+                      "location": {
+                        "id": 53,
+                        "status": "enabled",
+                        "title": "Title 52",
+                        "code": "LOC53T"
+                      }
                     },
                     "summary": "Get details"
                   }
@@ -2423,7 +2541,7 @@
           "public-auth_Patient eligibility link"
         ],
         "summary": "List of  Patient eligibility link",
-        "description": "Show patient eligibility links",
+        "description": "",
         "parameters": [
           {
             "in": "query",
@@ -2547,7 +2665,6 @@
                                       },
                                       "address": {
                                         "type": "object",
-                                        "required": [],
                                         "properties": {
                                           "line1": {
                                             "type": "string"
@@ -2638,7 +2755,6 @@
                                                 },
                                                 "limits": {
                                                   "type": "object",
-                                                  "required": [],
                                                   "properties": {
                                                     "quantity": {
                                                       "type": "integer"
