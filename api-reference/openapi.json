@@ -1,18 +1,4 @@
 {
-  "components": {
-    "securitySchemes": {
-      "ApiToken": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization"
-      }
-    }
-  },
-  "security": [
-    {
-      "ApiToken": []
-    }
-  ],
   "x-tagGroups": [
     {
       "name": "Public-auth",
@@ -34,14 +20,29 @@
         "summary": "Eligibility Request wrapper",
         "description": "",
         "responses": {
-          "200": {
+          "201": {
             "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "required": [
+                    "request_uid"
+                  ],
+                  "properties": {
+                    "request_uid": {
+                      "type": "string",
+                      "description": "UID provided during request creation or auto generated"
+                    }
+                  }
                 },
-                "examples": {}
+                "examples": {
+                  "Successful request": {
+                    "value": {
+                      "request_uid": "af42aa113b4148ec86f3ed7324f24242"
+                    }
+                  }
+                }
               }
             }
           }
@@ -2961,6 +2962,20 @@
   "servers": [
     {
       "url": "https://api.anagram.care"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiToken": []
     }
   ]
 }
