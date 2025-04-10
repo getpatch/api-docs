@@ -1,4 +1,18 @@
 {
+  "components": {
+    "securitySchemes": {
+      "ApiToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiToken": []
+    }
+  ],
   "x-tagGroups": [
     {
       "name": "Public-auth",
@@ -2948,6 +2962,5 @@
     {
       "url": "https://api.anagram.care"
     }
-  ],
-  "components": {}
+  ]
 }

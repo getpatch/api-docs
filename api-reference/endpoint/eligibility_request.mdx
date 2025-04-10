@@ -4,14 +4,6 @@ openapi: "POST /api/auth/v1/eligibility/"
 description: "Initiating an eligibility check for a patient"
 ---
 
-<CodeGroup>
-
-```json Endpoint
-POST /api/auth/v1/eligibility/
-```
-
-</CodeGroup>
-
 Requesting a patient's eligibility uses the following parameters:
 
 - First name (required)
@@ -39,15 +31,15 @@ The response will contain the request UID or a validation error.
 
 ```json Request Example
 {
-	"insurer_code": "string",
-	"request_uid": "string",
+	"insurer_code": "insurer:demo:vision",
+	"request_uid": "19850f24-900e-4812-8e99-6faa2397fe57",
 	"patient": {
-		"first_name": "string",
-		"last_name": "string",
-		"dob": "2019-08-24",
-		"ssn_last_four": "string",
-		"zip": "string",
-		"member_id": "string"
+		"first_name": "John",
+		"last_name": "Smith",
+		"dob": "1990-01-01",
+		"ssn_last_four": "4242",
+		"zip": "11101",
+		"member_id": "DEMO4242424242"
 	}
 }
 ```
@@ -56,14 +48,14 @@ The response will contain the request UID or a validation error.
 
 <ResponseExample>
 
-```json error
+```json Global Error
 {
     "errors": {"$": ["Wrong insurer code"]}
 }
 ```
 
 
-```json error 2
+```json Field Error
 {
     "errors": {
         "patient": {
@@ -74,36 +66,3 @@ The response will contain the request UID or a validation error.
 ```
 
 </ResponseExample>
-
-## Query Parameters
-
-<ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
-  Example: insurer:vision:vsp
-</ParamField>
-
-<ParamField query="request_uid" path="request_uid" type="string">
-  Any string value. Max length: 256
-</ParamField>
-
-<ParamField query="patient" path="patient" type="object" required>
-  <Expandable title="Patient Properties" defaultOpen="true">
-    <ParamField query="first_name" path="first_name" type="string" required>
-      Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
-    </ParamField>
-    <ParamField query="last_name" path="last_name" type="string" required="required">
-      Min length: 2, max length of full name: 46
-    </ParamField>
-    <ParamField query="dob" path="dob" type="string <date>" required="required">
-      Date of birth in ISO format (YYYY-MM-DD)
-    </ParamField>
-    <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
-      Last four digits from the patient's Social Security Number
-    </ParamField>
-    <ParamField query="zip" path="zip" type="string">
-      Zip code with 5 or 9 digits. Example: 12345-6789
-    </ParamField>
-    <ParamField query="member_id" path="member_id" type="string">
-      Insurer specific member identifier
-    </ParamField>
-  </Expandable>
-</ParamField>
