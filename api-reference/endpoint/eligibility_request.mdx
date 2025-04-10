@@ -4,16 +4,6 @@ openapi: "POST /api/auth/v1/eligibility/"
 description: "Initiating an eligibility check for a patient"
 ---
 
-Requesting a patient's eligibility uses the following parameters:
-
-- First name (required)
-- Last name (required)
-- Date of birth (required)
-- Last four digits from SSN (optional)
-- Zip code (optional)
-- Insurer Member ID (optional)
-- Request UID (optional)
-
 This call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request. The result will be returned in two ways:
 
 - Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred. Request UID will be included in payload.
@@ -53,6 +43,7 @@ The response will contain the request UID or a validation error.
   "request_uid": "af38aa113b4148ec86f3ed7324f75894"
 }
 ```
+
 
 ```json Global Error
 {

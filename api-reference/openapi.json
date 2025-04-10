@@ -17,7 +17,7 @@
         "tags": [
           "public-auth_Eligibility Request"
         ],
-        "summary": "Eligibility Request wrapper",
+        "summary": "Initial Eligibility Request",
         "description": "",
         "responses": {
           "201": {
