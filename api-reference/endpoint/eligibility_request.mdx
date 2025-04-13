@@ -11,10 +11,6 @@ This call is asynchronous, it initiates an eligibility search and returns a UID 
 
 If specifying a UID, ensure it is unique. If omitted, one will be generated automatically and included in the response for this API call.
 
-Authentication is required for this endpoint. The API key can be obtained in the[ app](https://provider.anagram.care/). The API key must be sent in the `Authorization` header, prefaced with `Api `:
-
-`Authorization: Api <your api key>`
-
 The response will contain the request UID or a validation error.
 
 <RequestExample>
@@ -27,9 +23,6 @@ The response will contain the request UID or a validation error.
 		"first_name": "John",
 		"last_name": "Smith",
 		"dob": "1990-01-01",
-		"ssn_last_four": "4242",
-		"zip": "11101",
-		"member_id": "DEMO4242424242"
 	}
 }
 ```
