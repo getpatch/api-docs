@@ -1,21 +1,7 @@
 ---
 title: "Patient Eligibility Link"
-openapi: "POST /v1/patients/{patient_code}/eligibility/"
+openapi: "POST /api/auth/v1/patients/{patient_code}/eligibility/"
 description: "Initiates an eligibility request and links it to a specific patient"
 ---
 
-<CodeGroup>
-
-```json Endpoint
-`POST` /v1/patients/{patient_code}/eligibility/
-```
-
-</CodeGroup>
-
-This endpoint initiates an eligibility request and ties it to a specific patient. Use the `code` returned from the [Create Patient](/api-reference/endpoint/create_patient) endpoint. For request parameters and details, refer to the [Eligibility Request]() endpoint.
-
-## Query Parameters
-
-<ParamField query="patient_code" path="patient_code" type="string" required>
-  Unique string returned upon creation of a Patient via the "Create Patient" endpoint
-</ParamField>
+This endpoint ties eligibility request to a specific patient. Use the `code` returned from the [Create Patient](/api-reference/endpoint/create_patient) endpoint. 

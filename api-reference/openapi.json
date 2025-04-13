@@ -17,11 +17,11 @@
         "tags": [
           "public-auth_Eligibility Request"
         ],
-        "summary": "Initial Eligibility Request",
+        "summary": "Start an Eligibility Check",
         "description": "",
         "responses": {
           "201": {
-            "description": "JSON object response",
+            "description": "Search started successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -76,11 +76,11 @@
                     "properties": {
                       "first_name": {
                         "type": "string",
-                        "description": "Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters."
+                        "description": "The name can only contain alphabetic characters, numerical digits, spaces, and some special symbols. The maximum length of the full name is 46 characters."
                       },
                       "last_name": {
                         "type": "string",
-                        "description": "Min length: 2, max length of full name: 46"
+                        "description": "Min length: 2, max length of the full name: 46."
                       },
                       "dob": {
                         "type": "string",
@@ -93,7 +93,7 @@
                       },
                       "zip": {
                         "type": "string",
-                        "description": "Zip code with 5 or 9 digits. Example: 12345-6789"
+                        "description": "Zip code with 5 or 9 digits. Example: 12345-6789."
                       },
                       "member_id": {
                         "type": "string",
@@ -113,11 +113,11 @@
         "tags": [
           "public-auth_Eligibility Result"
         ],
-        "summary": "Eligibility Result details",
-        "description": "",
+        "summary": "Get Eligibility Check",
+        "description": "Provides status and results of an eligibility check",
         "responses": {
           "200": {
-            "description": "JSON object response",
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -133,7 +133,12 @@
                     },
                     "status": {
                       "type": "string",
-                      "description": "Possible values: complete, processing, error"
+                      "enum": [
+                        "processing",
+                        "complete",
+                        "error"
+                      ],
+                      "description": ""
                     },
                     "error_code": {
                       "type": "string"
@@ -143,7 +148,9 @@
                       "items": {
                         "type": "object",
                         "required": [
-                          "persons"
+                          "persons",
+                          "insurer_code",
+                          "id"
                         ],
                         "properties": {
                           "insurer_code": {
@@ -186,7 +193,7 @@
                             "items": {
                               "type": "object",
                               "required": [
-                                "plan"
+                                "id"
                               ],
                               "properties": {
                                 "first_name": {
@@ -279,7 +286,8 @@
                                           "network_type",
                                           "is_authorization_required",
                                           "limits",
-                                          "subitem_limits"
+                                          "subitem_limits",
+                                          "code"
                                         ],
                                         "properties": {
                                           "code": {
@@ -287,11 +295,16 @@
                                             "description": "Unique benefit code"
                                           },
                                           "copay": {
-                                            "type": "number",
-                                            "format": "double"
+                                            "type": "string",
+                                            "format": "double",
+                                            "description": "Example \"25.000\" means 25 USD"
                                           },
                                           "network_type": {
-                                            "type": "string"
+                                            "type": "string",
+                                            "enum": [
+                                              "inn",
+                                              "oon"
+                                            ]
                                           },
                                           "is_authorization_required": {
                                             "type": "boolean"
@@ -308,7 +321,7 @@
                                                 "type": "integer"
                                               },
                                               "total_coverage": {
-                                                "type": "number",
+                                                "type": "string",
                                                 "format": "double",
                                                 "description": "Total coverage of benefit for period"
                                               },
@@ -319,7 +332,7 @@
                                                 "type": "integer"
                                               },
                                               "total_coverage_remain": {
-                                                "type": "number",
+                                                "type": "string",
                                                 "format": "double"
                                               }
                                             }
@@ -341,7 +354,7 @@
                                                   "description": "Maximum amount of services"
                                                 },
                                                 "total_coverage": {
-                                                  "type": "number",
+                                                  "type": "string",
                                                   "format": "double",
                                                   "description": "Total coverage of benefit for period"
                                                 }
@@ -362,7 +375,52 @@
                   }
                 },
                 "examples": {
-                  "Example#1": {
+                  "Initial search result": {
+                    "value": {
+                      "request_uid": "1233ab2dc4dj5bs",
+                      "status": "complete",
+                      "error_code": null,
+                      "results": [
+                        {
+                          "insurer_code": "insurer:vision:vsp",
+                          "id": 0,
+                          "plan_is_active": true,
+                          "status": "active",
+                          "plan_name": "VSP Choice Plan",
+                          "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+                          "plan_group_id": "30057697-0001",
+                          "plan_begin_date": "2023-02-01",
+                          "plan_end_date": null,
+                          "plan_refresh_date": null,
+                          "persons": [
+                            {
+                              "first_name": "DAN L",
+                              "last_name": "CAMPUS",
+                              "dob": "1963-07-11",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": "1234",
+                              "type": "self",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 0,
+                              "full_name": "DAN L CAMPUS",
+                              "is_active": null
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Result with primary member only"
+                  },
+                  "Details request result": {
                     "value": {
                       "request_uid": "1233ab2dc4dj5bs",
                       "status": "complete",
@@ -415,7 +473,7 @@
                                     "limits": {
                                       "quantity": 1,
                                       "total_coverage": null,
-                                      "quantity_remain": 1,
+                                      "quantity_remain": 0,
                                       "quantity_reserved": 0,
                                       "total_coverage_remain": null
                                     },
@@ -475,9 +533,9 @@
                                     "limits": {
                                       "quantity": 1,
                                       "total_coverage": "45.0000",
-                                      "quantity_remain": 1,
+                                      "quantity_remain": 0,
                                       "quantity_reserved": 0,
-                                      "total_coverage_remain": "45.0000"
+                                      "total_coverage_remain": "0"
                                     },
                                     "subitem_limits": []
                                   },
@@ -682,9 +740,9 @@
                         }
                       ]
                     },
-                    "summary": "Result with primary member only"
+                    "summary": "Details request outcome with primary member only"
                   },
-                  "Example#2": {
+                  "Plan with two members": {
                     "value": {
                       "request_uid": "1233ab2dc4dj5bs",
                       "status": "complete",
@@ -1028,7 +1086,7 @@
                     },
                     "summary": "Result with dependent and primary member"
                   },
-                  "Example#3": {
+                  "Missing primary member": {
                     "value": {
                       "request_uid": "1233ab2dc4dj5bs",
                       "status": "complete",
@@ -1350,7 +1408,7 @@
                     },
                     "summary": "Result with dependent but without primary member"
                   },
-                  "Example#4": {
+                  "Reserved benefits": {
                     "value": {
                       "request_uid": "1233ab2dc4dj5bs",
                       "status": "complete",
@@ -1672,7 +1730,7 @@
                     },
                     "summary": "Result there EXAM was used and FRAME was reserved"
                   },
-                  "Example#5": {
+                  "Search is in progress": {
                     "value": {
                       "request_uid": "2437abcd13def",
                       "status": "processing",
@@ -1681,16 +1739,7 @@
                     },
                     "summary": "Request still in progress"
                   },
-                  "Example#6": {
-                    "value": {
-                      "request_uid": "2437abcd13def",
-                      "status": "error",
-                      "error_code": "unexpected_error",
-                      "results": null
-                    },
-                    "summary": "Unexpected error, request could not be processed"
-                  },
-                  "Example#7": {
+                  "Insurer error": {
                     "value": {
                       "request_uid": "2437abcd13def",
                       "status": "error",
@@ -1699,23 +1748,14 @@
                     },
                     "summary": "Insurer could not process request"
                   },
-                  "Example#8": {
+                  "Unexpected search error": {
                     "value": {
                       "request_uid": "2437abcd13def",
                       "status": "error",
-                      "error_code": "api_not_found",
+                      "error_code": "unexpected_error",
                       "results": null
                     },
-                    "summary": "No results found for request"
-                  },
-                  "Example#9": {
-                    "value": {
-                      "request_uid": "2437abcd13def",
-                      "status": "error",
-                      "error_code": "api_multiple_results",
-                      "results": null
-                    },
-                    "summary": "Multiple results found for request"
+                    "summary": "Unexpected error, request could not be processed"
                   }
                 }
               }
@@ -1766,17 +1806,32 @@
         "tags": [
           "public-auth_Eligibility Details Request"
         ],
-        "summary": "Eligibility Details Request wrapper",
+        "summary": "Request member's plan details",
         "description": "",
         "responses": {
-          "200": {
-            "description": "JSON object response",
+          "201": {
+            "description": "Plan details request started",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "required": [
+                    "request_uid"
+                  ],
+                  "properties": {
+                    "request_uid": {
+                      "type": "string",
+                      "description": "UID of the plan details request"
+                    }
+                  }
                 },
-                "examples": {}
+                "examples": {
+                  "Successful request": {
+                    "value": {
+                      "request_uid": "af42aa113b4148ec86f3ed7324f24242"
+                    }
+                  }
+                }
               }
             }
           }
@@ -1827,7 +1882,7 @@
         "tags": [
           "public-auth_Patient"
         ],
-        "summary": "Create Patient",
+        "summary": "Create a Patient",
         "description": "",
         "requestBody": {
           "required": true,
@@ -2034,7 +2089,7 @@
                         },
                         "title": {
                           "type": "string",
-                          "description": "Used for emails and UI (can be edited by provider)"
+                          "description": "Location title"
                         },
                         "code": {
                           "type": "string",
@@ -2070,7 +2125,7 @@
                       "location": {
                         "id": 57,
                         "status": "enabled",
-                        "title": "Title 56",
+                        "title": "Main street branch",
                         "code": "LOC57T"
                       }
                     },
@@ -2120,7 +2175,7 @@
         "tags": [
           "public-auth_Patient"
         ],
-        "summary": "List of  Patient",
+        "summary": "List of Patients",
         "description": "",
         "parameters": [
           {
@@ -2537,14 +2592,244 @@
         "tags": [
           "public-auth_Patient eligibility link"
         ],
-        "summary": "Patient eligibility link wrapper",
+        "summary": "Link eligibility check with a patient",
         "responses": {
           "200": {
             "description": "JSON object response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "properties": {
+                    "request_uid": {
+                      "type": "string"
+                    },
+                    "provider_app_url": {
+                      "type": "string",
+                      "description": "URL to the patient's profile in the Anagram app"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "persons"
+                        ],
+                        "properties": {
+                          "insurer_code": {
+                            "type": "string",
+                            "description": "Example: insurer:vision:vsp"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "plan_is_active": {
+                            "type": "boolean",
+                            "description": "Is insurer plan active at the moment"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "plan_name": {
+                            "type": "string"
+                          },
+                          "plan_group": {
+                            "type": "string"
+                          },
+                          "plan_group_id": {
+                            "type": "string"
+                          },
+                          "plan_begin_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "plan_end_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "plan_refresh_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "persons": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "plan"
+                              ],
+                              "properties": {
+                                "first_name": {
+                                  "type": "string"
+                                },
+                                "last_name": {
+                                  "type": "string"
+                                },
+                                "dob": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "sex": {
+                                  "type": "string"
+                                },
+                                "member_id": {
+                                  "type": "string"
+                                },
+                                "ssn_last_four": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "address": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string"
+                                    },
+                                    "line2": {
+                                      "type": "string"
+                                    },
+                                    "city": {
+                                      "type": "string"
+                                    },
+                                    "zipcode": {
+                                      "type": "string"
+                                    },
+                                    "state": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "email": {
+                                  "type": "string"
+                                },
+                                "phone": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "integer"
+                                },
+                                "full_name": {
+                                  "type": "string",
+                                  "description": "Can be used instead of first and last names"
+                                },
+                                "is_active": {
+                                  "type": "boolean",
+                                  "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
+                                },
+                                "plan": {
+                                  "type": "object",
+                                  "required": [
+                                    "insurer_state",
+                                    "items"
+                                  ],
+                                  "properties": {
+                                    "refresh_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "insurer_state": {
+                                      "type": "string",
+                                      "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
+                                    },
+                                    "begin_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "end_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "items": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "required": [
+                                          "network_type",
+                                          "is_authorization_required",
+                                          "limits",
+                                          "subitem_limits"
+                                        ],
+                                        "properties": {
+                                          "code": {
+                                            "type": "string",
+                                            "description": "Unique benefit code"
+                                          },
+                                          "copay": {
+                                            "type": "number",
+                                            "format": "double"
+                                          },
+                                          "network_type": {
+                                            "type": "string"
+                                          },
+                                          "is_authorization_required": {
+                                            "type": "boolean"
+                                          },
+                                          "refresh_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "description": "Refresh date of benefit if it's different from plan refresh date"
+                                          },
+                                          "limits": {
+                                            "type": "object",
+                                            "properties": {
+                                              "quantity": {
+                                                "type": "integer"
+                                              },
+                                              "total_coverage": {
+                                                "type": "number",
+                                                "format": "double",
+                                                "description": "Total coverage of benefit for period"
+                                              },
+                                              "quantity_remain": {
+                                                "type": "integer"
+                                              },
+                                              "quantity_reserved": {
+                                                "type": "integer"
+                                              },
+                                              "total_coverage_remain": {
+                                                "type": "number",
+                                                "format": "double"
+                                              }
+                                            }
+                                          },
+                                          "subitem_limits": {
+                                            "type": "array",
+                                            "items": {
+                                              "type": "object",
+                                              "required": [
+                                                "code"
+                                              ],
+                                              "properties": {
+                                                "code": {
+                                                  "type": "string",
+                                                  "description": "code of sub benefit inside benefit"
+                                                },
+                                                "quantity": {
+                                                  "type": "integer",
+                                                  "description": "Maximum amount of services"
+                                                },
+                                                "total_coverage": {
+                                                  "type": "number",
+                                                  "format": "double",
+                                                  "description": "Total coverage of benefit for period"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -2555,7 +2840,7 @@
         "tags": [
           "public-auth_Patient eligibility link"
         ],
-        "summary": "List of  Patient eligibility link",
+        "summary": "List of patient eligibility links",
         "description": "",
         "parameters": [
           {
@@ -2913,21 +3198,7 @@
           }
         }
       ]
-    },
-    "/api/auth/v1/patients/{patient_code}/eligibility/overview/": {
-      "parameters": [
-        {
-          "name": "patient_code",
-          "in": "path",
-          "required": true,
-          "allowEmptyValue": false,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
-    "/api/auth/v1/patients/overview/": {}
+    }
   },
   "info": {
     "title": "Anagram backend",
@@ -2937,12 +3208,12 @@
     {
       "name": "public-auth_Eligibility Request",
       "x-displayName": "Eligibility Request",
-      "description": "Requesting patient's eligibility uses the following parameters:\n\n- First name (required)\n- Last name (required)\n- Date of birth (required)\n- Last four digits from SSN (optional)\n- Zip code (optional)\n- Insurer Member ID (optional)\n- Request UID (optional)\n\nThis call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request.\nThe result will be returned in two ways:\n- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred.\nRequest UID will be included in payload.\n- By calling the \"Eligibility Result\" endpoint - only to be used as fallback. Request UID is required.\n\nIf specifying a UID, ensure it is unique. If omitted one will be generated automatically\nand included in the response for this API call.\n\nAuthentication is required for this endpoint. Access token can be obtained\nin [provider app](https://provider.anagram.care/). Access token must be sent in `Authorization` header,\nprefaced with `API `:\n\n`Authorization: Api <key generated in provider app>`\n\nThe response will contain the request UID or a validation error.\n\nError examples:\n```\n{\n    \"errors\": {\"$\": [\"Wrong insurer code\"]}\n}\n```\n```\n{\n    \"errors\": {\n        \"patient\": {\n            \"first_name\": {\"$\": [\"This field cannot be blank.\"]}\n        }\n    }\n}\n```\n\nFor testing purposes, you can include cheat codes in the request. Cheat codes can be provided in the fields\n`first_name`, `last_name`, and `member_id`. Here are some examples of cheat codes:\n\n- `mark_used`: This cheat code marks all benefits as used.\n\n- `dt_exam_used`: This cheat code marks exam benefit as used.\n\n- `no_oon`: Removes all out-of-network benefits from the plan.\n\n- `no_inn`: Removes all in-network benefits from the plan. You can use both `no_oon` and `no_inn` codes together to\ngenerate a plan without any benefits.\n\n- `delay_10`, `delay_30`: These codes introduce a delay in the response, causing it to wait for either 10 or 30\nseconds before providing an answer.\n\n- `big_family`: This cheat code adds multiple persons to the result.\n\n- `not_found`: Using this cheat code will delete all results.\n\n- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error`."
+      "description": "Requesting patient's eligibility uses the following parameters:\n\n- First name (required)\n- Last name (required)\n- Date of birth (required)\n- Last four digits from SSN (optional)\n- Zip code (optional)\n- Insurer Member ID (optional)\n- Request UID (optional)\n\nThis call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request.\nThe result will be returned in two ways:\n- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred.\nRequest UID will be included in payload.\n- By calling the \"Eligibility Result\" endpoint - only to be used as fallback. Request UID is required.\n\nIf specifying a UID, ensure it is unique. If omitted one will be generated automatically\nand included in the response for this API call.\n\nAuthentication is required for this endpoint. Access token can be obtained\nin [provider app](https://provider.anagram.care/). Access token must be sent in `Authorization` header,\nprefaced with `API `:\n\n`Authorization: Api <key generated in provider app>`\n\nThe response will contain the request UID or a validation error.\n\nError examples:\n```\n{\n\"errors\": {\"$\": [\"Wrong insurer code\"]}\n}\n```\n```\n{\n\"errors\": {\n\"patient\": {\n\"first_name\": {\"$\": [\"This field cannot be blank.\"]}\n}\n}\n}\n```\n\nFor testing purposes, you can include cheat codes in the request. Cheat codes can be provided in the fields\n`first_name`, `last_name`, and `member_id`. Here are some examples of cheat codes:\n\n- `mark_used`: This cheat code marks all benefits as used.\n\n- `dt_exam_used`: This cheat code marks exam benefit as used.\n\n- `no_oon`: Removes all out-of-network benefits from the plan.\n\n- `no_inn`: Removes all in-network benefits from the plan. You can use both `no_oon` and `no_inn` codes together to\ngenerate a plan without any benefits.\n\n- `delay_10`, `delay_30`: These codes introduce a delay in the response, causing it to wait for either 10 or 30\nseconds before providing an answer.\n\n- `big_family`: This cheat code adds multiple persons to the result.\n\n- `not_found`: Using this cheat code will delete all results.\n\n- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error`."
     },
     {
       "name": "public-auth_Eligibility Result",
       "x-displayName": "Eligibility Result",
-      "description": "Eligibility search result will be sent to all active webhooks once available.\nAs a fallback, you may call this endpoint to check result status and obtain the result.\n\n### Status\n\nThe `status` field in the response can have one of the following values:\n\n`complete` - Indicates that the search has been completed.\n\n`processing` - Signifies that the search is currently in progress, and it is recommended to retry the request later.\n\n`error` - Suggests that the search dit not finished successfully, and you can find descriptions of error codes\nbelow.\n\n### Error codes\n\n`insurer_problem` – Insurer not available, please try again later\n\n`unexpected_error` – Unknown error\n\n### Webhooks\n\nAdd webhooks to receive results in the [provider app](https://provider.anagram.care/webhooks).\nWebhook payload will be identical to the response of this endpoint.\n\nWhen configuring a webhook you can provide a secret to sign the webhook payload\nand check the signature on the server side.\n\nSignature will be sent in `X-Signature` header in request to webhook endpoint.\n\nSignature is a request raw data signed with secret by HMAC SHA256 algorithm. Python example:\n\n```\nimport hashlib\nimport hmac\n\ndef get_signature(secret_key: str, payload: str) -> str:\n    return hmac.new(secret_key.encode(), payload.encode(), hashlib.sha256).hexdigest()\n```"
+      "description": "Eligibility search result will be sent to all active webhooks once available.\nAs a fallback, you may call this endpoint to check result status and obtain the result.\n\n### Status\n\nThe `status` field in the response can have one of the following values:\n\n`complete` - Indicates that the search has been completed.\n\n`processing` - Signifies that the search is currently in progress, and it is recommended to retry the request later.\n\n`error` - Suggests that the search dit not finished successfully, and you can find descriptions of error codes\nbelow.\n\n### Error codes\n\n`insurer_problem` – Insurer not available, please try again later\n\n`unexpected_error` – Unknown error\n\n### Webhooks\n\nAdd webhooks to receive results in the [provider app](https://provider.anagram.care/webhooks).\nWebhook payload will be identical to the response of this endpoint.\n\nWhen configuring a webhook you can provide a secret to sign the webhook payload\nand check the signature on the server side.\n\nSignature will be sent in `X-Signature` header in request to webhook endpoint.\n\nSignature is a request raw data signed with secret by HMAC SHA256 algorithm. Python example:\n\n```\nimport hashlib\nimport hmac\n\ndef get_signature(secret_key: str, payload: str) -> str:\nreturn hmac.new(secret_key.encode(), payload.encode(), hashlib.sha256).hexdigest()\n```"
     },
     {
       "name": "public-auth_Eligibility Details Request",
@@ -2969,7 +3240,8 @@
       "ApiToken": {
         "type": "apiKey",
         "in": "header",
-        "name": "Authorization"
+        "name": "Authorization",
+        "description": "Your API token prepended with Api prefix. Example value: \"Api B3F4242424E3FDB4242424242A9C7642\"\n"
       }
     }
   },
