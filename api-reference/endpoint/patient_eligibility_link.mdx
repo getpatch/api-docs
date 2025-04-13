@@ -1,7 +1,8 @@
 ---
 title: "Patient Eligibility Link"
 openapi: "POST /api/auth/v1/patients/{patient_code}/eligibility/"
-description: "Initiates an eligibility request and links it to a specific patient"
+description: "Link an eligibility request to a specific patient"
 ---
 
 This endpoint ties eligibility request to a specific patient. Use the `code` returned from the [Create Patient](/api-reference/endpoint/create_patient) endpoint. 
+The result will contain a URL to the patient's profile in the Anagram web app.
