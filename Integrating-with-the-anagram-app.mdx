@@ -10,7 +10,7 @@ Anagram's app robustly handles all aspects of the eligibility and claim submissi
 3. Flows to match results with the initial eligibility search
 4. Benefit interpretation 
    1. Out-of-network benefit calculator
-   2. In-network benefit details
+   2. In-network benefit details in PDF format
 5. Out-of-network claim submission
 6. View past eligibility checks and claim details
 
@@ -19,11 +19,11 @@ Anagram's app robustly handles all aspects of the eligibility and claim submissi
     <Step title="Create Patient">
       You must do this for the patient record to appear in the Anagram App. Initiating an eligibility request by itself does not. Creating a Patient returns a unique code. Save this code to use in the next step. [**<u>Create Patient</u>** resources here.](/api-reference/endpoint/create_patient)
     </Step>
-    <Step title="Initiate Eligibility Request using the Patient Eligibility Link">
-      Use the `code` from the previous request to initiate an eligibility request using the [**<u>Patient Eligibility Link</u>**](/api-reference/endpoint/patient_eligibility_link) endpoint. 
+    <Step title="Initiate Eligibility Request and Link It with the Patient">
+      Use the `code` from the previous request to link arbitrary eligibility request using the [**<u>Patient Eligibility Link</u>**](/api-reference/endpoint/patient_eligibility_link) endpoint. Eligibility check will appear on the patient's profile in the Anagram web app.
     </Step>
-    <Step title="Fetch Results">
-      Acquire the eligibility results using the [**<u>Eligibility Results</u>**](/api-reference/endpoint/eligibility_results) endpoint and submit an [**<u>Eligibility Details Request</u>**](/api-reference/endpoint/eligibility_details_request) for more plan information. 
+    <Step title="Redirect your user">
+      The linking endpoint will provide a URL to the patient's profile in the Anagram's app.
     </Step>
   </Steps>
 </Card>

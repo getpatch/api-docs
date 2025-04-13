@@ -1,23 +1,21 @@
 ---
 title: "Authentication"
-description: "Description of your new file."
+description: "How to obtain and use an API token"
 ---
 
 The Anagram API uses **API keys** to authenticate requests. You can view and manage your API keys in [**the Anagram App**](https://provider.anagram.care/api-tokens). Click “Generate new token” and follow the instructions. If you can’t find the “API Tokens” section in the settings, please contact our support team and request to activate Public API access.
 
 Your API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.
 
-Authentication to the API is performed via [**HTTP Basic Auth**](http://en.wikipedia.org/wiki/Basic_access_authentication). Provide your API key as the basic auth username value. You do not need to provide a password.
-
 All API requests must be made over [**HTTPS**](http://en.wikipedia.org/wiki/HTTP_Secure). Calls made over plain HTTP will fail. API requests without authentication will also fail.
 
-All API endpoints are authenticated using Bearer tokens in the authentication header.
+All API requests require bearer authentication header:
 
-```json
+```http
 Authorization: Api <your api key>
 ```
 
-`Api` is the bearer name and is case sensitive. Requests without a valid token will be denied with a `401` status and an error message:
+`Api` is the bearer name and is case sensitive. Requests without a valid token will be denied with a `401` status and an error message:
 
 ```json
 {"detail": "Invalid authentication token."}
@@ -26,8 +24,9 @@ Authorization: Api <your api key>
 <RequestExample>
 
 ```Authenticated Request
-curl https://api.anagram.care/v1/eligibility \
-  -u 6FB02106ADF1D956B1147F95F455B9AD
+curl --request GET \
+  --url https://api.anagram.care/api/auth/v1/patients/PAT4242B/ \
+  --header 'Authorization: Api B3F4242424E3FDB4242424242A9C7642'
 ```
 
 </RequestExample>
