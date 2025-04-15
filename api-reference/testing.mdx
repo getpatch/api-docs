@@ -18,5 +18,5 @@ For testing purposes, you can include cheat codes in the **Eligibility Request**
 - `not_found`: Using this cheat code will delete all results.
 - `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error` during initial eligibility check step.
 - `dt_err_int`: This cheat code simulates a problem on a plan details request stage and triggers the `unexpected_error`.
-- `gen_all.in_pii`: Populates all possible person's fields in the eligibility result. It is useful for testing that your app can utilize them all.
+- `gen_all.in_pii`: Populates all possible person's fields in the eligibility result. This can be useful to test that your app can utilize all person field variants.
 - `in_noact.dt_all_inactive`: Removes `is_active` flag from a person level on the initial request and makes [plan details request](/api-reference/endpoint/eligibility_details_request) to reveal that the plan is inactive.
