@@ -2930,12 +2930,14 @@
                           "format": "double",
                           "minimum": 0,
                           "exclusiveMinimum": true,
-                          "example": "299.95"
+                          "example": "299.95",
+                          "description": "Cost of one service"
                         },
                         "date": {
                           "type": "string",
                           "format": "date",
-                          "example": "2025-04-15"
+                          "example": "2025-04-15",
+                          "description": "Date of service"
                         },
                         "codes": {
                           "type": "array",
