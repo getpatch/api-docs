@@ -1,9 +1,9 @@
 ---
 title: "Testing"
-description: "Description of your new file."
+description: "How to simulate test scenarios and edge cases."
 ---
 
-There is no testing environment. For testing, use the`insurer:vision:demo`payer in the **insurer_code** request parameter. This demo payer provides mock responses and does not interact with live data.
+There is no testing environment. For testing, use the `insurer:vision:demo` payer in the **insurer_code** request parameter. This demo payer provides mock responses and does not interact with live data.
 
 ## Cheat Codes
 
@@ -16,4 +16,7 @@ For testing purposes, you can include cheat codes in the **Eligibility Request**
 - `delay_10`, `delay_30`: These codes introduce a delay in the response, causing it to wait for either 10 or 30 seconds before providing an answer.
 - `big_family`: This cheat code adds multiple persons to the result.
 - `not_found`: Using this cheat code will delete all results.
-- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error`.
+- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error` during initial eligibility check step.
+- `dt_err_int`: This cheat code simulates a problem on a plan details request stage and triggers the `unexpected_error`.
+- `gen_all.in_pii`: Populates all possible person's fields in the eligibility result. This can be useful to test that your app can utilize all person field variants.
+- `in_noact.dt_all_inactive`: Removes `is_active` flag from a person level on the initial request and makes [plan details request](/api-reference/endpoint/eligibility_details_request) to reveal that the plan is inactive.

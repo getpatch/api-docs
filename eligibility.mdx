@@ -21,7 +21,7 @@ description: "The Eligibility section of the Anagram API provides tools for veri
 
 The API supports both webhooks and polling to notify you of eligibility check results. If webhooks are configured, the result is automatically sent to the configured endpoint once the eligibility check is complete. Otherwise, polling must be used to check for updates to the eligibility request.
 
-Matching search results
+### Matching search results
 
 When performing an eligibility check, the Anagram API uses basic patient information, such as the name (first and last) and date of birth, to search for a match with the insurer’s records. However, the insurer's response may include multiple potential matches, often due to slight variations in the data. These variations can include:
 
@@ -40,9 +40,9 @@ You should carefully develop a matching strategy that aligns with your business 
 
 ## Plan Interpretation
 
-When analyzing a patient's insurance plan details retrieved via the Anagram API, it's essential to understand the distinctions between in-network (INN) and out-of-network (OON) services, as well as the associated costs.​
+When analyzing a patient's insurance plan details retrieved via the Anagram API, it's essential to understand the distinctions between in-network (INN) and out-of-network (OON) services, as well as the associated costs.
 
-- **In-Network (INN) vs. Out-of-Network (OON)**: plans are distinguished by 'oon' for out-of-network and 'inn' for in-network.
-- **Copays and Coinsurance**: The API response includes information on copayments (fixed amounts paid for specific services) and coinsurance (a percentage of the service cost the patient must pay after meeting their deductible).​ Out-of-network copays are effectively deductibles and should be treated as such.
-- **Items and Services**: Detailed descriptions of covered items (e.g., exams, frames, lenses) are provided, along with their respective costs and coverage details.​
-- **Packages and Bundled Benefits**: .​
+- **In-Network (INN) vs. Out-of-Network (OON)**: plans are distinguished by `oon` for out-of-network and `inn` for in-network.
+- **Copays and Coinsurance**: The API response includes information on copayments (fixed amounts paid for specific services) and coinsurance (a percentage of the service cost the patient must pay after meeting their deductible). Out-of-network copays are effectively deductibles and should be treated as such.
+- **Items and Services**: Detailed descriptions of covered items (e.g., exams, frames, lenses) are provided, along with their respective costs and coverage details.
+- **Packages and Bundled Benefits**: .
