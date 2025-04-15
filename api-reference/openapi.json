@@ -2674,12 +2674,6 @@
                     "metadata": {
                       "type": "object"
                     },
-                    "diagnosis_codes": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
                     "services": {
                       "type": "array",
                       "items": {
@@ -2696,7 +2690,7 @@
                             "type": "integer"
                           },
                           "cost": {
-                            "type": "number",
+                            "type": "string",
                             "format": "double"
                           },
                           "date": {
@@ -2785,12 +2779,6 @@
                           }
                         },
                         "phone": {
-                          "type": "string"
-                        },
-                        "employer": {
-                          "type": "string"
-                        },
-                        "individual_plan_name": {
                           "type": "string"
                         },
                         "insurer_code": {
@@ -2977,7 +2965,7 @@
                       "ssn_last_four": {
                         "type": "string",
                         "description": "SSN Last Four",
-                        "example": 924,
+                        "example": "0924",
                         "pattern": "\\d\\d\\d\\d"
                       },
                       "first_name": {
@@ -2992,7 +2980,7 @@
                         "type": "string",
                         "format": "date",
                         "description": "Date of Birth",
-                        "example": "1985-03-15T00:00:00.000Z"
+                        "example": "1985-03-15"
                       },
                       "sex": {
                         "type": "string",
@@ -3049,7 +3037,7 @@
                       "phone": {
                         "type": "string",
                         "description": "Member phone",
-                        "example": 1234567890,
+                        "example": "1234567890",
                         "pattern": "\\d{10}"
                       },
                       "insurer_code": {
@@ -3089,7 +3077,7 @@
                       "ssn_last_four": {
                         "type": "string",
                         "description": "SSN Last Four",
-                        "example": 924,
+                        "example": "0924",
                         "pattern": "\\d\\d\\d\\d"
                       },
                       "first_name": {
@@ -3104,7 +3092,7 @@
                         "type": "string",
                         "format": "date",
                         "description": "Date of Birth",
-                        "example": "1985-03-15T00:00:00.000Z"
+                        "example": "1985-03-15"
                       },
                       "sex": {
                         "type": "string",
@@ -3149,7 +3137,7 @@
                           "zipcode": {
                             "type": "string",
                             "pattern": "\\d{5}|\\d{5}-\\d{4}\n",
-                            "example": 99577
+                            "example": "99577"
                           },
                           "state": {
                             "type": "string",
@@ -3161,7 +3149,7 @@
                       "phone": {
                         "type": "string",
                         "description": "Member phone",
-                        "example": 1234567890,
+                        "example": "1234567890",
                         "pattern": "\\d{10}"
                       },
                       "account_number": {
