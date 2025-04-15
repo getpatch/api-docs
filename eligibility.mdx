@@ -3,25 +3,25 @@ title: "Eligibility"
 description: "The Eligibility section of the Anagram API provides tools for verifying a patient's eligibility and benefits with insurance providers."
 ---
 
-## Workflow
+# Workflow
 
 <Steps>
   <Step title="Eligibility Request">
     The eligibility check process is initiated in this step with the patient's information being sent to the payer. This request returns a unique `request_uid` that can be used to fetch the eligibility result.
   </Step>
   <Step title="Eligibility Result">
-    The eligibility result is fetch`request_uid` and is the outcome of the eligibility requiest. This result contains limited information about the patient's plan. To get the full insurance plan, the Eligibility Details request needs to be run. 
+    The eligibility result is fetch`request_uid` and is the outcome of the eligibility requiest. This result contains limited information about the patient's plan. To get the full insurance plan, the Eligibility Details request needs to be run.
   </Step>
   <Step title="Eligibility Details">
     The detailed eligbility and benefits information is obtained by running the Eligibility Details endpoint.
   </Step>
 </Steps>
 
-### Webhooks
+## Webhooks
 
 The API supports both webhooks and polling to notify you of eligibility check results. If webhooks are configured, the result is automatically sent to the configured endpoint once the eligibility check is complete. Otherwise, polling must be used to check for updates to the eligibility request.
 
-### Matching search results
+# Matching search results
 
 When performing an eligibility check, the Anagram API uses basic patient information, such as the name (first and last) and date of birth, to search for a match with the insurer’s records. However, the insurer's response may include multiple potential matches, often due to slight variations in the data. These variations can include:
 
@@ -38,11 +38,94 @@ It’s important for you to consider the trade-offs of your chosen matching stra
 
 You should carefully develop a matching strategy that aligns with your business needs and data quality, keeping in mind the potential impact of their chosen strategy on both **accuracy** and **efficiency**. You should also implement additional checks or verification steps (such as confirming the member's address or other identifiers) when possible to reduce the risk of selecting the wrong member, especially when the data is ambiguous or incomplete.
 
-## Plan Interpretation
+# Plan and Benefit Interpretation
 
-When analyzing a patient's insurance plan details retrieved via the Anagram API, it's essential to understand the distinctions between in-network (INN) and out-of-network (OON) services, as well as the associated costs.
+When analyzing a patient's insurance plan details retrieved via the Anagram API, it's essential to understand the distinctions between in-network (INN) and out-of-network (OON) services, as well as the associated costs. This guide reviews how to calculate copays and reimbursements based on the returned plans.
 
 - **In-Network (INN) vs. Out-of-Network (OON)**: plans are distinguished by `oon` for out-of-network and `inn` for in-network.
-- **Copays and Coinsurance**: The API response includes information on copayments (fixed amounts paid for specific services) and coinsurance (a percentage of the service cost the patient must pay after meeting their deductible). Out-of-network copays are effectively deductibles and should be treated as such.
+- **Copays and Coinsurance**: The API response includes information on copayments (fixed amounts paid for specific services). Out-of-network copays are effectively deductibles.
 - **Items and Services**: Detailed descriptions of covered items (e.g., exams, frames, lenses) are provided, along with their respective costs and coverage details.
-- **Packages and Bundled Benefits**: .
+
+## Packages and Bundled Benefits
+
+### 1. Packaged Items
+
+Packages group related items under a single benefit entity. These are the current supported types:
+
+- **Frame Packages**: One package per lens type. Currently, these only include frames and lenses. In the future, additional items (e.g., add-ons) may be added for _out-of-network_ cases. If this occurs, we'll provide notice.
+- **Contact Lens Packages**: Defined by the presence of both `LENS_CONTACT` and `EXAM_CONTACT` items.
+- **Other Packages**: No additional package types are currently found in historical data.
+
+### 2. Deductibles and Copays
+
+Packages allow the application of a **single copay or deductible** across multiple items. Key rules:
+
+- **Copay Application**: Deducted once per package, _not per subitem_.
+- **Coverage Definition**: Can be defined either on the **package level** or **subitem level**.
+  - Example: Glasses typically use subitem-level coverage (frame and lenses separately).
+  - Contact lens packages usually apply package-level coverage.
+
+It’s recommended to support both coverage structures in your implementation.
+
+### 3. Package Scope – Single vs Multiple Pairs
+
+- **Current Scope**: All known packages apply to **a single pair of glasses**.
+- **Future Support**: In-network coverage for multiple pairs may be introduced, but typically a second pair is treated as a separate benefit.
+- **Out-of-Network Plans**: Multi-pair coverage does _not_ apply.
+
+### 4. Edge Cases and Rules
+
+**Required & Optional Items in Packages**
+
+- **Glasses Packages**: Require both frames and lenses to activate.
+- **Contact Lens Packages**: Include an optional exam component (`EXAM_CONTACT`).
+
+> These rules are **not yet exposed via the public API**. We recommend hardcoding them for now.
+
+### Exclusion Groups
+
+Some plan rules prevent conflicting combinations:
+
+- **Duplicate Items**: Cannot claim multiple lenses of different types (e.g., one single vision, one progressive).
+- **Conflicting Benefits**: Cannot claim glasses and contacts in the same benefit cycle.
+
+We recommend hardcoding these exclusions where applicable.
+
+## Reimbursement Calculation Logic
+
+When a package benefit is applied:
+
+- **The total Copay** is subtracted from the _total order cost_.
+- Remaining coverage is capped at individual item limits, not exceeding the post-copay balance.
+
+### Example Calculations
+
+**Claim**:
+
+- Frame V2020: $38 ×1
+- Progressive Lens V2300: $70 ×2
+- Order Total: $178
+
+**Matched Package**: `FRAME_LENS_PROG_PKG`
+
+- Frame: up to $70
+- Progressive lens: up to $55
+- Copay: $25
+
+**Correct Calculation**:
+
+1. `$178 - $25 = $153` (max reimbursable)
+2. Coverage: `min($38, $70)` \+ `min($70, $55)` = `$38 + $55 = $93`
+3. **Final Reimbursement**: `$93`
+
+Incorrect logic would apply copay to one item only, which would yield a lower reimbursement ($78 in this case).
+
+**Additional Examples:**
+
+| Case | Frame Cost | Lens Cost | Total | Copay | Max After Copay | Final Reimbursement   |
+| :--- | :--------- | :-------- | :---- | :---- | :-------------- | :-------------------- |
+| A    | $40        | $30 ×2    | $100  | $25   | $75             | $40 \+ $55 = **$75**  |
+| B    | $80        | $20 ×2    | $120  | $25   | $95             | $70 \+ $40 = **$95**  |
+| C    | $140       | $20 ×2    | $180  | $25   | $155            | $70 \+ $40 = **$110** |
+
+> Note: Even if the total cost after copay exceeds the sum of subitem caps, reimbursement is limited by those individual caps.
