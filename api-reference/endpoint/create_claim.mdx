@@ -1,16 +1,8 @@
 ---
 title: "Create Claim"
-openapi: "POST /claims"
+openapi: "POST /api/auth/v1/claims/"
 description: "Creating and submitting an out-of-network vision claim"
 ---
-
-<CodeGroup>
-
-```json Endpoint
-`POST` /v1/claims/
-```
-
-</CodeGroup>
 
 The claim object contains all information required to send a claim to an insurer:
 
@@ -25,22 +17,10 @@ During claim submission, the API validates the claim payload against known insur
 
 Insurers can change their requirements without notifying us. In these cases, as soon as we understand the new requirements, we will update the validation rules and notify you. It is advisable to be prepared to adopt the updated rules as quickly as possible.
 
-## Main Claim Object
-
-| Field name      | Field type              | Constraints                 | Description                      | Examples                                                             | |
-| :-------------- | :---------------------- | :-------------------------- | :------------------------------- | :------------------------------------------------------------------- | --- |
-| patient         | `patient object`        | see `patient` object        | information about patient        | see `patient` object                                                 | |
-| primary_member  | `primary_member object` | see `primary_member` object | information about primary member | see `primary_member` object                                          | |
-| diagnosis_codes | \`[string]              | null\`                      | HCPCS diagnosis codes (global)   |                                                                      | |
-| services        | `[service object]`      | see `service` object        | list of services in claim        | see `service` object                                                 | |
-| paid_amount     | `money`                 | required                    | amount paid by patient           |                                                                      | |
-| is_aob_enabled  | \`boolean               | null\`                      | Available only for VSP           | whether to accept the assignment of the benefits. `false` by default | |
-
 <RequestExample>
 
 ```json Request Example
 {
-    "diagnosis_codes": ["H52.10"],
     "patient": {
         "dob": "1998-02-11",
         "first_name": "Max",
@@ -73,12 +53,14 @@ Insurers can change their requirements without notifying us. In these cases, as 
         "cost": "12.22",
         "date": "2022-02-11",
         "quantity": "2"
+        "diagnosis_codes": ["H52.10"],
     }, {
         "codes": ["V2781"],
         "cost": "44.21",
         "date": "2022-02-11",
         "quantity": "1"
-    }]
+    }],
+    "paid_amount": "68.65"
 }
 ```
 
@@ -88,9 +70,7 @@ Insurers can change their requirements without notifying us. In these cases, as 
 
 ```json 200
 {
-    "diagnosis_codes": ["H52.10"],
-    "id": 21,
-    "paid_amount": null,
+    "code": CLM21T,
     "patient": {
         "address": {
             "city": "City",
@@ -136,13 +116,15 @@ Insurers can change their requirements without notifying us. In these cases, as 
         "cost": "12.2200",
         "date": "2022-02-11",
         "quantity": 2
+        "diagnosis_codes": ["H52.10"],
     }, {
         "codes": ["V2781"],
         "cost": "44.2100",
         "date": "2022-02-11",
         "quantity": 1
     }],
-    "status": "ready"
+    "status": "ready",
+    "paid_amount": "68.6500"
 }
 ```
 
@@ -205,7 +187,7 @@ Insurers can change their requirements without notifying us. In these cases, as 
 
 </ResponseExample>
 
-## Query Parameters
+## Request Parameters
 
 The main fields of claim are:
 
@@ -213,109 +195,4 @@ The main fields of claim are:
 - `primary_member`: JSON object, representing primary patient member
 - `services`: list of JSON objects, representing services that can be reimbursed
 
-Also, there are fields in nested objects:
-
-- `address`: JSON object, represents the mailing address in `patient` and `primary_member` fields.
-
 Both `patient` and `primary_member` must be provided even if the claim is created for a primary member. In this case, both the `patient` object and `primary_member` object must contain the same data.
-
-<ParamField query="address" path="address" type="object">
-  This is the mailing address of the patient.
-
-  Example:
-
-  ```
-  "address": {
-      "city": "City",
-      "line1": "String name",
-      "line2": null,
-      "state": "CA",
-      "zipcode": "12332"
-  }
-  ```
-
-  <Expandable title="Address Properties" defaultOpen="true">
-    <ParamField query="line1" path="line1" type="string" required>
-      
-    </ParamField>
-    <ParamField query="line2" path="line2" type="string">
-      
-    </ParamField>
-    <ParamField query="recipient" path="recipient" type="string">
-      
-    </ParamField>
-    <ParamField query="city" path="city" type="string" required>
-      
-    </ParamField>
-    <ParamField query="zipcode" path="zipcode" type="string" required>
-      
-    </ParamField>
-    <ParamField query="state" path="state" type="string" required>
-      
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField query="services" path="services" type="list of objects">
-  The services (and materials) received by the patient are a list of service objects. Each service object has a type that must be described by a valid CPT/HCPCS code (see "[**<u>Supported Payers and Coding</u>**](/Supported-payers-and-coding)" for the full list of available codes).
-
-  Note that diagnosis codes can be supplied both as global diagnosis (via top-level diagnosis_codes field) or per service, via an optional diagnosis_codes field in the service object.
-
-  Unknown codes will result in an error.
-
-  <Expandable title="Services Properties" defaultOpen="true">
-    <ParamField query="codes" path="codes" type="[string]" required>
-      List of ore-defined CPT codes
-      Constraints: CPT codes
-    </ParamField>
-    <ParamField query="diagnosis_codes" path="diagnosis_codes" type="[string] | null" required>
-      ICD10 HCPCS diagnosis codes (per service)
-    </ParamField>
-    <ParamField query="quantity" path="quantity" type="integer" required>
-      Number of services or materials received
-      Constraints: greater than `0`
-    </ParamField>
-    <ParamField query="cost" path="cost" type="money" required>
-      Cost of a single service line item
-      Constraints: greater than `0.00`
-    </ParamField>
-    <ParamField query="date" path="date" type="date" required>
-      Date of service
-      Example: `2025-03-01`
-    </ParamField>
-    <ParamField query="state" path="state" type="string" required>
-      
-    </ParamField>
-  </Expandable>
-</ParamField>
-
-<ParamField query="insurer_code" path="insurer_code" header="something" type="string" required="required">
-  Example: insurer:vision:vsp
-</ParamField>
-
-<ParamField query="request_uid" path="request_uid" type="string">
-  Any string value. Max length: 256
-</ParamField>
-
-<ParamField query="patient" path="patient" type="object" required>
-  <Expandable title="Patient Properties" defaultOpen="true">
-    <ParamField query="first_name" path="first_name" type="string" required>
-      Name can only contain alphabetic characters, numerical digits, spaces and some special symbols. Maximum length of full name is 46 characters.
-    </ParamField>
-    <ParamField query="last_name" path="last_name" type="string" required="required">
-      Min length: 2, max length of full name: 46
-    </ParamField>
-    <ParamField query="dob" path="dob" type="string <date>" required="required">
-      Date of birth in ISO format (YYYY-MM-DD)
-    </ParamField>
-    <ParamField query="ssn_last_four" path="ssn_last_four" type="string">
-      Last four digits from the patient's Social Security Number
-    </ParamField>
-    <ParamField query="zip" path="zip" type="string">
-      Zip code with 5 or 9 digits. Example: 12345-6789
-    </ParamField>
-    <ParamField query="member_id" path="member_id" type="string">
-      Insurer specific member identifier
-    </ParamField>
-  </Expandable>
-</ParamField>
