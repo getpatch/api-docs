@@ -3,10 +3,36 @@ title: "Claims"
 description: "Filing out-of-network vision claims with Anagram's API"
 ---
 
-Our API allows you to submit out-of-network claims to vision insurers. Please note that VSP is the only vision insurer that supports Assignment of Benefits (AOB). All other insurers will send reimbursement directly to the patient. 
+## Assignment of Benefits (AOB)
 
-Typically, reimbursements are processed within 2-4 weeks from submission and will be sent via paper mail. Unfortunately, we don’t have a reliable way to track the status of your claims once they’re submitted.
+- Assigning benefits to the provider (you) allows you to immediately charge the patient the net price, effectively lowering the upfront out-of-pocket for the patient
+- VSP is the only vision insurer that supports the Assignment of Benefits (AOB).
+- For all other insurers, reimbursement is sent directly to the patient, not to the provider.
 
-While we strive to provide accurate estimates for patient eligibility, coverage, and reimbursement, we cannot guarantee these details or ensure payments to you. Eligibility and payment will be confirmed when the insurer processes the claim. Our coverage estimates are usually accurate, but there may be occasional discrepancies. We recommend informing your patients that their actual reimbursement may vary slightly from the initial estimate.
+## Claim processing and timelines
 
-You can technically submit claims without checking a patient's eligibility, but we don't recommend it. This will result in an increased number of rejected claims.
+- Reimbursements are typically processed within 2–4 weeks from the time of claim submission.
+- Payments are sent via paper mail.
+- Currently, there is no reliable way to track the status of claims after submission.
+
+## Claim payments and reimbursement expectations
+
+While we aim to provide accurate estimates regarding patient eligibility, coverage, and reimbursement amounts, these are not guaranteed, and final details will only be confirmed once the insurer processes the claim.
+
+Actual reimbursement may vary slightly from the initial estimate provided. We recommended communicating this uncertainty to patients to set appropriate expectations.
+
+## **Workflow suggestions and best practices**
+
+### Using the eligibility response
+
+The eligibility response often contains useful information that you should include on the claim. If you do this, you do not need to ask the patient for it. It can include the patient's name, date of birth, member ID, address, phone, and more. We recommend using the insurer's data as it will decrease the likelihood of rejections.
+
+<Warning>
+  You can technically submit claims without checking a patient's eligibility, but we don't recommend it. This will result in an increased number of rejected claims.
+</Warning>
+
+### Hold periods
+
+- **Wait for any order hold period** to pass
+- **Re-run eligibility checks** to confirm up-to-date information
+- Use the **eligibility response to populate** claim fields automatically and submit the claim
