@@ -60,7 +60,15 @@
                 "properties": {
                   "insurer_code": {
                     "type": "string",
-                    "description": "Example: insurer:vision:vsp"
+                    "description": "Optional when `insurer_code_list` is provided. Example: insurer:vision:vsp"
+                  },
+                  "insurer_code_list": {
+                    "type": "array",
+                    "description": "Activates Universal Search",
+                    "items": {
+                      "type": "string",
+                      "description": "Example: insurer:vision:vsp"
+                    }
                   },
                   "request_uid": {
                     "type": "string",
@@ -103,7 +111,7 @@
                   },
                   "location_code": {
                     "type": "string",
-                    "description": "Example: LOC4242B"
+                    "description": "Identifies the location that the eligibility check will be linked to. When this field is empty, the eligibility check will be linked with the default location. Example: LOC4242B"
                   }
                 }
               }
@@ -1408,7 +1416,7 @@
                   },
                   "location_code": {
                     "type": "string",
-                    "description": "Example: LOC4242B"
+                    "description": "Identifies the location that the patient will be linked to. When this field is empty, the patient will be linked with the default location. Example: LOC4242B"
                   }
                 }
               },
@@ -3169,7 +3177,7 @@
                   },
                   "location_code": {
                     "type": "string",
-                    "description": "Example: LOC4242B"
+                    "description": "Identifies the location that the claim will be linked to. When this field is empty, the claim will be linked with the default location. Example: LOC4242B"
                   }
                 }
               }
