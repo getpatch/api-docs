@@ -3,7 +3,7 @@ title: "Claims"
 description: "Description of your new file."
 ---
 
-The claim object contains all information required to send a claim to an insurer:
+The claim object contains all the information required to send a claim to an insurer:
 
 * insurer
 
@@ -15,7 +15,7 @@ The claim object contains all information required to send a claim to an insurer
 
 Note that although the VSP claim form allows arbitrary CPS/HCPCS codes and our API supports the majority of them, we recommend using only the codes specified below to reduce the chance of claim rejection. Contact Anagram customer support if you need to use other codes.
 
-During claim submission the API validates the claim payload against known insurer requirements and will reject a claim that we know will be rejected by the insurer, but does not guarantee the opposite (i.e. a claim accepted by API can still be rejected by insurer).
+During claim submission the API validates the claim payload against known insurer requirements and will reject a claim that we know will be rejected by the insurer. However, this does not guarantee the opposite; a claim accepted by the API can still be rejected by the insurer.
 
 It is possible for insurers to change their requirements without notifying us. In these events as soon as we understand the new requirements we will update the validation rules and notify you. It is advizable to be prepared to adopt the updated rules as quickly as possible.
 

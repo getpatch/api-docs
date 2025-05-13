@@ -100,6 +100,10 @@
                         "description": "Insurer specific member identifier"
                       }
                     }
+                  },
+                  "location_code": {
+                    "type": "string",
+                    "description": "Example: LOC4242B"
                   }
                 }
               }
@@ -1401,6 +1405,10 @@
                   "force_similar": {
                     "type": "boolean",
                     "description": "Allow to save a new object which is similar to others"
+                  },
+                  "location_code": {
+                    "type": "string",
+                    "description": "Example: LOC4242B"
                   }
                 }
               },
@@ -3158,6 +3166,97 @@
                         "description": "Patient account number in an external system"
                       }
                     }
+                  },
+                  "location_code": {
+                    "type": "string",
+                    "description": "Example: LOC4242B"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/v1/locations/": {
+      "get": {
+        "summary": "List of Locations",
+        "description": "",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "_page_number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "result"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "title",
+                          "code"
+                        ],
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "code": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "prev": {
+                      "type": "string"
+                    },
+                    "previous": {
+                      "type": "string"
+                    },
+                    "next": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "result": [
+                        {
+                          "created_at": "Westwood Store #542",
+                          "code": "LOC4242B"
+                        },
+                        {
+                          "created_at": "Main st Store #634",
+                          "code": "LOC75634B"
+                        },
+                      ]
+                    },
+                    "summary": ""
                   }
                 }
               }
