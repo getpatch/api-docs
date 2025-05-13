@@ -31,7 +31,7 @@ Universal Search allows you to efficiently perform eligibility checks across mul
 
 With Universal Search, the API will simultaneously query all insurers specified in your request. It returns comprehensive eligibility results for each insurer, consolidating the responses into a single, organized response payload.
 
-### Request Parameters
+## Request Parameters
 
 To utilize Universal Search, include the parameter `insurer_code_list` in the Eligibility Request endpoint, an array containing the insurer codes you wish to query. The details of insurer codes can be found [here](/Supported-payers-and-coding).
 
@@ -136,10 +136,10 @@ Incorrect logic would apply copay to one item only, which would yield a lower re
 
 **Additional Examples:**
 
-| Case | Frame Cost | Lens Cost | Total | Copay | Max After Copay | Final Reimbursement        |
-| :--- | :--------- | :-------- | :---- | :---- | :-------------- | :------------------------- |
-| A    | \$40       | \$30 ×2   | \$100 | \$25  | \$75            | $$40 \+ $$  55 = **\$75**  |
-| B    | \$80       | \$20 ×2   | \$120 | \$25  | \$95            | $$70 \+ $$  40 = **\$95**  |
-| C    | \$140      | \$20 ×2   | \$180 | \$25  | \$155           | $$70 \+ $$  40 = **\$110** |
+| Case | Frame Cost | Lens Cost | Total | Copay | Max After Copay | Final Reimbursement      |
+| :--- | :--------- | :-------- | :---- | :---- | :-------------- | :----------------------- |
+| A    | \$40       | \$30 ×2   | \$100 | \$25  | \$75            | $40 \+ $  55 = **\$75**  |
+| B    | \$80       | \$20 ×2   | \$120 | \$25  | \$95            | $70 \+ $  40 = **\$95**  |
+| C    | \$140      | \$20 ×2   | \$180 | \$25  | \$155           | $70 \+ $  40 = **\$110** |
 
 > Note: Even if the total cost after copay exceeds the sum of subitem caps, reimbursement is limited by those individual caps.
