@@ -3247,11 +3247,11 @@
                     "value": {
                       "result": [
                         {
-                          "created_at": "Westwood Store #542",
+                          "title": "Westwood Store #542",
                           "code": "LOC4242B"
                         },
                         {
-                          "created_at": "Main st Store #634",
+                          "title": "Main st Store #634",
                           "code": "LOC75634B"
                         },
                       ]
