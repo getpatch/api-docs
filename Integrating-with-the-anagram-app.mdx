@@ -8,7 +8,7 @@ Anagram's app robustly handles all aspects of the eligibility and claim submissi
 1. Eligibility via direct or universal search
 2. Displaying all eligibility results and details
 3. Flows to match results with the initial eligibility search
-4. Benefit interpretation 
+4. Benefit interpretation
    1. Out-of-network benefit calculator
    2. In-network benefit details in PDF format
 5. Out-of-network claim submission
@@ -17,7 +17,11 @@ Anagram's app robustly handles all aspects of the eligibility and claim submissi
 <Card title="Pushing Patients to Anagram APP via API" icon="file-import">
   <Steps>
     <Step title="Create Patient">
-      You must do this for the patient record to appear in the Anagram App. Initiating an eligibility request by itself does not. Creating a Patient returns a unique code. Save this code to use in the next step. [**<u>Create Patient</u>** resources here.](/api-reference/endpoint/create_patient)
+      You must do this for the patient record to appear in the Anagram App. Initiating an eligibility request by itself does not. Creating a Patient returns a unique code. Save this code to use in the next step. [**<u>Create Patient resources here.</u>**](/api-reference/endpoint/create_patient)
+
+      <Note>
+        If you have multiple locations, you'll want to specify the location code when creating the patient. This code will identify the location that the patient will be linked to. To pull a list of your location codes, see the [List Locations](/api-reference/endpoint/locations) endpoint.
+      </Note>
     </Step>
     <Step title="Initiate Eligibility Request and link it with the patient">
       Use the `code` from the previous request to link arbitrary eligibility request using the [**<u>Patient Eligibility Link</u>**](/api-reference/endpoint/patient_eligibility_link) endpoint. Eligibility check will appear on the patient's profile in the Anagram web app.
@@ -37,7 +41,7 @@ Anagram's app robustly handles all aspects of the eligibility and claim submissi
       All eligibility results will be returned for each patient. If more than one result is returned, staff should interpret it and identify the correct patient.
     </Step>
     <Step title="Benefit Interpretation and Claim Submission">
-      Staff can view and interpret the plan benefits and initiate out-of-network vision claims in a few easy steps. 
+      Staff can view and interpret the plan benefits and initiate out-of-network vision claims in a few easy steps.
     </Step>
   </Steps>
 </Card>

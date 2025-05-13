@@ -13,13 +13,27 @@ description: "The Eligibility section of the Anagram API provides tools for veri
     The eligibility result is fetch`request_uid` and is the outcome of the eligibility requiest. This result contains limited information about the patient's plan. To get the full insurance plan, the Eligibility Details request needs to be run.
   </Step>
   <Step title="Eligibility Details">
-    The detailed eligbility and benefits information is obtained by running the Eligibility Details endpoint.
+    The detailed eligibility and benefits information is obtained by running the Eligibility Details endpoint.
   </Step>
 </Steps>
 
 ## Webhooks
 
 The API supports both webhooks and polling to notify you of eligibility check results. If webhooks are configured, the result is automatically sent to the configured endpoint once the eligibility check is complete. Otherwise, polling must be used to check for updates to the eligibility request.
+
+# Universal Search
+
+## Overview
+
+Universal Search allows you to efficiently perform eligibility checks across multiple insurers with a single API request. Rather than submitting individual eligibility requests for each insurer, you can now specify multiple insurers within one streamlined query, significantly reducing response time and simplifying your workflow.
+
+## How it Works
+
+With Universal Search, the API will simultaneously query all insurers specified in your request. It returns comprehensive eligibility results for each insurer, consolidating the responses into a single, organized response payload.
+
+### Request Parameters
+
+To utilize Universal Search, include the parameter `insurer_code_list` in the Eligibility Request endpoint, an array containing the insurer codes you wish to query. The details of insurer codes can be found [here](/Supported-payers-and-coding).
 
 # Matching search results
 
@@ -102,15 +116,15 @@ When a package benefit is applied:
 
 **Claim**:
 
-- Frame V2020: $38 ×1
-- Progressive Lens V2300: $70 ×2
-- Order Total: $178
+- Frame V2020: \$38 ×1
+- Progressive Lens V2300: \$70 ×2
+- Order Total: \$178
 
 **Matched Package**: `FRAME_LENS_PROG_PKG`
 
-- Frame: up to $70
-- Progressive lens: up to $55
-- Copay: $25
+- Frame: up to \$70
+- Progressive lens: up to \$55
+- Copay: \$25
 
 **Correct Calculation**:
 
@@ -118,14 +132,14 @@ When a package benefit is applied:
 2. Coverage: `min($38, $70)` \+ `min($70, $55)` = `$38 + $55 = $93`
 3. **Final Reimbursement**: `$93`
 
-Incorrect logic would apply copay to one item only, which would yield a lower reimbursement ($78 in this case).
+Incorrect logic would apply copay to one item only, which would yield a lower reimbursement (\$78 in this case).
 
 **Additional Examples:**
 
-| Case | Frame Cost | Lens Cost | Total | Copay | Max After Copay | Final Reimbursement   |
-| :--- | :--------- | :-------- | :---- | :---- | :-------------- | :-------------------- |
-| A    | $40        | $30 ×2    | $100  | $25   | $75             | $40 \+ $55 = **$75**  |
-| B    | $80        | $20 ×2    | $120  | $25   | $95             | $70 \+ $40 = **$95**  |
-| C    | $140       | $20 ×2    | $180  | $25   | $155            | $70 \+ $40 = **$110** |
+| Case | Frame Cost | Lens Cost | Total | Copay | Max After Copay | Final Reimbursement        |
+| :--- | :--------- | :-------- | :---- | :---- | :-------------- | :------------------------- |
+| A    | \$40       | \$30 ×2   | \$100 | \$25  | \$75            | $$40 \+ $$  55 = **\$75**  |
+| B    | \$80       | \$20 ×2   | \$120 | \$25  | \$95            | $$70 \+ $$  40 = **\$95**  |
+| C    | \$140      | \$20 ×2   | \$180 | \$25  | \$155           | $$70 \+ $$  40 = **\$110** |
 
 > Note: Even if the total cost after copay exceeds the sum of subitem caps, reimbursement is limited by those individual caps.
