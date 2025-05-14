@@ -64,9 +64,9 @@
                   },
                   "insurer_code_list": {
                     "type": "array",
-                    "description": "Activates Universal Search. Example: `["insurer:vision:vsp", "insurer:vision:eyemed"]`",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Activates Universal Search. Example: `["insurer:vision:vsp", "insurer:vision:eyemed"]`"
                     }
                   },
                   "request_uid": {
