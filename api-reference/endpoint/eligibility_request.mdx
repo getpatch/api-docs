@@ -15,10 +15,25 @@ The response will contain the request UID or a validation error.
 
 <RequestExample>
 
-```json Request Example
+```json Direct Search Request
 {
 	"insurer_code": "insurer:demo:vision",
 	"request_uid": "19850f24-900e-4812-8e99-6faa2397fe57",
+	"patient": {
+		"first_name": "John",
+		"last_name": "Smith",
+		"dob": "1990-01-01",
+	}
+}
+```
+
+```json Universal Search Request
+{
+	"insurer_code_list": [
+      "insurer:vision:vsp",
+      "insurer:vision:eyemed",
+      "insurer:vision:davis_vision"
+    ],
 	"patient": {
 		"first_name": "John",
 		"last_name": "Smith",
