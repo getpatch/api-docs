@@ -66,7 +66,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Activates Universal Search. Example: `["insurer:vision:vsp", "insurer:vision:eyemed"]`"
+                      "description": "Activates Universal Search. Example: `[\"insurer:vision:vsp\", \"insurer:vision:eyemed\"]`"
                     }
                   },
                   "request_uid": {
@@ -3260,7 +3260,7 @@
                         {
                           "title": "Main st Store #634",
                           "code": "LOC75634B"
-                        },
+                        }
                       ]
                     },
                     "summary": ""
