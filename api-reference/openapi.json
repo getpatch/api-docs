@@ -2053,6 +2053,25 @@
           "public-auth_Patient eligibility link"
         ],
         "summary": "Link eligibility check with a patient",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "request_uid"
+                ],
+                "properties": {
+                  "request_uid": {
+                    "type": "string",
+                    "description": "Eligibility check request UID"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "JSON object response",
