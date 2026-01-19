@@ -388,7 +388,7 @@
                 "examples": {
                   "Initial search result": {
                     "value": {
-                      "request_uid": "1233ab2dc4dj5bs",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "complete",
                       "error_code": null,
                       "results": [
@@ -433,7 +433,7 @@
                   },
                   "Details request result": {
                     "value": {
-                      "request_uid": "1233ab2dc4dj5bs",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "complete",
                       "error_code": null,
                       "results": [
@@ -755,7 +755,7 @@
                   },
                   "Plan with two members": {
                     "value": {
-                      "request_uid": "1233ab2dc4dj5bs",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "complete",
                       "error_code": null,
                       "results": [
@@ -821,7 +821,7 @@
                   },
                   "Missing primary member": {
                     "value": {
-                      "request_uid": "1233ab2dc4dj5bs",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "complete",
                       "error_code": null,
                       "results": [
@@ -866,7 +866,7 @@
                   },
                   "Reserved benefits": {
                     "value": {
-                      "request_uid": "1233ab2dc4dj5bs",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "complete",
                       "error_code": null,
                       "results": [
@@ -1188,7 +1188,7 @@
                   },
                   "Search is in progress": {
                     "value": {
-                      "request_uid": "2437abcd13def",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "processing",
                       "error_code": null,
                       "results": null
@@ -1197,7 +1197,7 @@
                   },
                   "Insurer error": {
                     "value": {
-                      "request_uid": "2437abcd13def",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "error",
                       "error_code": "insurer_problem",
                       "results": null
@@ -1206,7 +1206,342 @@
                   },
                   "Unexpected search error": {
                     "value": {
-                      "request_uid": "2437abcd13def",
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
+                      "status": "error",
+                      "error_code": "unexpected_error",
+                      "results": null
+                    },
+                    "summary": "Unexpected error, request could not be processed"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "detail"
+                  ],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "detail": "Eligibility not found (unknown-id)"
+                    },
+                    "summary": "Unknown request ID"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "request_uid",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/auth/v2/eligibility/{request_uid}/": {
+      "get": {
+        "tags": [
+          "public-auth_EligibilityV2 Result"
+        ],
+        "summary": "Get Eligibility Check v2",
+        "description": "Provides status and results of an eligibility check",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": 
+                  {
+                    "type": "object",
+                    "required": [
+                      "request_uid",
+                      "status"
+                    ],
+                    "properties": {
+                      "request_uid": {
+                        "type": "string",
+                        "description": "UID provided on request creation or auto generated"
+                      },
+                      "status": {
+                        "type": "string",
+                        "enum": [
+                          "processing",
+                          "complete",
+                          "error"
+                        ],
+                        "description": ""
+                      },
+                      "error_code": {
+                        "type": "string"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "insurer_code",
+                            "persons"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "active",
+                                "inactive",
+                                "out_of_network",
+                                "unavailable"
+                              ],
+                              "description": ""
+                            },
+                            "plan_name": {
+                              "type": "string"
+                            },
+                            "plan_group": {
+                              "type": "string"
+                            },
+                            "plan_group_id": {
+                              "type": "string"
+                            },
+                            "plan_begin_date": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "plan_end_date": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "plan_refresh_date": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "insurer_code": {
+                              "type": "string"
+                            },
+                            "plan_is_active": {
+                              "type": "boolean"
+                            },
+                            "persons": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "plan"
+                                ],
+                                "properties": {
+                                  "first_name": {
+                                    "type": "string"
+                                  },
+                                  "last_name": {
+                                    "type": "string"
+                                  },
+                                  "dob": {
+                                    "type": "string",
+                                    "format": "date"
+                                  },
+                                  "sex": {
+                                    "type": "string"
+                                  },
+                                  "member_id": {
+                                    "type": "string"
+                                  },
+                                  "ssn_last_four": {
+                                    "type": "string"
+                                  },
+                                  "type": {
+                                    "type": "string"
+                                  },
+                                  "address": {
+                                    "type": "object",
+                                    "required": [],
+                                    "properties": {
+                                      "line1": {
+                                        "type": "string"
+                                      },
+                                      "line2": {
+                                        "type": "string"
+                                      },
+                                      "city": {
+                                        "type": "string"
+                                      },
+                                      "zipcode": {
+                                        "type": "string"
+                                      },
+                                      "state": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "phone": {
+                                    "type": "string"
+                                  },
+                                  "id": {
+                                    "type": "integer"
+                                  },
+                                  "full_name": {
+                                    "type": "string",
+                                    "description": "Can be used instead of first and last names"
+                                  },
+                                  "is_active": {
+                                    "type": "boolean",
+                                    "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
+                                  },
+                                  "plan": {
+                                    "type": "object",
+                                    "required": [
+                                      "insurer_state",
+                                      "items"
+                                    ],
+                                    "properties": {
+                                      "refresh_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                      },
+                                      "insurer_state": {
+                                        "type": "string",
+                                        "enum": [
+                                          "inn",
+                                          "oon"
+                                        ],
+                                        "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
+                                      },
+                                      "begin_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                      },
+                                      "end_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                      },
+                                      "flags": {
+                                        "$ref": "#/components/schemas/Flags"
+                                      },
+                                      "copayment": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "allowance": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "allowance_accepted": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "allowance_reserved": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "discount": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "margin_limit": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "is_authorization_required": {
+                                        "$ref": "#/components/schemas/FlagBasedBoolean"
+                                      },
+                                      "items": {
+                                        "$ref": "#/components/schemas/PlanBenefit"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                "examples": {
+                  "Normalized In-Network Benefits": {
+                    "value": {
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
+                      "status": "complete",
+                      "error_code": null,
+                      "results": [
+                        {
+                          "insurer_code": "insurer:vision:vsp",
+                          "id": 0,
+                          "plan_is_active": true,
+                          "status": "active",
+                          "plan_name": "VSP Choice Plan",
+                          "plan_group": "MAN GOFORG / WYMAN GORDON COMPANY",
+                          "plan_group_id": "30057697-0001",
+                          "plan_begin_date": "2023-02-01",
+                          "plan_end_date": null,
+                          "plan_refresh_date": null,
+                          "persons": [
+                            {
+                              "first_name": "DAN L",
+                              "last_name": "CAMPUS",
+                              "dob": "1963-07-11",
+                              "sex": "male",
+                              "member_id": null,
+                              "ssn_last_four": "1234",
+                              "type": "self",
+                              "address": {
+                                "line1": "39 CAN ROAD",
+                                "line2": null,
+                                "city": "WALLER",
+                                "zipcode": "77484-3862",
+                                "state": "TX"
+                              },
+                              "email": null,
+                              "phone": "8324579375",
+                              "id": 0,
+                              "full_name": "DAN L CAMPUS",
+                              "is_active": null,
+                              "plan": "TBD"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "summary": "Details request outcome with primary member only"
+                  },
+                  "Search is in progress": {
+                    "value": {
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
+                      "status": "processing",
+                      "error_code": null,
+                      "results": null
+                    },
+                    "summary": "Request still in progress"
+                  },
+                  "Insurer error": {
+                    "value": {
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
+                      "status": "error",
+                      "error_code": "insurer_problem",
+                      "results": null
+                    },
+                    "summary": "Insurer could not process request"
+                  },
+                  "Unexpected search error": {
+                    "value": {
+                      "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "error",
                       "error_code": "unexpected_error",
                       "results": null
@@ -3334,6 +3669,155 @@
         "in": "header",
         "name": "Authorization",
         "description": "Your API token prefaced with an \"Api\" prefix. Example value: \"Api B3F4242424E3FDB4242424242A9C7642\"\n"
+      }
+    },
+    "schemas": {
+      "Flags": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "inn",
+            "oon"
+          ],
+          "description": ""
+        }
+      },
+      "FlagBasedDouble": {
+        "description": "Applicable value should be chosen based on flags",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "flags": {
+              "$ref": "#/components/schemas/Flags"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "value": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        }
+      },
+      "FlagBasedBoolean": {
+        "description": "Applicable value should be chosen based on flags",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "flags": {
+              "$ref": "#/components/schemas/Flags"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "value": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "FlagBasedInteger": {
+        "description": "Applicable value should be chosen based on flags",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "flags": {
+              "$ref": "#/components/schemas/Flags"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "value": {
+              "type": "integer"
+            }
+          }
+        }
+      },
+      "PlanBenefit": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "benefit_code",
+            "refresh_date",
+            "period_unit",
+            "period_length"
+          ],
+          "properties": {
+            "benefit_code": {
+              "type": "string"
+            },
+            "flags": {
+              "$ref": "#/components/schemas/Flags"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "refresh_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "period_unit": {
+              "type": "string",
+              "enum": [
+                "calendar_month",
+                "service_month",
+                "plan_month"
+              ],
+              "description": ""
+            },
+            "period_length": {
+              "type": "integer"
+            },
+            "copayment": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "allowance": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "allowance_accepted": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "allowance_reserved": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "discount": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "quantity": {
+              "$ref": "#/components/schemas/FlagBasedInteger"
+            },
+            "quantity_accepted": {
+              "$ref": "#/components/schemas/FlagBasedInteger"
+            },
+            "quantity_reserved": {
+              "$ref": "#/components/schemas/FlagBasedInteger"
+            },
+            "margin_limit": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "is_authorization_required": {
+              "$ref": "#/components/schemas/FlagBasedBoolean"
+            },
+            "items": {
+              "$ref": "#/components/schemas/PlanBenefit"
+            }
+          }
+        }
       }
     }
   },
