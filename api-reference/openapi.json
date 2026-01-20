@@ -6,6 +6,7 @@
         "public-auth_Eligibility Details Request",
         "public-auth_Eligibility Request",
         "public-auth_Eligibility Result",
+        "public-auth_EligibilityV2 Result",
         "public-auth_Patient",
         "public-auth_Patient eligibility link"
       ]
@@ -1437,9 +1438,16 @@
                                         "format": "date"
                                       },
                                       "flags": {
-                                        "$ref": "#/components/schemas/Flags"
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string",
+                                          "description": "Specific properties of the plan that are not otherwise expressed in the benefit records. Possible values are TBD."
+                                        }
                                       },
                                       "copayment": {
+                                        "$ref": "#/components/schemas/FlagBasedDouble"
+                                      },
+                                      "coinsurance": {
                                         "$ref": "#/components/schemas/FlagBasedDouble"
                                       },
                                       "allowance": {
@@ -1461,142 +1469,7 @@
                                         "$ref": "#/components/schemas/FlagBasedBoolean"
                                       },
                                       "items": {
-                                        "type": "array",
-                                        "items": {
-                                          "type": "object",
-                                          "required": [
-                                            "benefit_code",
-                                            "refresh_date",
-                                            "period_unit",
-                                            "period_length"
-                                          ],
-                                          "properties": {
-                                            "benefit_code": {
-                                              "type": "string"
-                                            },
-                                            "flags": {
-                                              "$ref": "#/components/schemas/Flags"
-                                            },
-                                            "comment": {
-                                              "type": "string"
-                                            },
-                                            "refresh_date": {
-                                              "type": "string",
-                                              "format": "date"
-                                            },
-                                            "period_unit": {
-                                              "type": "string",
-                                              "enum": [
-                                                "calendar_month",
-                                                "service_month",
-                                                "plan_month"
-                                              ],
-                                              "description": ""
-                                            },
-                                            "period_length": {
-                                              "type": "integer"
-                                            },
-                                            "copayment": {
-                                              "$ref": "#/components/schemas/FlagBasedDouble"
-                                            },
-                                            "allowance": {
-                                              "$ref": "#/components/schemas/FlagBasedDouble"
-                                            },
-                                            "allowance_accepted": {
-                                              "$ref": "#/components/schemas/FlagBasedDouble"
-                                            },
-                                            "allowance_reserved": {
-                                              "$ref": "#/components/schemas/FlagBasedDouble"
-                                            },
-                                            "discount": {
-                                              "$ref": "#/components/schemas/FlagBasedDouble"
-                                            },
-                                            "quantity": {
-                                              "$ref": "#/components/schemas/FlagBasedInteger"
-                                            },
-                                            "quantity_accepted": {
-                                              "$ref": "#/components/schemas/FlagBasedInteger"
-                                            },
-                                            "quantity_reserved": {
-                                              "$ref": "#/components/schemas/FlagBasedInteger"
-                                            },
-                                            "margin_limit": {
-                                              "$ref": "#/components/schemas/FlagBasedDouble"
-                                            },
-                                            "is_authorization_required": {
-                                              "$ref": "#/components/schemas/FlagBasedBoolean"
-                                            },
-                                            "items": {
-                                              "type": "array",
-                                              "items": {
-                                                "type": "object",
-                                                "required": [
-                                                  "benefit_code",
-                                                  "refresh_date",
-                                                  "period_unit",
-                                                  "period_length"
-                                                ],
-                                                "properties": {
-                                                  "benefit_code": {
-                                                    "type": "string"
-                                                  },
-                                                  "flags": {
-                                                    "$ref": "#/components/schemas/Flags"
-                                                  },
-                                                  "comment": {
-                                                    "type": "string"
-                                                  },
-                                                  "refresh_date": {
-                                                    "type": "string",
-                                                    "format": "date"
-                                                  },
-                                                  "period_unit": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                      "calendar_month",
-                                                      "service_month",
-                                                      "plan_month"
-                                                    ],
-                                                    "description": ""
-                                                  },
-                                                  "period_length": {
-                                                    "type": "integer"
-                                                  },
-                                                  "copayment": {
-                                                    "$ref": "#/components/schemas/FlagBasedDouble"
-                                                  },
-                                                  "allowance": {
-                                                    "$ref": "#/components/schemas/FlagBasedDouble"
-                                                  },
-                                                  "allowance_accepted": {
-                                                    "$ref": "#/components/schemas/FlagBasedDouble"
-                                                  },
-                                                  "allowance_reserved": {
-                                                    "$ref": "#/components/schemas/FlagBasedDouble"
-                                                  },
-                                                  "discount": {
-                                                    "$ref": "#/components/schemas/FlagBasedDouble"
-                                                  },
-                                                  "quantity": {
-                                                    "$ref": "#/components/schemas/FlagBasedInteger"
-                                                  },
-                                                  "quantity_accepted": {
-                                                    "$ref": "#/components/schemas/FlagBasedInteger"
-                                                  },
-                                                  "quantity_reserved": {
-                                                    "$ref": "#/components/schemas/FlagBasedInteger"
-                                                  },
-                                                  "margin_limit": {
-                                                    "$ref": "#/components/schemas/FlagBasedDouble"
-                                                  },
-                                                  "is_authorization_required": {
-                                                    "$ref": "#/components/schemas/FlagBasedBoolean"
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
+                                        "$ref": "#/components/schemas/PlanBenefit"
                                       }
                                     }
                                   }
@@ -1647,7 +1520,62 @@
                               "id": 0,
                               "full_name": "DAN L CAMPUS",
                               "is_active": null,
-                              "plan": "TBD"
+                              "plan": {
+                                "insurer_state": "oon",
+                                "begin_date": "2026-01-01",
+                                "refresh_date": "2026-12-31",
+                                "items": [
+                                  {
+                                    "benefit_code": "EXAM",
+                                    "comment": "Route Eye Exam with Refraction",
+                                    "refresh_date": "2026-12-31",
+                                    "period_unit": "calendar_month",
+                                    "period_length": 12,
+                                    "copayment": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": "10.0000"
+                                      }
+                                    ],
+                                    "allowance": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": "45.0000"
+                                      }
+                                    ],
+                                    "allowance_accepted": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": "0.0000"
+                                      }
+                                    ],
+                                    "allowance_reserved": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": "0.0000"
+                                      }
+                                    ],
+                                    "quantity": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": 1
+                                      }
+                                    ],
+                                    "quantity_accepted": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": 0
+                                      }
+                                    ],
+                                    "quantity_reserved": [
+                                      {
+                                        "flags": ["oon"],
+                                        "value": 0
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
                             }
                           ]
                         }
@@ -3877,6 +3805,67 @@
             },
             "value": {
               "type": "integer"
+            }
+          }
+        }
+      },
+      "PlanBenefit": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "benefit_code",
+            "refresh_date"
+          ],
+          "properties": {
+            "benefit_code": {
+              "type": "string"
+            },
+            "flags": {
+              "$ref": "#/components/schemas/Flags"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "refresh_date": {
+              "type": "string",
+              "format": "date"
+            },
+            "copayment": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "coinsurance": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "allowance": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "allowance_accepted": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "allowance_reserved": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "discount": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "quantity": {
+              "$ref": "#/components/schemas/FlagBasedInteger"
+            },
+            "quantity_accepted": {
+              "$ref": "#/components/schemas/FlagBasedInteger"
+            },
+            "quantity_reserved": {
+              "$ref": "#/components/schemas/FlagBasedInteger"
+            },
+            "margin_limit": {
+              "$ref": "#/components/schemas/FlagBasedDouble"
+            },
+            "is_authorization_required": {
+              "$ref": "#/components/schemas/FlagBasedBoolean"
+            },
+            "items": {
+              "$ref": "#/components/schemas/PlanBenefit"
             }
           }
         }
