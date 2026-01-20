@@ -1270,207 +1270,205 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": 
-                  {
-                    "type": "object",
-                    "required": [
-                      "request_uid",
-                      "status"
-                    ],
-                    "properties": {
-                      "request_uid": {
-                        "type": "string",
-                        "description": "UID provided on request creation or auto generated"
-                      },
-                      "status": {
-                        "type": "string",
-                        "enum": [
-                          "processing",
-                          "complete",
-                          "error"
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "request_uid",
+                    "status"
+                  ],
+                  "properties": {
+                    "request_uid": {
+                      "type": "string",
+                      "description": "UID provided on request creation or auto generated"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "processing",
+                        "complete",
+                        "error"
+                      ],
+                      "description": ""
+                    },
+                    "error_code": {
+                      "type": "string"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "insurer_code",
+                          "persons"
                         ],
-                        "description": ""
-                      },
-                      "error_code": {
-                        "type": "string"
-                      },
-                      "results": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "required": [
-                            "insurer_code",
-                            "persons"
-                          ],
-                          "properties": {
-                            "id": {
-                              "type": "integer"
-                            },
-                            "status": {
-                              "type": "string",
-                              "enum": [
-                                "active",
-                                "inactive",
-                                "out_of_network",
-                                "unavailable"
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": [
+                              "active",
+                              "inactive",
+                              "out_of_network",
+                              "unavailable"
+                            ],
+                            "description": ""
+                          },
+                          "plan_name": {
+                            "type": "string"
+                          },
+                          "plan_group": {
+                            "type": "string"
+                          },
+                          "plan_group_id": {
+                            "type": "string"
+                          },
+                          "plan_begin_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "plan_end_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "plan_refresh_date": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "insurer_code": {
+                            "type": "string"
+                          },
+                          "plan_is_active": {
+                            "type": "boolean"
+                          },
+                          "persons": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "plan"
                               ],
-                              "description": ""
-                            },
-                            "plan_name": {
-                              "type": "string"
-                            },
-                            "plan_group": {
-                              "type": "string"
-                            },
-                            "plan_group_id": {
-                              "type": "string"
-                            },
-                            "plan_begin_date": {
-                              "type": "string",
-                              "format": "date"
-                            },
-                            "plan_end_date": {
-                              "type": "string",
-                              "format": "date"
-                            },
-                            "plan_refresh_date": {
-                              "type": "string",
-                              "format": "date"
-                            },
-                            "insurer_code": {
-                              "type": "string"
-                            },
-                            "plan_is_active": {
-                              "type": "boolean"
-                            },
-                            "persons": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "required": [
-                                  "plan"
-                                ],
-                                "properties": {
-                                  "first_name": {
-                                    "type": "string"
-                                  },
-                                  "last_name": {
-                                    "type": "string"
-                                  },
-                                  "dob": {
-                                    "type": "string",
-                                    "format": "date"
-                                  },
-                                  "sex": {
-                                    "type": "string"
-                                  },
-                                  "member_id": {
-                                    "type": "string"
-                                  },
-                                  "ssn_last_four": {
-                                    "type": "string"
-                                  },
-                                  "type": {
-                                    "type": "string"
-                                  },
-                                  "address": {
-                                    "type": "object",
-                                    "properties": {
-                                      "line1": {
-                                        "type": "string"
-                                      },
-                                      "line2": {
-                                        "type": "string"
-                                      },
-                                      "city": {
-                                        "type": "string"
-                                      },
-                                      "zipcode": {
-                                        "type": "string"
-                                      },
-                                      "state": {
-                                        "type": "string"
-                                      }
+                              "properties": {
+                                "first_name": {
+                                  "type": "string"
+                                },
+                                "last_name": {
+                                  "type": "string"
+                                },
+                                "dob": {
+                                  "type": "string",
+                                  "format": "date"
+                                },
+                                "sex": {
+                                  "type": "string"
+                                },
+                                "member_id": {
+                                  "type": "string"
+                                },
+                                "ssn_last_four": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "address": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string"
+                                    },
+                                    "line2": {
+                                      "type": "string"
+                                    },
+                                    "city": {
+                                      "type": "string"
+                                    },
+                                    "zipcode": {
+                                      "type": "string"
+                                    },
+                                    "state": {
+                                      "type": "string"
                                     }
-                                  },
-                                  "email": {
-                                    "type": "string"
-                                  },
-                                  "phone": {
-                                    "type": "string"
-                                  },
-                                  "id": {
-                                    "type": "integer"
-                                  },
-                                  "full_name": {
-                                    "type": "string",
-                                    "description": "Can be used instead of first and last names"
-                                  },
-                                  "is_active": {
-                                    "type": "boolean",
-                                    "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
-                                  },
-                                  "plan": {
-                                    "type": "object",
-                                    "required": [
-                                      "insurer_state",
-                                      "items"
-                                    ],
-                                    "properties": {
-                                      "refresh_date": {
-                                        "type": "string",
-                                        "format": "date"
-                                      },
-                                      "insurer_state": {
-                                        "type": "string",
-                                        "enum": [
-                                          "inn",
-                                          "oon"
-                                        ],
-                                        "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
-                                      },
-                                      "begin_date": {
-                                        "type": "string",
-                                        "format": "date"
-                                      },
-                                      "end_date": {
-                                        "type": "string",
-                                        "format": "date"
-                                      },
-                                      "flags": {
-                                        "type": "array",
-                                        "items": {
-                                          "type": "string",
-                                          "description": "Specific properties of the plan that are not otherwise expressed in the benefit records. Possible values are TBD."
-                                        }
-                                      },
-                                      "copayment": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "coinsurance": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "allowance": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "allowance_accepted": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "allowance_reserved": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "discount": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "margin_limit": {
-                                        "$ref": "#/components/schemas/FlagBasedDouble"
-                                      },
-                                      "is_authorization_required": {
-                                        "$ref": "#/components/schemas/FlagBasedBoolean"
-                                      },
+                                  }
+                                },
+                                "email": {
+                                  "type": "string"
+                                },
+                                "phone": {
+                                  "type": "string"
+                                },
+                                "id": {
+                                  "type": "integer"
+                                },
+                                "full_name": {
+                                  "type": "string",
+                                  "description": "Can be used instead of first and last names"
+                                },
+                                "is_active": {
+                                  "type": "boolean",
+                                  "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
+                                },
+                                "plan": {
+                                  "type": "object",
+                                  "required": [
+                                    "insurer_state",
+                                    "items"
+                                  ],
+                                  "properties": {
+                                    "refresh_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "insurer_state": {
+                                      "type": "string",
+                                      "enum": [
+                                        "inn",
+                                        "oon"
+                                      ],
+                                      "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
+                                    },
+                                    "begin_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "end_date": {
+                                      "type": "string",
+                                      "format": "date"
+                                    },
+                                    "flags": {
+                                      "type": "array",
                                       "items": {
-                                        "$ref": "#/components/schemas/PlanBenefit"
+                                        "type": "string",
+                                        "description": "Specific properties of the plan that are not otherwise expressed in the benefit records. Possible values are TBD."
                                       }
+                                    },
+                                    "copayment": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "coinsurance": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "allowance": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "allowance_accepted": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "allowance_reserved": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "discount": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "margin_limit": {
+                                      "$ref": "#/components/schemas/FlagBasedDouble"
+                                    },
+                                    "is_authorization_required": {
+                                      "$ref": "#/components/schemas/FlagBasedBoolean"
+                                    },
+                                    "items": {
+                                      "$ref": "#/components/schemas/PlanBenefit"
                                     }
                                   }
                                 }
@@ -1480,7 +1478,8 @@
                         }
                       }
                     }
-                  },
+                  }
+                },
                 "examples": {
                   "Normalized In-Network Benefits": {
                     "value": {
@@ -1527,50 +1526,340 @@
                                 "items": [
                                   {
                                     "benefit_code": "EXAM",
-                                    "comment": "Route Eye Exam with Refraction",
+                                    "comment": "Route eye exam with refraction",
                                     "refresh_date": "2026-12-31",
-                                    "period_unit": "calendar_month",
-                                    "period_length": 12,
                                     "copayment": [
                                       {
-                                        "flags": ["oon"],
+                                        "flags": [
+                                          "inn"
+                                        ],
                                         "value": "10.0000"
+                                      },
+                                      {
+                                        "flags": [
+                                          "oon"
+                                        ],
+                                        "value": "15.0000"
                                       }
                                     ],
                                     "allowance": [
                                       {
-                                        "flags": ["oon"],
+                                        "flags": [
+                                          "oon"
+                                        ],
                                         "value": "45.0000"
-                                      }
-                                    ],
-                                    "allowance_accepted": [
-                                      {
-                                        "flags": ["oon"],
-                                        "value": "0.0000"
-                                      }
-                                    ],
-                                    "allowance_reserved": [
-                                      {
-                                        "flags": ["oon"],
-                                        "value": "0.0000"
                                       }
                                     ],
                                     "quantity": [
                                       {
-                                        "flags": ["oon"],
                                         "value": 1
                                       }
                                     ],
                                     "quantity_accepted": [
                                       {
-                                        "flags": ["oon"],
                                         "value": 0
                                       }
                                     ],
                                     "quantity_reserved": [
                                       {
-                                        "flags": ["oon"],
                                         "value": 0
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "benefit_code": "MATERIAL",
+                                    "refresh_date": "2026-12-31",
+                                    "items": [
+                                      {
+                                        "benefit_code": "GLASSES",
+                                        "flags": [
+                                          "choice"
+                                        ],
+                                        "copayment": [
+                                          {
+                                            "value": "25.0000"
+                                          }
+                                        ],
+                                        "items": [
+                                          {
+                                            "benefit_code": "FRAME",
+                                            "allowance": [
+                                              {
+                                                "flags": [
+                                                  "oon"
+                                                ],
+                                                "value": "70.0000"
+                                              },
+                                              {
+                                                "flags": [
+                                                  "inn"
+                                                ],
+                                                "value": "130.0000"
+                                              }
+                                            ],
+                                            "quantity": [
+                                              {
+                                                "value": 1
+                                              }
+                                            ],
+                                            "quantity_accepted": [
+                                              {
+                                                "value": 0
+                                              }
+                                            ],
+                                            "quantity_reserved": [
+                                              {
+                                                "value": 0
+                                              }
+                                            ],
+                                            "items": [
+                                              {
+                                                "benefit_code": "FRAME_TIER_1",
+                                                "flags": [
+                                                  "inn"
+                                                ],
+                                                "allowance": [
+                                                  {
+                                                    "value": "20.0000"
+                                                  }
+                                                ],
+                                                "quantity": [
+                                                  {
+                                                    "value": 1
+                                                  }
+                                                ],
+                                                "quantity_accepted": [
+                                                  {
+                                                    "value": 0
+                                                  }
+                                                ],
+                                                "quantity_reserved": [
+                                                  {
+                                                    "value": 0
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "benefit_code": "FRAME_TIER_2",
+                                                "flags": [
+                                                  "inn"
+                                                ],
+                                                "refresh_date": "2026-06-30",
+                                                "allowance": [
+                                                  {
+                                                    "value": "40.0000"
+                                                  }
+                                                ],
+                                                "quantity": [
+                                                  {
+                                                    "value": 1
+                                                  }
+                                                ],
+                                                "quantity_accepted": [
+                                                  {
+                                                    "value": 0
+                                                  }
+                                                ],
+                                                "quantity_reserved": [
+                                                  {
+                                                    "value": 0
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "benefit_code": "LENS",
+                                            "quantity": [
+                                              {
+                                                "value": 2
+                                              }
+                                            ],
+                                            "quantity_accepted": [
+                                              {
+                                                "value": 0
+                                              }
+                                            ],
+                                            "quantity_reserved": [
+                                              {
+                                                "value": 0
+                                              }
+                                            ],
+                                            "items": [
+                                              {
+                                                "benefit_code": "LENS_ANY",
+                                                "flags": [
+                                                  "inn",
+                                                  "choice"
+                                                ]
+                                              },
+                                              {
+                                                "benefit_code": "LENS_1F",
+                                                "flags": [
+                                                  "oon",
+                                                  "choice"
+                                                ],
+                                                "allowance": [
+                                                  {
+                                                    "value": "50.0000"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "benefit_code": "LENS_2F",
+                                                "flags": [
+                                                  "oon",
+                                                  "choice"
+                                                ],
+                                                "allowance": [
+                                                  {
+                                                    "value": "60.0000"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "benefit_code": "LENS_3F",
+                                                "flags": [
+                                                  "oon",
+                                                  "choice"
+                                                ],
+                                                "allowance": [
+                                                  {
+                                                    "value": "70.0000"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "benefit_code": "LENS_MATERIAL",
+                                                "flags": [
+                                                  "inn",
+                                                  "dependent",
+                                                  "required"
+                                                ],
+                                                "items": [
+                                                  {
+                                                    "benefit_code": "LENS_MATERIAL_CR39",
+                                                    "flags": [
+                                                      "choice"
+                                                    ],
+                                                    "copayment": [
+                                                      {
+                                                        "value": "0.0000"
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "benefit_code": "LENS_MATERIAL_POLYCORBANATE",
+                                                    "flags": [
+                                                      "choice"
+                                                    ],
+                                                    "copayment": [
+                                                      {
+                                                        "value": "30.0000"
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "benefit_code": "LENS_MATERIAL_HI_INDEX",
+                                                    "flags": [
+                                                      "choice"
+                                                    ],
+                                                    "copayment": [
+                                                      {
+                                                        "value": "50.0000"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "benefit_code": "LENS_ADDON",
+                                                "flags": [
+                                                  "inn",
+                                                  "dependent"
+                                                ],
+                                                "items": [
+                                                  {
+                                                    "benefit_code": "LENS_ADDON_SCRETCH_RESISTANCE",
+                                                    "copayment": [
+                                                      {
+                                                        "value": "17.0000"
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "benefit_code": "LENS_ADDON_ANTI_REFLECTIVE",
+                                                    "copayment": [
+                                                      {
+                                                        "value": "41.0000"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "benefit_code": "CONTACT",
+                                        "flags": [
+                                          "choice"
+                                        ],
+                                        "copayment": [
+                                          {
+                                            "flags": [
+                                              "oon"
+                                            ],
+                                            "value": "0.0000"
+                                          }
+                                        ],
+                                        "allowance": [
+                                          {
+                                            "flags": [
+                                              "oon"
+                                            ],
+                                            "value": "110.0000"
+                                          }
+                                        ],
+                                        "items": [
+                                          {
+                                            "benefit_code": "CONTACT_FIT",
+                                            "flags": [
+                                              "dependent"
+                                            ],
+                                            "copayment": [
+                                              {
+                                                "flags": [
+                                                  "inn"
+                                                ],
+                                                "value": "60.0000"
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "benefit_code": "CONTACT_LENS",
+                                            "flags": [
+                                              "required"
+                                            ],
+                                            "copayment": [
+                                              {
+                                                "flags": [
+                                                  "inn"
+                                                ],
+                                                "value": "0.0000"
+                                              }
+                                            ],
+                                            "allowance": [
+                                              {
+                                                "flags": [
+                                                  "inn"
+                                                ],
+                                                "value": "130.0000"
+                                              }
+                                            ]
+                                          }
+                                        ]
                                       }
                                     ]
                                   }
@@ -3740,7 +4029,10 @@
           "type": "string",
           "enum": [
             "inn",
-            "oon"
+            "oon",
+            "choice",
+            "required",
+            "dependent"
           ],
           "description": ""
         }
