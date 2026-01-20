@@ -1573,7 +1573,7 @@
                                       {
                                         "benefit_code": "GLASSES",
                                         "flags": [
-                                          "choice"
+                                          "exclusive-use"
                                         ],
                                         "copayment": [
                                           {
@@ -1690,14 +1690,14 @@
                                                 "benefit_code": "LENS_ANY",
                                                 "flags": [
                                                   "inn",
-                                                  "choice"
+                                                  "exclusive-use"
                                                 ]
                                               },
                                               {
                                                 "benefit_code": "LENS_1F",
                                                 "flags": [
                                                   "oon",
-                                                  "choice"
+                                                  "exclusive-use"
                                                 ],
                                                 "allowance": [
                                                   {
@@ -1709,7 +1709,7 @@
                                                 "benefit_code": "LENS_2F",
                                                 "flags": [
                                                   "oon",
-                                                  "choice"
+                                                  "exclusive-use"
                                                 ],
                                                 "allowance": [
                                                   {
@@ -1721,7 +1721,7 @@
                                                 "benefit_code": "LENS_3F",
                                                 "flags": [
                                                   "oon",
-                                                  "choice"
+                                                  "exclusive-use"
                                                 ],
                                                 "allowance": [
                                                   {
@@ -1733,14 +1733,14 @@
                                                 "benefit_code": "LENS_MATERIAL",
                                                 "flags": [
                                                   "inn",
-                                                  "dependent",
+                                                  "requires-parent-use",
                                                   "required"
                                                 ],
                                                 "items": [
                                                   {
                                                     "benefit_code": "LENS_MATERIAL_CR39",
                                                     "flags": [
-                                                      "choice"
+                                                      "exclusive-use"
                                                     ],
                                                     "copayment": [
                                                       {
@@ -1751,7 +1751,7 @@
                                                   {
                                                     "benefit_code": "LENS_MATERIAL_POLYCORBANATE",
                                                     "flags": [
-                                                      "choice"
+                                                      "exclusive-use"
                                                     ],
                                                     "copayment": [
                                                       {
@@ -1762,7 +1762,7 @@
                                                   {
                                                     "benefit_code": "LENS_MATERIAL_HI_INDEX",
                                                     "flags": [
-                                                      "choice"
+                                                      "exclusive-use"
                                                     ],
                                                     "copayment": [
                                                       {
@@ -1776,7 +1776,7 @@
                                                 "benefit_code": "LENS_ADDON",
                                                 "flags": [
                                                   "inn",
-                                                  "dependent"
+                                                  "requires-parent-use"
                                                 ],
                                                 "items": [
                                                   {
@@ -1804,7 +1804,7 @@
                                       {
                                         "benefit_code": "CONTACT",
                                         "flags": [
-                                          "choice"
+                                          "exclusive-use"
                                         ],
                                         "copayment": [
                                           {
@@ -1826,7 +1826,7 @@
                                           {
                                             "benefit_code": "CONTACT_FIT",
                                             "flags": [
-                                              "dependent"
+                                              "requires-parent-use"
                                             ],
                                             "copayment": [
                                               {
@@ -4030,9 +4030,9 @@
           "enum": [
             "inn",
             "oon",
-            "choice",
+            "exclusive-use",
             "required",
-            "dependent"
+            "requires-parent-use"
           ],
           "description": ""
         }
@@ -4103,6 +4103,7 @@
       },
       "PlanBenefit": {
         "type": "array",
+        "description": "Recursive list of benefit items. Each benefit item can contain additional benefit items in `items` property, forming a hierarchy of benefits with unlimited nesting depth.",
         "items": {
           "type": "object",
           "required": [
