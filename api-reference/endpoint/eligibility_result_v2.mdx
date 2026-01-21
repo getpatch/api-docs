@@ -5,3 +5,13 @@ tag: "Draft"
 ---
 
 The V2 endpoint expands on V1 by returning comprehensive in-network benefit details, including coinsurance, allowances, and additional coverage information.
+
+## Flags
+
+Benefits and benefit properties might be context-dependent, which is indicated by flags. When flags are not specified, the benefit or property is always applicable. Child benefits inherit the flag-dependent properties of parent benefits.
+
+- `inn` — benefit or property is applicable only in-network
+- `oon` — benefit or property is applicable only out-of-network
+- `exclusive-use` — only one benefit of the same level can be used per policy year
+- `required` — benefit is required to be used for the parent benefit to kick in
+- `requires-parent-use` — benefit can be used if the parent benefit is not already used
