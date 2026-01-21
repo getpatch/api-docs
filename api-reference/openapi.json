@@ -1481,7 +1481,7 @@
                   }
                 },
                 "examples": {
-                  "Normalized In-Network Benefits": {
+                  "Details request result": {
                     "value": {
                       "request_uid": "f2edce8e783e4a42a50029a5ea0b0fe4",
                       "status": "complete",
