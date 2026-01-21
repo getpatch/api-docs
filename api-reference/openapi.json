@@ -15,9 +15,7 @@
   "paths": {
     "/api/auth/v1/eligibility/": {
       "post": {
-        "tags": [
-          "public-auth_Eligibility Request"
-        ],
+        "tags": ["public-auth_Eligibility Request"],
         "summary": "Start an Eligibility Check",
         "description": "",
         "responses": {
@@ -27,9 +25,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "request_uid"
-                  ],
+                  "required": ["request_uid"],
                   "properties": {
                     "request_uid": {
                       "type": "string",
@@ -54,10 +50,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "insurer_code",
-                  "patient"
-                ],
+                "required": ["insurer_code", "patient"],
                 "properties": {
                   "insurer_code": {
                     "type": "string",
@@ -76,11 +69,7 @@
                   },
                   "patient": {
                     "type": "object",
-                    "required": [
-                      "first_name",
-                      "last_name",
-                      "dob"
-                    ],
+                    "required": ["first_name", "last_name", "dob"],
                     "properties": {
                       "first_name": {
                         "type": "string",
@@ -122,9 +111,7 @@
     },
     "/api/auth/v1/eligibility/{request_uid}/": {
       "get": {
-        "tags": [
-          "public-auth_Eligibility Result"
-        ],
+        "tags": ["public-auth_Eligibility Result"],
         "summary": "Get Eligibility Check",
         "description": "Provides status and results of an eligibility check",
         "responses": {
@@ -134,10 +121,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "request_uid",
-                    "status"
-                  ],
+                  "required": ["request_uid", "status"],
                   "properties": {
                     "request_uid": {
                       "type": "string",
@@ -145,11 +129,7 @@
                     },
                     "status": {
                       "type": "string",
-                      "enum": [
-                        "processing",
-                        "complete",
-                        "error"
-                      ],
+                      "enum": ["processing", "complete", "error"],
                       "description": ""
                     },
                     "error_code": {
@@ -159,11 +139,7 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": [
-                          "persons",
-                          "insurer_code",
-                          "id"
-                        ],
+                        "required": ["persons", "insurer_code", "id"],
                         "properties": {
                           "insurer_code": {
                             "type": "string",
@@ -204,9 +180,7 @@
                             "type": "array",
                             "items": {
                               "type": "object",
-                              "required": [
-                                "id"
-                              ],
+                              "required": ["id"],
                               "properties": {
                                 "first_name": {
                                   "type": "string"
@@ -269,10 +243,7 @@
                                 },
                                 "plan": {
                                   "type": "object",
-                                  "required": [
-                                    "insurer_state",
-                                    "items"
-                                  ],
+                                  "required": ["insurer_state", "items"],
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
@@ -313,10 +284,7 @@
                                           },
                                           "network_type": {
                                             "type": "string",
-                                            "enum": [
-                                              "inn",
-                                              "oon"
-                                            ]
+                                            "enum": ["inn", "oon"]
                                           },
                                           "is_authorization_required": {
                                             "type": "boolean"
@@ -353,9 +321,7 @@
                                             "type": "array",
                                             "items": {
                                               "type": "object",
-                                              "required": [
-                                                "code"
-                                              ],
+                                              "required": ["code"],
                                               "properties": {
                                                 "code": {
                                                   "type": "string",
@@ -1224,9 +1190,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "detail"
-                  ],
+                  "required": ["detail"],
                   "properties": {
                     "detail": {
                       "type": "string"
@@ -1260,9 +1224,7 @@
     },
     "/api/auth/v2/eligibility/{request_uid}/": {
       "get": {
-        "tags": [
-          "public-auth_EligibilityV2 Result"
-        ],
+        "tags": ["public-auth_EligibilityV2 Result"],
         "summary": "Get Eligibility Check v2",
         "description": "Provides status and results of an eligibility check",
         "responses": {
@@ -1272,10 +1234,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "request_uid",
-                    "status"
-                  ],
+                  "required": ["request_uid", "status"],
                   "properties": {
                     "request_uid": {
                       "type": "string",
@@ -1283,11 +1242,7 @@
                     },
                     "status": {
                       "type": "string",
-                      "enum": [
-                        "processing",
-                        "complete",
-                        "error"
-                      ],
+                      "enum": ["processing", "complete", "error"],
                       "description": ""
                     },
                     "error_code": {
@@ -1297,10 +1252,7 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": [
-                          "insurer_code",
-                          "persons"
-                        ],
+                        "required": ["insurer_code", "persons"],
                         "properties": {
                           "id": {
                             "type": "integer"
@@ -1346,9 +1298,7 @@
                             "type": "array",
                             "items": {
                               "type": "object",
-                              "required": [
-                                "plan"
-                              ],
+                              "required": ["plan"],
                               "properties": {
                                 "first_name": {
                                   "type": "string"
@@ -1411,10 +1361,7 @@
                                 },
                                 "plan": {
                                   "type": "object",
-                                  "required": [
-                                    "insurer_state",
-                                    "items"
-                                  ],
+                                  "required": ["insurer_state", "items"],
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
@@ -1422,10 +1369,7 @@
                                     },
                                     "insurer_state": {
                                       "type": "string",
-                                      "enum": [
-                                        "inn",
-                                        "oon"
-                                      ],
+                                      "enum": ["inn", "oon"],
                                       "description": "Plan includes only in-network (inn) benefits or also out-of-network (oon) ones"
                                     },
                                     "begin_date": {
@@ -1530,23 +1474,17 @@
                                     "refresh_date": "2026-12-31",
                                     "copayment": [
                                       {
-                                        "flags": [
-                                          "inn"
-                                        ],
+                                        "flags": ["inn"],
                                         "value": "10.0000"
                                       },
                                       {
-                                        "flags": [
-                                          "oon"
-                                        ],
+                                        "flags": ["oon"],
                                         "value": "15.0000"
                                       }
                                     ],
                                     "allowance": [
                                       {
-                                        "flags": [
-                                          "oon"
-                                        ],
+                                        "flags": ["oon"],
                                         "value": "45.0000"
                                       }
                                     ],
@@ -1572,9 +1510,7 @@
                                     "items": [
                                       {
                                         "benefit_code": "GLASSES",
-                                        "flags": [
-                                          "exclusive-use"
-                                        ],
+                                        "flags": ["exclusive-use"],
                                         "copayment": [
                                           {
                                             "value": "25.0000"
@@ -1585,15 +1521,11 @@
                                             "benefit_code": "FRAME",
                                             "allowance": [
                                               {
-                                                "flags": [
-                                                  "oon"
-                                                ],
+                                                "flags": ["oon"],
                                                 "value": "70.0000"
                                               },
                                               {
-                                                "flags": [
-                                                  "inn"
-                                                ],
+                                                "flags": ["inn"],
                                                 "value": "130.0000"
                                               }
                                             ],
@@ -1615,9 +1547,7 @@
                                             "items": [
                                               {
                                                 "benefit_code": "FRAME_TIER_1",
-                                                "flags": [
-                                                  "inn"
-                                                ],
+                                                "flags": ["inn"],
                                                 "allowance": [
                                                   {
                                                     "value": "20.0000"
@@ -1641,9 +1571,7 @@
                                               },
                                               {
                                                 "benefit_code": "FRAME_TIER_2",
-                                                "flags": [
-                                                  "inn"
-                                                ],
+                                                "flags": ["inn"],
                                                 "refresh_date": "2026-06-30",
                                                 "allowance": [
                                                   {
@@ -1739,9 +1667,7 @@
                                                 "items": [
                                                   {
                                                     "benefit_code": "LENS_MATERIAL_CR39",
-                                                    "flags": [
-                                                      "exclusive-use"
-                                                    ],
+                                                    "flags": ["exclusive-use"],
                                                     "copayment": [
                                                       {
                                                         "value": "0.0000"
@@ -1750,9 +1676,7 @@
                                                   },
                                                   {
                                                     "benefit_code": "LENS_MATERIAL_POLYCORBANATE",
-                                                    "flags": [
-                                                      "exclusive-use"
-                                                    ],
+                                                    "flags": ["exclusive-use"],
                                                     "copayment": [
                                                       {
                                                         "value": "30.0000"
@@ -1761,9 +1685,7 @@
                                                   },
                                                   {
                                                     "benefit_code": "LENS_MATERIAL_HI_INDEX",
-                                                    "flags": [
-                                                      "exclusive-use"
-                                                    ],
+                                                    "flags": ["exclusive-use"],
                                                     "copayment": [
                                                       {
                                                         "value": "50.0000"
@@ -1803,58 +1725,42 @@
                                       },
                                       {
                                         "benefit_code": "CONTACT",
-                                        "flags": [
-                                          "exclusive-use"
-                                        ],
+                                        "flags": ["exclusive-use"],
                                         "copayment": [
                                           {
-                                            "flags": [
-                                              "oon"
-                                            ],
+                                            "flags": ["oon"],
                                             "value": "0.0000"
                                           }
                                         ],
                                         "allowance": [
                                           {
-                                            "flags": [
-                                              "oon"
-                                            ],
+                                            "flags": ["oon"],
                                             "value": "110.0000"
                                           }
                                         ],
                                         "items": [
                                           {
                                             "benefit_code": "CONTACT_FIT",
-                                            "flags": [
-                                              "requires-parent-use"
-                                            ],
+                                            "flags": ["requires-parent-use"],
                                             "copayment": [
                                               {
-                                                "flags": [
-                                                  "inn"
-                                                ],
+                                                "flags": ["inn"],
                                                 "value": "60.0000"
                                               }
                                             ]
                                           },
                                           {
                                             "benefit_code": "CONTACT_LENS",
-                                            "flags": [
-                                              "required"
-                                            ],
+                                            "flags": ["required"],
                                             "copayment": [
                                               {
-                                                "flags": [
-                                                  "inn"
-                                                ],
+                                                "flags": ["inn"],
                                                 "value": "0.0000"
                                               }
                                             ],
                                             "allowance": [
                                               {
-                                                "flags": [
-                                                  "inn"
-                                                ],
+                                                "flags": ["inn"],
                                                 "value": "130.0000"
                                               }
                                             ]
@@ -1909,9 +1815,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "detail"
-                  ],
+                  "required": ["detail"],
                   "properties": {
                     "detail": {
                       "type": "string"
@@ -1945,9 +1849,7 @@
     },
     "/api/auth/v1/eligibility/{request_uid}/details/": {
       "post": {
-        "tags": [
-          "public-auth_Eligibility Details Request"
-        ],
+        "tags": ["public-auth_Eligibility Details Request"],
         "summary": "Request member's plan details",
         "description": "",
         "responses": {
@@ -1957,9 +1859,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "request_uid"
-                  ],
+                  "required": ["request_uid"],
                   "properties": {
                     "request_uid": {
                       "type": "string",
@@ -1984,10 +1884,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "result_id",
-                  "person_id"
-                ],
+                "required": ["result_id", "person_id"],
                 "properties": {
                   "request_uid": {
                     "type": "string",
@@ -2021,9 +1918,7 @@
     },
     "/api/auth/v1/patients/": {
       "post": {
-        "tags": [
-          "public-auth_Patient"
-        ],
+        "tags": ["public-auth_Patient"],
         "summary": "Create a Patient",
         "description": "",
         "requestBody": {
@@ -2032,11 +1927,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "first_name",
-                  "last_name",
-                  "dob"
-                ],
+                "required": ["first_name", "last_name", "dob"],
                 "properties": {
                   "first_name": {
                     "type": "string"
@@ -2059,12 +1950,7 @@
                   },
                   "address": {
                     "type": "object",
-                    "required": [
-                      "line1",
-                      "city",
-                      "zipcode",
-                      "state"
-                    ],
+                    "required": ["line1", "city", "zipcode", "state"],
                     "properties": {
                       "line1": {
                         "type": "string"
@@ -2178,12 +2064,7 @@
                     },
                     "address": {
                       "type": "object",
-                      "required": [
-                        "line1",
-                        "city",
-                        "zipcode",
-                        "state"
-                      ],
+                      "required": ["line1", "city", "zipcode", "state"],
                       "properties": {
                         "line1": {
                           "type": "string"
@@ -2220,12 +2101,7 @@
                     },
                     "location": {
                       "type": "object",
-                      "required": [
-                        "id",
-                        "status",
-                        "title",
-                        "code"
-                      ],
+                      "required": ["id", "status", "title", "code"],
                       "properties": {
                         "id": {
                           "type": "integer"
@@ -2293,19 +2169,13 @@
                     "value": {
                       "errors": {
                         "first_name": {
-                          "$": [
-                            "This field cannot be null."
-                          ]
+                          "$": ["This field cannot be null."]
                         },
                         "last_name": {
-                          "$": [
-                            "This field cannot be null."
-                          ]
+                          "$": ["This field cannot be null."]
                         },
                         "dob": {
-                          "$": [
-                            "This field cannot be null."
-                          ]
+                          "$": ["This field cannot be null."]
                         }
                       }
                     },
@@ -2318,9 +2188,7 @@
         }
       },
       "get": {
-        "tags": [
-          "public-auth_Patient"
-        ],
+        "tags": ["public-auth_Patient"],
         "summary": "List of Patients",
         "description": "",
         "parameters": [
@@ -2349,9 +2217,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "result"
-                  ],
+                  "required": ["result"],
                   "type": "object",
                   "properties": {
                     "result": {
@@ -2396,12 +2262,7 @@
                           },
                           "address": {
                             "type": "object",
-                            "required": [
-                              "line1",
-                              "city",
-                              "zipcode",
-                              "state"
-                            ],
+                            "required": ["line1", "city", "zipcode", "state"],
                             "properties": {
                               "line1": {
                                 "type": "string"
@@ -2438,12 +2299,7 @@
                           },
                           "location": {
                             "type": "object",
-                            "required": [
-                              "id",
-                              "status",
-                              "title",
-                              "code"
-                            ],
+                            "required": ["id", "status", "title", "code"],
                             "properties": {
                               "id": {
                                 "type": "integer"
@@ -2548,9 +2404,7 @@
     },
     "/api/auth/v1/patients/{code}/": {
       "get": {
-        "tags": [
-          "public-auth_Patient"
-        ],
+        "tags": ["public-auth_Patient"],
         "summary": "Patient details",
         "description": "",
         "responses": {
@@ -2598,12 +2452,7 @@
                     },
                     "address": {
                       "type": "object",
-                      "required": [
-                        "line1",
-                        "city",
-                        "zipcode",
-                        "state"
-                      ],
+                      "required": ["line1", "city", "zipcode", "state"],
                       "properties": {
                         "line1": {
                           "type": "string"
@@ -2640,12 +2489,7 @@
                     },
                     "location": {
                       "type": "object",
-                      "required": [
-                        "id",
-                        "status",
-                        "title",
-                        "code"
-                      ],
+                      "required": ["id", "status", "title", "code"],
                       "properties": {
                         "id": {
                           "type": "integer"
@@ -2735,9 +2579,7 @@
     },
     "/api/auth/v1/patients/{patient_code}/eligibility/": {
       "post": {
-        "tags": [
-          "public-auth_Patient eligibility link"
-        ],
+        "tags": ["public-auth_Patient eligibility link"],
         "summary": "Link eligibility check with a patient",
         "requestBody": {
           "required": true,
@@ -2745,9 +2587,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "request_uid"
-                ],
+                "required": ["request_uid"],
                 "properties": {
                   "request_uid": {
                     "type": "string",
@@ -2777,9 +2617,7 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": [
-                          "persons"
-                        ],
+                        "required": ["persons"],
                         "properties": {
                           "insurer_code": {
                             "type": "string",
@@ -2820,9 +2658,7 @@
                             "type": "array",
                             "items": {
                               "type": "object",
-                              "required": [
-                                "plan"
-                              ],
+                              "required": ["plan"],
                               "properties": {
                                 "first_name": {
                                   "type": "string"
@@ -2885,10 +2721,7 @@
                                 },
                                 "plan": {
                                   "type": "object",
-                                  "required": [
-                                    "insurer_state",
-                                    "items"
-                                  ],
+                                  "required": ["insurer_state", "items"],
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
@@ -2963,9 +2796,7 @@
                                             "type": "array",
                                             "items": {
                                               "type": "object",
-                                              "required": [
-                                                "code"
-                                              ],
+                                              "required": ["code"],
                                               "properties": {
                                                 "code": {
                                                   "type": "string",
@@ -3002,9 +2833,7 @@
         }
       },
       "get": {
-        "tags": [
-          "public-auth_Patient eligibility link"
-        ],
+        "tags": ["public-auth_Patient eligibility link"],
         "summary": "List of patient eligibility links",
         "description": "",
         "parameters": [
@@ -3033,19 +2862,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "result"
-                  ],
+                  "required": ["result"],
                   "type": "object",
                   "properties": {
                     "result": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": [
-                          "request_uid",
-                          "provider_app_url"
-                        ],
+                        "required": ["request_uid", "provider_app_url"],
                         "properties": {
                           "request_uid": {
                             "type": "string",
@@ -3059,9 +2883,7 @@
                             "type": "array",
                             "items": {
                               "type": "object",
-                              "required": [
-                                "persons"
-                              ],
+                              "required": ["persons"],
                               "properties": {
                                 "insurer_code": {
                                   "type": "string",
@@ -3102,9 +2924,7 @@
                                   "type": "array",
                                   "items": {
                                     "type": "object",
-                                    "required": [
-                                      "plan"
-                                    ],
+                                    "required": ["plan"],
                                     "properties": {
                                       "first_name": {
                                         "type": "string"
@@ -3167,10 +2987,7 @@
                                       },
                                       "plan": {
                                         "type": "object",
-                                        "required": [
-                                          "insurer_state",
-                                          "items"
-                                        ],
+                                        "required": ["insurer_state", "items"],
                                         "properties": {
                                           "refresh_date": {
                                             "type": "string",
@@ -3245,9 +3062,7 @@
                                                   "type": "array",
                                                   "items": {
                                                     "type": "object",
-                                                    "required": [
-                                                      "code"
-                                                    ],
+                                                    "required": ["code"],
                                                     "properties": {
                                                       "code": {
                                                         "type": "string",
@@ -3461,22 +3276,14 @@
                         },
                         "sex": {
                           "type": "string",
-                          "enum": [
-                            "male",
-                            "female"
-                          ]
+                          "enum": ["male", "female"]
                         },
                         "email": {
                           "type": "string"
                         },
                         "address": {
                           "type": "object",
-                          "required": [
-                            "line1",
-                            "city",
-                            "zipcode",
-                            "state"
-                          ],
+                          "required": ["line1", "city", "zipcode", "state"],
                           "properties": {
                             "line1": {
                               "type": "string"
@@ -3537,22 +3344,14 @@
                         },
                         "sex": {
                           "type": "string",
-                          "enum": [
-                            "male",
-                            "female"
-                          ]
+                          "enum": ["male", "female"]
                         },
                         "email": {
                           "type": "string"
                         },
                         "address": {
                           "type": "object",
-                          "required": [
-                            "line1",
-                            "city",
-                            "zipcode",
-                            "state"
-                          ],
+                          "required": ["line1", "city", "zipcode", "state"],
                           "properties": {
                             "line1": {
                               "type": "string"
@@ -3621,12 +3420,7 @@
                     "maxItems": 6,
                     "items": {
                       "type": "object",
-                      "required": [
-                        "codes",
-                        "quantity",
-                        "cost",
-                        "date"
-                      ],
+                      "required": ["codes", "quantity", "cost", "date"],
                       "properties": {
                         "quantity": {
                           "type": "integer",
@@ -3704,10 +3498,7 @@
                       },
                       "sex": {
                         "type": "string",
-                        "enum": [
-                          "male",
-                          "female"
-                        ],
+                        "enum": ["male", "female"],
                         "description": "Member sex. Required for VSP"
                       },
                       "email": {
@@ -3719,12 +3510,7 @@
                       "address": {
                         "type": "object",
                         "description": "Member address",
-                        "required": [
-                          "line1",
-                          "city",
-                          "zipcode",
-                          "state"
-                        ],
+                        "required": ["line1", "city", "zipcode", "state"],
                         "properties": {
                           "line1": {
                             "type": "string",
@@ -3781,12 +3567,7 @@
                     "properties": {
                       "type": {
                         "type": "string",
-                        "enum": [
-                          "self",
-                          "spouse",
-                          "child",
-                          "other"
-                        ],
+                        "enum": ["self", "spouse", "child", "other"],
                         "description": "Type of patient. `self` in case of primary member",
                         "example": "spouse"
                       },
@@ -3816,10 +3597,7 @@
                       },
                       "sex": {
                         "type": "string",
-                        "enum": [
-                          "male",
-                          "female"
-                        ],
+                        "enum": ["male", "female"],
                         "description": "Member sex. Required for VSP"
                       },
                       "email": {
@@ -3831,12 +3609,7 @@
                       "address": {
                         "type": "object",
                         "description": "Member address",
-                        "required": [
-                          "line1",
-                          "city",
-                          "zipcode",
-                          "state"
-                        ],
+                        "required": ["line1", "city", "zipcode", "state"],
                         "properties": {
                           "line1": {
                             "type": "string",
@@ -3920,19 +3693,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "required": [
-                    "result"
-                  ],
+                  "required": ["result"],
                   "type": "object",
                   "properties": {
                     "result": {
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": [
-                          "title",
-                          "code"
-                        ],
+                        "required": ["title", "code"],
                         "properties": {
                           "title": {
                             "type": "string"
@@ -4042,9 +3810,7 @@
         "type": "array",
         "items": {
           "type": "object",
-          "required": [
-            "value"
-          ],
+          "required": ["value"],
           "properties": {
             "flags": {
               "$ref": "#/components/schemas/Flags"
@@ -4064,9 +3830,7 @@
         "type": "array",
         "items": {
           "type": "object",
-          "required": [
-            "value"
-          ],
+          "required": ["value"],
           "properties": {
             "flags": {
               "$ref": "#/components/schemas/Flags"
@@ -4085,9 +3849,7 @@
         "type": "array",
         "items": {
           "type": "object",
-          "required": [
-            "value"
-          ],
+          "required": ["value"],
           "properties": {
             "flags": {
               "$ref": "#/components/schemas/Flags"
@@ -4106,10 +3868,7 @@
         "description": "Recursive list of benefit items. Each benefit item can contain additional benefit items in `items` property, forming a hierarchy of benefits with unlimited nesting depth.",
         "items": {
           "type": "object",
-          "required": [
-            "benefit_code",
-            "refresh_date"
-          ],
+          "required": ["benefit_code", "refresh_date"],
           "properties": {
             "benefit_code": {
               "type": "string"
