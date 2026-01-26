@@ -1661,7 +1661,7 @@
                                               {
                                                 "benefit_code": "FRAME_TIER_2",
                                                 "flags": ["inn"],
-                                                "refresh_date": "2026-06-30",
+                                                "end_date": "2026-06-30",
                                                 "allowance": [
                                                   {
                                                     "value": "40.0000"
