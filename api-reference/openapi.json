@@ -3956,58 +3956,61 @@
         "type": "array",
         "description": "Recursive list of benefit items. Each benefit item can contain additional benefit items in `items` property, forming a hierarchy of benefits with unlimited nesting depth.",
         "items": {
-          "type": "object",
-          "required": ["benefit_code", "refresh_date"],
-          "properties": {
-            "benefit_code": {
-              "type": "string"
-            },
-            "flags": {
-              "$ref": "#/components/schemas/Flags"
-            },
-            "comment": {
-              "type": "string"
-            },
-            "refresh_date": {
-              "type": "string",
-              "format": "date"
-            },
-            "copayment": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "coinsurance": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "allowance": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "allowance_accepted": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "allowance_reserved": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "discount": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "quantity": {
-              "$ref": "#/components/schemas/FlagBasedInteger"
-            },
-            "quantity_accepted": {
-              "$ref": "#/components/schemas/FlagBasedInteger"
-            },
-            "quantity_reserved": {
-              "$ref": "#/components/schemas/FlagBasedInteger"
-            },
-            "margin_limit": {
-              "$ref": "#/components/schemas/FlagBasedDouble"
-            },
-            "is_authorization_required": {
-              "$ref": "#/components/schemas/FlagBasedBoolean"
-            },
-            "items": {
-              "$ref": "#/components/schemas/PlanBenefit"
-            }
+          "$ref": "#/components/schemas/PlanBenefitItem"
+        }
+      },
+      "PlanBenefitItem": {
+        "type": "object",
+        "required": ["benefit_code", "refresh_date"],
+        "properties": {
+          "benefit_code": {
+            "type": "string"
+          },
+          "flags": {
+            "$ref": "#/components/schemas/Flags"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "refresh_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "copayment": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "coinsurance": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "allowance": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "allowance_accepted": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "allowance_reserved": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "discount": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "quantity": {
+            "$ref": "#/components/schemas/FlagBasedInteger"
+          },
+          "quantity_accepted": {
+            "$ref": "#/components/schemas/FlagBasedInteger"
+          },
+          "quantity_reserved": {
+            "$ref": "#/components/schemas/FlagBasedInteger"
+          },
+          "margin_limit": {
+            "$ref": "#/components/schemas/FlagBasedDouble"
+          },
+          "is_authorization_required": {
+            "$ref": "#/components/schemas/FlagBasedBoolean"
+          },
+          "items": {
+            "$ref": "#/components/schemas/PlanBenefit"
           }
         }
       }
