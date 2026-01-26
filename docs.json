@@ -43,6 +43,7 @@
             "pages": [
               "api-reference/endpoint/eligibility_request",
               "api-reference/endpoint/eligibility_result",
+              "api-reference/endpoint/eligibility_result_pdf",
               "api-reference/endpoint/eligibility_result_v2",
               "api-reference/endpoint/eligibility_details_request",
               "api-reference/endpoint/create_claim",
