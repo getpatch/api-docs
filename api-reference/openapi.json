@@ -1222,9 +1222,98 @@
         }
       ]
     },
+    "/api/auth/v1/eligibility/{request_uid}/pdf/": {
+      "get": {
+        "tags": ["public-auth_Eligibility Result"],
+        "summary": "Get In-Network Plan PDF",
+        "description": "Returns PDF file with plan details",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                },
+                "examples": {
+                  "Success": {
+                    "externalValue": "https://api-docs.anagram.care/images/example-inn-plan.pdf",
+                    "summary": "In-Network Plan PDF"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Plan PDF does not exist": {
+                    "value": {
+                      "detail": "Benefits_pdf not found"
+                    },
+                    "summary": "Plan PDF does not exist"
+                  },
+                  "Incorrect Result Selected": {
+                    "value": {
+                      "detail": "Result not found"
+                    },
+                    "summary": "Result with given ID does not exist in the eligibility response"
+                  },
+                  "Incorrect Person Selected": {
+                    "value": {
+                      "detail": "Person not found"
+                    },
+                    "summary": "Person with given ID does not exist in the selected result"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "request_uid",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "in": "query",
+          "name": "result_id",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "in": "query",
+          "name": "person_id",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
     "/api/auth/v2/eligibility/{request_uid}/": {
       "get": {
-        "tags": ["public-auth_EligibilityV2 Result"],
+        "tags": ["public-auth_Eligibility Result"],
         "summary": "Get Eligibility Check v2",
         "description": "Provides status and results of an eligibility check",
         "responses": {
