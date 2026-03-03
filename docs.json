@@ -52,7 +52,8 @@
               "api-reference/endpoint/patient_details",
               "api-reference/endpoint/patient_eligibility_link",
               "api-reference/endpoint/list_patient_eligibility_links",
-              "api-reference/endpoint/locations"
+              "api-reference/endpoint/locations",
+              "api-reference/endpoint/start_iframe_session"
             ]
           }
         ]
