@@ -3833,6 +3833,78 @@
           }
         }
       }
+    },
+    "/api/auth/v1/iframe-session/": {
+      "post": {
+        "summary": "Start new iframe session",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["entry_point"],
+                "properties": {
+                  "entry_point": {
+                    "type": "string",
+                    "enum": ["add_patient", "insurers", "passwords"],
+                    "description": "Initial view of the iframe"
+                  }
+                }
+              },
+              "examples": {
+                "Example": {
+                  "value": {
+                    "entry_point": "add_patient"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "iframe_url": {
+                      "type": "string",
+                      "description": "URL of the iframe for empbedding. Use it for `src` attribute of the `iframe` HTML tag"
+                    }
+                  }
+                },
+                "examples": {
+                  "Successful request": {
+                    "value": {
+                      "iframe_url": "https://embed.anagram.care/?token=aa555a4e43949e647bca87be9f77fa0c55ac9e480b9939f21b288da0de0f0f01&entry_point=add_patient"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "Account is not configured for embedded session": {
+                    "value": {
+                      "detail": "iframe is not activated for current user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "info": {
