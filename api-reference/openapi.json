@@ -3886,6 +3886,29 @@
               }
             }
           },
+          "400": {
+            "description": "JSON object response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "Unsupported entry point": {
+                    "value": {
+                      "errors": {
+                        "entry_point": {
+                          "$": [
+                            "Value 'foobar' is not a valid choice."
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "403": {
             "description": "JSON object response",
             "content": {
