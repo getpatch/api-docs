@@ -54,7 +54,7 @@
                 "properties": {
                   "insurer_code": {
                     "type": "string",
-                    "description": "Required if you don't have access to Universal Search. Allows searching a specific insurer. Example: insurer:vision:vsp"
+                    "description": "Required if you don't have access to Universal Search. Allows searching a specific insurer. Example: `insurer:vision:vsp`"
                   },
                   "insurer_code_list": {
                     "type": "array",
