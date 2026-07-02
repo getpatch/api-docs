@@ -50,17 +50,17 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["insurer_code", "patient"],
+                "required": ["patient"],
                 "properties": {
                   "insurer_code": {
                     "type": "string",
-                    "description": "Optional when `insurer_code_list` is provided. Example: insurer:vision:vsp"
+                    "description": "Required if you don't have access to Universal Search. Allows searching a specific insurer. Example: `insurer:vision:vsp`"
                   },
                   "insurer_code_list": {
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Activates Universal Search. Example: `[\"insurer:vision:vsp\", \"insurer:vision:eyemed\"]`"
+                      "description": "Allows searching several insurers at once (Universal Search). When omitted, Anagram will search all insurers available for your account (Recommended). Alternatively, can explicitly list the insurers you want to search. Example: `[\"insurer:vision:vsp\", \"insurer:vision:eyemed\"]`"
                     }
                   },
                   "request_uid": {
@@ -69,7 +69,7 @@
                   },
                   "patient": {
                     "type": "object",
-                    "required": ["first_name", "last_name", "dob"],
+                    "required": ["first_name", "last_name", "dob", "zip"],
                     "properties": {
                       "first_name": {
                         "type": "string",
