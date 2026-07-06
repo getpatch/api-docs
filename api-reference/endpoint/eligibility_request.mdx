@@ -23,13 +23,25 @@ The response will contain the request UID or a validation error.
 		"first_name": "John",
 		"last_name": "Smith",
 		"dob": "1990-01-01",
+		"zip": "11101"
 	}
 }
 ```
 
 ```json Universal Search Request
 {
-	"insurer_code_list": [
+	"patient": {
+		"first_name": "John",
+		"last_name": "Smith",
+		"dob": "1990-01-01",
+		"zip": "11101"
+	}
+}
+```
+
+```json Universal Search Request for Specific Insurers
+{
+    "insurer_code_list": [
       "insurer:vision:vsp",
       "insurer:vision:eyemed",
       "insurer:vision:davis_vision"
@@ -38,6 +50,7 @@ The response will contain the request UID or a validation error.
 		"first_name": "John",
 		"last_name": "Smith",
 		"dob": "1990-01-01",
+		"zip": "11101"
 	}
 }
 ```
