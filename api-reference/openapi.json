@@ -289,7 +289,7 @@
                   },
                   "patient": {
                     "type": "object",
-                    "required": ["first_name", "last_name", "dob", "zip"],
+                    "required": ["first_name", "last_name", "dob"],
                     "properties": {
                       "first_name": {
                         "type": "string",
@@ -310,7 +310,17 @@
                       },
                       "zip": {
                         "type": "string",
-                        "description": "Zip code with 5 or 9 digits. Example: 12345-6789."
+                        "description": "Zip code with 5 or 9 digits. Do not provide this field together with `address.zipcode`. Example: 12345-6789."
+                      },
+                      "address": {
+                        "type": "object",
+                        "description": "Alternative way to provide the patient's ZIP code. Do not provide `address.zipcode` together with `zip`.",
+                        "properties": {
+                          "zipcode": {
+                            "type": "string",
+                            "description": "Zip code with 5 or 9 digits. Example: 12345-6789."
+                          }
+                        }
                       },
                       "member_id": {
                         "type": "string",
@@ -395,10 +405,12 @@
                       "description": ""
                     },
                     "error_code": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "results": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "type": "object",
                         "required": ["persons", "insurer_code", "id"],
@@ -424,7 +436,8 @@
                             "type": "string"
                           },
                           "plan_group_id": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "plan_begin_date": {
                             "type": "string",
@@ -432,11 +445,13 @@
                           },
                           "plan_end_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "plan_refresh_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "persons": {
                             "type": "array",
@@ -458,10 +473,12 @@
                                   "type": "string"
                                 },
                                 "member_id": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "ssn_last_four": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "type": {
                                   "type": "string"
@@ -473,7 +490,8 @@
                                       "type": "string"
                                     },
                                     "line2": {
-                                      "type": "string"
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "city": {
                                       "type": "string"
@@ -487,7 +505,8 @@
                                   }
                                 },
                                 "email": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "phone": {
                                   "type": "string"
@@ -501,6 +520,7 @@
                                 },
                                 "is_active": {
                                   "type": "boolean",
+                                  "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
                                 "plan": {
@@ -509,7 +529,8 @@
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "insurer_state": {
                                       "type": "string",
@@ -517,11 +538,13 @@
                                     },
                                     "begin_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "end_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "items": {
                                       "type": "array",
@@ -542,6 +565,7 @@
                                           "copay": {
                                             "type": "string",
                                             "format": "double",
+                                            "nullable": true,
                                             "description": "Example \"25.000\" means 25 USD"
                                           },
                                           "network_type": {
@@ -554,6 +578,7 @@
                                           "refresh_date": {
                                             "type": "string",
                                             "format": "date",
+                                            "nullable": true,
                                             "description": "Refresh date of benefit if it's different from plan refresh date"
                                           },
                                           "limits": {
@@ -565,6 +590,7 @@
                                               "total_coverage": {
                                                 "type": "string",
                                                 "format": "double",
+                                                "nullable": true,
                                                 "description": "Total coverage of benefit for period"
                                               },
                                               "quantity_remain": {
@@ -575,7 +601,8 @@
                                               },
                                               "total_coverage_remain": {
                                                 "type": "string",
-                                                "format": "double"
+                                                "format": "double",
+                                                "nullable": true
                                               }
                                             }
                                           },
@@ -1507,6 +1534,36 @@
               }
             }
           },
+          "400": {
+            "description": "Missing or invalid PDF selection parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Invalid result ID": {
+                    "value": {
+                      "detail": "Result_id"
+                    },
+                    "summary": "Missing or invalid result ID"
+                  },
+                  "Invalid person ID": {
+                    "value": {
+                      "detail": "Person_id"
+                    },
+                    "summary": "Missing or invalid person ID"
+                  }
+                }
+              }
+            }
+          },
           "404": {
             "description": "JSON object response",
             "content": {
@@ -1597,10 +1654,12 @@
                       "description": ""
                     },
                     "error_code": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "results": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "type": "object",
                         "required": ["insurer_code", "persons"],
@@ -1625,7 +1684,8 @@
                             "type": "string"
                           },
                           "plan_group_id": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "plan_begin_date": {
                             "type": "string",
@@ -1633,11 +1693,13 @@
                           },
                           "plan_end_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "plan_refresh_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "insurer_code": {
                             "type": "string"
@@ -1665,10 +1727,12 @@
                                   "type": "string"
                                 },
                                 "member_id": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "ssn_last_four": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "type": {
                                   "type": "string"
@@ -1680,7 +1744,8 @@
                                       "type": "string"
                                     },
                                     "line2": {
-                                      "type": "string"
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "city": {
                                       "type": "string"
@@ -1694,7 +1759,8 @@
                                   }
                                 },
                                 "email": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "phone": {
                                   "type": "string"
@@ -1708,6 +1774,7 @@
                                 },
                                 "is_active": {
                                   "type": "boolean",
+                                  "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
                                 "plan": {
@@ -1716,7 +1783,8 @@
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "insurer_state": {
                                       "type": "string",
@@ -1725,11 +1793,13 @@
                                     },
                                     "begin_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "end_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "flags": {
                                       "type": "array",
@@ -2227,6 +2297,78 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Plan details request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "Duplicate request UID": {
+                    "value": {
+                      "errors": {
+                        "request_uid": {
+                          "$": ["Request uid already exist"]
+                        }
+                      }
+                    },
+                    "summary": "Request UID already exists"
+                  },
+                  "Unknown result": {
+                    "value": {
+                      "errors": {
+                        "result_id": {
+                          "$": ["Result not found"]
+                        }
+                      }
+                    },
+                    "summary": "Result ID does not exist"
+                  },
+                  "Unknown person": {
+                    "value": {
+                      "errors": {
+                        "person_id": {
+                          "$": ["Person not found"]
+                        }
+                      }
+                    },
+                    "summary": "Person ID does not exist"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Initial eligibility request not found or inaccessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown eligibility request": {
+                    "value": {
+                      "detail": "Eligibility not found (unknown-id)"
+                    },
+                    "summary": "Initial eligibility request not found"
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -2398,7 +2540,8 @@
                       "type": "string"
                     },
                     "middle_name": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "last_name": {
                       "type": "string"
@@ -2424,7 +2567,8 @@
                           "type": "string"
                         },
                         "recipient": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "city": {
                           "type": "string"
@@ -2444,7 +2588,8 @@
                       "type": "string"
                     },
                     "account_number": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "code": {
                       "type": "string",
@@ -2727,7 +2872,8 @@
                             "type": "string"
                           },
                           "middle_name": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "last_name": {
                             "type": "string"
@@ -2753,7 +2899,8 @@
                                 "type": "string"
                               },
                               "recipient": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                               },
                               "city": {
                                 "type": "string"
@@ -2773,7 +2920,8 @@
                             "type": "string"
                           },
                           "account_number": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "code": {
                             "type": "string",
@@ -2917,7 +3065,8 @@
                       "type": "string"
                     },
                     "middle_name": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "last_name": {
                       "type": "string"
@@ -2943,7 +3092,8 @@
                           "type": "string"
                         },
                         "recipient": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "city": {
                           "type": "string"
@@ -2963,7 +3113,8 @@
                       "type": "string"
                     },
                     "account_number": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "code": {
                       "type": "string",
@@ -3311,6 +3462,58 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Eligibility link validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "Eligibility already linked": {
+                    "value": {
+                      "errors": {
+                        "eligibility_code": {
+                          "$": ["Eligibility already connected"]
+                        }
+                      }
+                    },
+                    "summary": "Eligibility is already linked to a patient"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient or eligibility request not found or inaccessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown eligibility request": {
+                    "value": {
+                      "detail": "eligibility not found"
+                    },
+                    "summary": "Eligibility request not found for the patient's location"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3355,6 +3558,7 @@
                         "properties": {
                           "request_uid": {
                             "type": "string",
+                            "nullable": true,
                             "description": "UID provided on request"
                           },
                           "provider_app_url": {
@@ -3388,7 +3592,8 @@
                                   "type": "string"
                                 },
                                 "plan_group_id": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "plan_begin_date": {
                                   "type": "string",
@@ -3473,7 +3678,8 @@
                                         "properties": {
                                           "refresh_date": {
                                             "type": "string",
-                                            "format": "date"
+                                            "format": "date",
+                                            "nullable": true
                                           },
                                           "insurer_state": {
                                             "type": "string",
@@ -3481,11 +3687,13 @@
                                           },
                                           "begin_date": {
                                             "type": "string",
-                                            "format": "date"
+                                            "format": "date",
+                                            "nullable": true
                                           },
                                           "end_date": {
                                             "type": "string",
-                                            "format": "date"
+                                            "format": "date",
+                                            "nullable": true
                                           },
                                           "items": {
                                             "type": "array",
@@ -3646,6 +3854,30 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Patient not found or inaccessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown patient": {
+                    "value": {
+                      "detail": "patient not found"
+                    },
+                    "summary": "Patient not found"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3681,9 +3913,15 @@
                     "patient"
                   ],
                   "properties": {
+                    "status": {
+                      "type": "string"
+                    },
                     "paid_amount": {
                       "type": "string",
                       "format": "double"
+                    },
+                    "code": {
+                      "type": "string"
                     },
                     "is_aob_enabled": {
                       "type": "boolean"
@@ -3758,10 +3996,20 @@
                         },
                         "sex": {
                           "type": "string",
-                          "enum": ["male", "female"]
+                          "enum": ["male", "female"],
+                          "nullable": true
                         },
                         "email": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "employer": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "individual_plan_name": {
+                          "type": "string",
+                          "nullable": true
                         },
                         "address": {
                           "type": "object",
@@ -3771,10 +4019,12 @@
                               "type": "string"
                             },
                             "line2": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "recipient": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "city": {
                               "type": "string"
@@ -3809,10 +4059,12 @@
                           "type": "string"
                         },
                         "member_id": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "ssn_last_four": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "first_name": {
                           "type": "string"
@@ -3826,10 +4078,12 @@
                         },
                         "sex": {
                           "type": "string",
-                          "enum": ["male", "female"]
+                          "enum": ["male", "female"],
+                          "nullable": true
                         },
                         "email": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "address": {
                           "type": "object",
@@ -3839,10 +4093,12 @@
                               "type": "string"
                             },
                             "line2": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "recipient": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "city": {
                               "type": "string"
@@ -3856,7 +4112,8 @@
                           }
                         },
                         "phone": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "account_number": {
                           "type": "string"
@@ -4087,8 +4344,7 @@
                       "dob",
                       "address",
                       "phone",
-                      "insurer_code",
-                      "member_id"
+                      "insurer_code"
                     ],
                     "properties": {
                       "member_id": {
@@ -4177,12 +4433,10 @@
                     "type": "object",
                     "description": "Information about patient",
                     "required": [
-                      "type",
                       "first_name",
                       "last_name",
                       "dob",
-                      "address",
-                      "member_id"
+                      "address"
                     ],
                     "properties": {
                       "type": {
