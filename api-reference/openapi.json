@@ -288,15 +288,7 @@
                   },
                   "patient": {
                     "type": "object",
-                    "required": ["first_name", "last_name", "dob"],
-                    "oneOf": [
-                      {
-                        "required": ["zip"]
-                      },
-                      {
-                        "required": ["address"]
-                      }
-                    ],
+                    "required": ["first_name", "last_name", "dob", "zip"],
                     "properties": {
                       "first_name": {
                         "type": "string",
@@ -317,18 +309,7 @@
                       },
                       "zip": {
                         "type": "string",
-                        "description": "Zip code with 5 or 9 digits. Do not provide this field together with `address.zipcode`. Example: 12345-6789."
-                      },
-                      "address": {
-                        "type": "object",
-                        "required": ["zipcode"],
-                        "description": "Alternative way to provide the patient's ZIP code. Only `zipcode` is supported. Do not provide `address.zipcode` together with `zip`.",
-                        "properties": {
-                          "zipcode": {
-                            "type": "string",
-                            "description": "Zip code with 5 or 9 digits. Example: 12345-6789."
-                          }
-                        }
+                        "description": "Zip code with 5 or 9 digits. Example: 12345-6789."
                       },
                       "member_id": {
                         "type": "string",
@@ -1537,36 +1518,6 @@
                   "Success": {
                     "externalValue": "https://api-docs.anagram.care/images/example-inn-plan.pdf",
                     "summary": "In-Network Plan PDF"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing or invalid PDF selection parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": ["detail"],
-                  "properties": {
-                    "detail": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "examples": {
-                  "Missing or invalid result ID": {
-                    "value": {
-                      "detail": "Result_id"
-                    },
-                    "summary": "Missing or invalid result ID"
-                  },
-                  "Missing or invalid person ID": {
-                    "value": {
-                      "detail": "Person_id"
-                    },
-                    "summary": "Missing or invalid person ID"
                   }
                 }
               }
