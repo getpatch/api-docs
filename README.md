@@ -1,32 +1,34 @@
-# Mintlify Starter Kit
+# Anagram API Docs
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
+Public documentation for the Anagram API: [api-docs.goanagram.com](https://api-docs.goanagram.com).
 
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+## Development
 
-### Development
+Requires Node.js 22. Newer versions are not currently supported by Mintlify.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
-
-```
-npm i -g mintlify
+```bash
+brew install node@22
+export PATH="$(brew --prefix node@22)/bin:$PATH"
 ```
 
-Run the following command at the root of your documentation (where docs.json is)
+Install the [Mintlify CLI](https://www.mintlify.com/docs/cli/install):
 
+```bash
+npm install -g mint@latest
 ```
-mintlify dev
+
+From the repository root, start the local preview:
+
+```bash
+mint dev
 ```
 
-### Publishing Changes
+Validate changes before publishing:
 
-Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+```bash
+mint validate
+```
 
-#### Troubleshooting
+## Publishing
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `docs.json`
+Changes are deployed to production automatically after they are merged into the `master` branch. Follow the team's standard Git flow: create a feature branch and open a PR.

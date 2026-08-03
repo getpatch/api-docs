@@ -13,6 +13,158 @@
     }
   ],
   "paths": {
+    "/api/public/1/insurers/": {
+      "get": {
+        "summary": "List Insurers",
+        "security": [],
+        "servers": [
+          {
+            "url": "https://api.anagram.care",
+            "description": "Public API"
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search for an insurer by name, alternative names, and keywords"
+          },
+          {
+            "in": "query",
+            "name": "code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by an exact insurer code"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["vision", "medical"]
+            },
+            "description": "Filter insurers by type"
+          },
+          {
+            "in": "query",
+            "name": "_page_number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "Zero-based page number"
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100
+            },
+            "description": "Number of insurers per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insurers returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["result"],
+                  "properties": {
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["name", "alternative_names", "code", "is_vision"],
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "alternative_names": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "is_vision": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "prev": {
+                      "type": "string"
+                    },
+                    "previous": {
+                      "type": "string"
+                    },
+                    "next": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Insurer list": {
+                    "value": {
+                      "result": [
+                        {
+                          "name": "VSP",
+                          "alternative_names": [
+                            "Vision Service Plan"
+                          ],
+                          "code": "insurer:vision:vsp",
+                          "is_vision": true
+                        }
+                      ]
+                    },
+                    "summary": "Insurers"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Invalid insurer type": {
+                    "value": {
+                      "detail": "Invalid insurer type: dental. Available types: vision, medical"
+                    },
+                    "summary": "Unsupported insurer type"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/v1/eligibility/": {
       "post": {
         "tags": ["public-auth_Eligibility Request"],
@@ -34,10 +186,77 @@
                   }
                 },
                 "examples": {
-                  "Successful request": {
+                  "Valid request": {
                     "value": {
                       "request_uid": "af42aa113b4148ec86f3ed7324f24242"
+                    },
+                    "summary": "Valid request"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
                     }
+                  }
+                },
+                "examples": {
+                  "Field error": {
+                    "value": {
+                      "errors": {
+                        "patient": {
+                          "first_name": {
+                            "$": ["This field cannot be blank."]
+                          }
+                        }
+                      }
+                    },
+                    "summary": "Field error"
+                  },
+                  "Unknown insurer": {
+                    "value": {
+                      "errors": {
+                        "insurer_code": {
+                          "$": [
+                            "Insurers not found: {'insurer:vision:vsp:invalid'}"
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Unknown insurer"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Global error": {
+                    "value": {
+                      "detail": "Invalid authorization header"
+                    },
+                    "summary": "Global error"
                   }
                 }
               }
@@ -103,6 +322,48 @@
                     "description": "Identifies the location that the eligibility check will be linked to. When this field is empty, the eligibility check will be linked with the default location. Example: LOC4242B"
                   }
                 }
+              },
+              "examples": {
+                "Direct search request": {
+                  "value": {
+                    "insurer_code": "insurer:demo:vision",
+                    "request_uid": "19850f24-900e-4812-8e99-6faa2397fe57",
+                    "patient": {
+                      "first_name": "John",
+                      "last_name": "Smith",
+                      "dob": "1990-01-01",
+                      "zip": "11101"
+                    }
+                  },
+                  "summary": "Direct search request"
+                },
+                "Universal search request": {
+                  "value": {
+                    "patient": {
+                      "first_name": "John",
+                      "last_name": "Smith",
+                      "dob": "1990-01-01",
+                      "zip": "11101"
+                    }
+                  },
+                  "summary": "Universal search request"
+                },
+                "Universal search for selected insurers": {
+                  "value": {
+                    "insurer_code_list": [
+                      "insurer:vision:vsp",
+                      "insurer:vision:eyemed",
+                      "insurer:vision:davis_vision"
+                    ],
+                    "patient": {
+                      "first_name": "John",
+                      "last_name": "Smith",
+                      "dob": "1990-01-01",
+                      "zip": "11101"
+                    }
+                  },
+                  "summary": "Universal search request for specific insurers"
+                }
               }
             }
           }
@@ -133,10 +394,12 @@
                       "description": ""
                     },
                     "error_code": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "results": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "type": "object",
                         "required": ["persons", "insurer_code", "id"],
@@ -162,7 +425,8 @@
                             "type": "string"
                           },
                           "plan_group_id": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "plan_begin_date": {
                             "type": "string",
@@ -170,11 +434,13 @@
                           },
                           "plan_end_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "plan_refresh_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "persons": {
                             "type": "array",
@@ -196,10 +462,12 @@
                                   "type": "string"
                                 },
                                 "member_id": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "ssn_last_four": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "type": {
                                   "type": "string"
@@ -211,7 +479,8 @@
                                       "type": "string"
                                     },
                                     "line2": {
-                                      "type": "string"
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "city": {
                                       "type": "string"
@@ -225,7 +494,8 @@
                                   }
                                 },
                                 "email": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "phone": {
                                   "type": "string"
@@ -239,6 +509,7 @@
                                 },
                                 "is_active": {
                                   "type": "boolean",
+                                  "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
                                 "plan": {
@@ -247,7 +518,8 @@
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "insurer_state": {
                                       "type": "string",
@@ -255,11 +527,13 @@
                                     },
                                     "begin_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "end_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "items": {
                                       "type": "array",
@@ -280,6 +554,7 @@
                                           "copay": {
                                             "type": "string",
                                             "format": "double",
+                                            "nullable": true,
                                             "description": "Example \"25.000\" means 25 USD"
                                           },
                                           "network_type": {
@@ -292,6 +567,7 @@
                                           "refresh_date": {
                                             "type": "string",
                                             "format": "date",
+                                            "nullable": true,
                                             "description": "Refresh date of benefit if it's different from plan refresh date"
                                           },
                                           "limits": {
@@ -303,6 +579,7 @@
                                               "total_coverage": {
                                                 "type": "string",
                                                 "format": "double",
+                                                "nullable": true,
                                                 "description": "Total coverage of benefit for period"
                                               },
                                               "quantity_remain": {
@@ -313,7 +590,8 @@
                                               },
                                               "total_coverage_remain": {
                                                 "type": "string",
-                                                "format": "double"
+                                                "format": "double",
+                                                "nullable": true
                                               }
                                             }
                                           },
@@ -1335,10 +1613,12 @@
                       "description": ""
                     },
                     "error_code": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "results": {
                       "type": "array",
+                      "nullable": true,
                       "items": {
                         "type": "object",
                         "required": ["insurer_code", "persons"],
@@ -1363,7 +1643,8 @@
                             "type": "string"
                           },
                           "plan_group_id": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "plan_begin_date": {
                             "type": "string",
@@ -1371,11 +1652,13 @@
                           },
                           "plan_end_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "plan_refresh_date": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "nullable": true
                           },
                           "insurer_code": {
                             "type": "string"
@@ -1403,10 +1686,12 @@
                                   "type": "string"
                                 },
                                 "member_id": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "ssn_last_four": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "type": {
                                   "type": "string"
@@ -1418,7 +1703,8 @@
                                       "type": "string"
                                     },
                                     "line2": {
-                                      "type": "string"
+                                      "type": "string",
+                                      "nullable": true
                                     },
                                     "city": {
                                       "type": "string"
@@ -1432,7 +1718,8 @@
                                   }
                                 },
                                 "email": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "phone": {
                                   "type": "string"
@@ -1446,6 +1733,7 @@
                                 },
                                 "is_active": {
                                   "type": "boolean",
+                                  "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
                                 "plan": {
@@ -1454,7 +1742,8 @@
                                   "properties": {
                                     "refresh_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "insurer_state": {
                                       "type": "string",
@@ -1463,11 +1752,13 @@
                                     },
                                     "begin_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "end_date": {
                                       "type": "string",
-                                      "format": "date"
+                                      "format": "date",
+                                      "nullable": true
                                     },
                                     "flags": {
                                       "type": "array",
@@ -1965,6 +2256,78 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Plan details request validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "Duplicate request UID": {
+                    "value": {
+                      "errors": {
+                        "request_uid": {
+                          "$": ["Request uid already exist"]
+                        }
+                      }
+                    },
+                    "summary": "Request UID already exists"
+                  },
+                  "Unknown result": {
+                    "value": {
+                      "errors": {
+                        "result_id": {
+                          "$": ["Result not found"]
+                        }
+                      }
+                    },
+                    "summary": "Result ID does not exist"
+                  },
+                  "Unknown person": {
+                    "value": {
+                      "errors": {
+                        "person_id": {
+                          "$": ["Person not found"]
+                        }
+                      }
+                    },
+                    "summary": "Person ID does not exist"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Initial eligibility request not found or inaccessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown eligibility request": {
+                    "value": {
+                      "detail": "Eligibility not found (unknown-id)"
+                    },
+                    "summary": "Initial eligibility request not found"
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -2109,7 +2472,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "JSON object response",
             "content": {
               "application/json": {
@@ -2117,7 +2480,6 @@
                   "type": "object",
                   "required": [
                     "created_at",
-                    "location_id",
                     "first_name",
                     "last_name",
                     "dob",
@@ -2129,14 +2491,12 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "location_id": {
-                      "type": "integer"
-                    },
                     "first_name": {
                       "type": "string"
                     },
                     "middle_name": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "last_name": {
                       "type": "string"
@@ -2162,7 +2522,8 @@
                           "type": "string"
                         },
                         "recipient": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "city": {
                           "type": "string"
@@ -2182,7 +2543,8 @@
                       "type": "string"
                     },
                     "account_number": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "code": {
                       "type": "string",
@@ -2190,11 +2552,8 @@
                     },
                     "location": {
                       "type": "object",
-                      "required": ["id", "status", "title", "code"],
+                      "required": ["status", "title", "code"],
                       "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
                         "status": {
                           "type": "string"
                         },
@@ -2211,10 +2570,9 @@
                   }
                 },
                 "examples": {
-                  "Example": {
+                  "Patient created": {
                     "value": {
                       "created_at": "2025-03-18T13:51:16.926798+00:00",
-                      "location_id": 57,
                       "first_name": "michael",
                       "middle_name": null,
                       "last_name": "enslin",
@@ -2234,7 +2592,6 @@
                       "account_number": null,
                       "code": "PAT21T",
                       "location": {
-                        "id": 57,
                         "status": "enabled",
                         "title": "Main street branch",
                         "code": "LOC57T"
@@ -2247,14 +2604,105 @@
             }
           },
           "400": {
-            "description": "JSON object response",
+            "description": "Patient validation failed or similar patients were found",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    },
+                    "has_similars": {
+                      "type": "boolean",
+                      "description": "Whether similar patients were found"
+                    },
+                    "has_more_similars": {
+                      "type": "boolean",
+                      "description": "Whether more similar patients exist beyond those returned"
+                    },
+                    "similars": {
+                      "type": "array",
+                      "description": "Existing patients with the same first name, last name, and date of birth. Returns up to 10 patients.",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "created_at",
+                          "first_name",
+                          "last_name",
+                          "dob",
+                          "code",
+                          "location"
+                        ],
+                        "properties": {
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "middle_name": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "dob": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "sex": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "ssn_last_four": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "address": {
+                            "type": "object",
+                            "nullable": true
+                          },
+                          "email": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "phone": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "account_number": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "code": {
+                            "type": "string"
+                          },
+                          "location": {
+                            "type": "object",
+                            "required": ["status", "title", "code"],
+                            "properties": {
+                              "status": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "code": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 },
                 "examples": {
-                  "Example#1": {
+                  "Validation error": {
                     "value": {
                       "errors": {
                         "first_name": {
@@ -2269,6 +2717,37 @@
                       }
                     },
                     "summary": "Bad request"
+                  },
+                  "Similar patient found": {
+                    "value": {
+                      "errors": {
+                        "$": ["Similar patient found"]
+                      },
+                      "has_more_similars": false,
+                      "has_similars": true,
+                      "similars": [
+                        {
+                          "created_at": "2025-03-18T13:51:16.926798+00:00",
+                          "first_name": "Name",
+                          "middle_name": null,
+                          "last_name": "Lname",
+                          "dob": "1970-01-01",
+                          "sex": null,
+                          "ssn_last_four": null,
+                          "address": null,
+                          "email": null,
+                          "phone": null,
+                          "account_number": null,
+                          "code": "PAT21T",
+                          "location": {
+                            "status": "enabled",
+                            "title": "Main street branch",
+                            "code": "LOC57T"
+                          }
+                        }
+                      ]
+                    },
+                    "summary": "Similar patient found"
                   }
                 }
               }
@@ -2315,7 +2794,6 @@
                         "type": "object",
                         "required": [
                           "created_at",
-                          "location_id",
                           "first_name",
                           "last_name",
                           "dob",
@@ -2327,14 +2805,12 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "location_id": {
-                            "type": "integer"
-                          },
                           "first_name": {
                             "type": "string"
                           },
                           "middle_name": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "last_name": {
                             "type": "string"
@@ -2360,7 +2836,8 @@
                                 "type": "string"
                               },
                               "recipient": {
-                                "type": "string"
+                                "type": "string",
+                                "nullable": true
                               },
                               "city": {
                                 "type": "string"
@@ -2380,7 +2857,8 @@
                             "type": "string"
                           },
                           "account_number": {
-                            "type": "string"
+                            "type": "string",
+                            "nullable": true
                           },
                           "code": {
                             "type": "string",
@@ -2388,11 +2866,8 @@
                           },
                           "location": {
                             "type": "object",
-                            "required": ["id", "status", "title", "code"],
+                            "required": ["status", "title", "code"],
                             "properties": {
-                              "id": {
-                                "type": "integer"
-                              },
                               "status": {
                                 "type": "string"
                               },
@@ -2426,7 +2901,6 @@
                       "result": [
                         {
                           "created_at": "2025-03-17T13:51:16.700206+00:00",
-                          "location_id": 56,
                           "first_name": "michael",
                           "middle_name": null,
                           "last_name": "enslin",
@@ -2446,7 +2920,6 @@
                           "account_number": null,
                           "code": "PAT19T",
                           "location": {
-                            "id": 56,
                             "status": "enabled",
                             "title": "Title 55",
                             "code": "LOC56T"
@@ -2454,7 +2927,6 @@
                         },
                         {
                           "created_at": "2025-03-16T13:51:16.712693+00:00",
-                          "location_id": 56,
                           "first_name": "jane",
                           "middle_name": null,
                           "last_name": "doe",
@@ -2474,7 +2946,6 @@
                           "account_number": null,
                           "code": "PAT20T",
                           "location": {
-                            "id": 56,
                             "status": "enabled",
                             "title": "Title 55",
                             "code": "LOC56T"
@@ -2505,7 +2976,6 @@
                   "type": "object",
                   "required": [
                     "created_at",
-                    "location_id",
                     "first_name",
                     "last_name",
                     "dob",
@@ -2517,14 +2987,12 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "location_id": {
-                      "type": "integer"
-                    },
                     "first_name": {
                       "type": "string"
                     },
                     "middle_name": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "last_name": {
                       "type": "string"
@@ -2550,7 +3018,8 @@
                           "type": "string"
                         },
                         "recipient": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "city": {
                           "type": "string"
@@ -2570,7 +3039,8 @@
                       "type": "string"
                     },
                     "account_number": {
-                      "type": "string"
+                      "type": "string",
+                      "nullable": true
                     },
                     "code": {
                       "type": "string",
@@ -2578,11 +3048,8 @@
                     },
                     "location": {
                       "type": "object",
-                      "required": ["id", "status", "title", "code"],
+                      "required": ["status", "title", "code"],
                       "properties": {
-                        "id": {
-                          "type": "integer"
-                        },
                         "status": {
                           "type": "string"
                         },
@@ -2602,7 +3069,6 @@
                   "Example": {
                     "value": {
                       "created_at": "2025-03-16T13:51:16.219467+00:00",
-                      "location_id": 53,
                       "first_name": "michael",
                       "middle_name": null,
                       "last_name": "enslin",
@@ -2622,7 +3088,6 @@
                       "account_number": null,
                       "code": "PAT17T",
                       "location": {
-                        "id": 53,
                         "status": "enabled",
                         "title": "Title 52",
                         "code": "LOC53T"
@@ -2688,7 +3153,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "JSON object response",
             "content": {
               "application/json": {
@@ -2918,6 +3383,58 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Eligibility link validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "Eligibility already linked": {
+                    "value": {
+                      "errors": {
+                        "eligibility_code": {
+                          "$": ["Eligibility already connected"]
+                        }
+                      }
+                    },
+                    "summary": "Eligibility is already linked to a patient"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Patient or eligibility request not found or inaccessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown eligibility request": {
+                    "value": {
+                      "detail": "eligibility not found"
+                    },
+                    "summary": "Eligibility request not found for the patient's location"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -2962,6 +3479,7 @@
                         "properties": {
                           "request_uid": {
                             "type": "string",
+                            "nullable": true,
                             "description": "UID provided on request"
                           },
                           "provider_app_url": {
@@ -2995,7 +3513,8 @@
                                   "type": "string"
                                 },
                                 "plan_group_id": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "plan_begin_date": {
                                   "type": "string",
@@ -3080,7 +3599,8 @@
                                         "properties": {
                                           "refresh_date": {
                                             "type": "string",
-                                            "format": "date"
+                                            "format": "date",
+                                            "nullable": true
                                           },
                                           "insurer_state": {
                                             "type": "string",
@@ -3088,11 +3608,13 @@
                                           },
                                           "begin_date": {
                                             "type": "string",
-                                            "format": "date"
+                                            "format": "date",
+                                            "nullable": true
                                           },
                                           "end_date": {
                                             "type": "string",
-                                            "format": "date"
+                                            "format": "date",
+                                            "nullable": true
                                           },
                                           "items": {
                                             "type": "array",
@@ -3253,6 +3775,30 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Patient not found or inaccessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown patient": {
+                    "value": {
+                      "detail": "patient not found"
+                    },
+                    "summary": "Patient not found"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -3273,8 +3819,8 @@
         "summary": "Submit a claim",
         "description": "",
         "responses": {
-          "200": {
-            "description": "",
+          "201": {
+            "description": "Claim created successfully",
             "content": {
               "application/json": {
                 "schema": {
@@ -3288,9 +3834,15 @@
                     "patient"
                   ],
                   "properties": {
+                    "status": {
+                      "type": "string"
+                    },
                     "paid_amount": {
                       "type": "string",
                       "format": "double"
+                    },
+                    "code": {
+                      "type": "string"
                     },
                     "is_aob_enabled": {
                       "type": "boolean"
@@ -3365,10 +3917,12 @@
                         },
                         "sex": {
                           "type": "string",
-                          "enum": ["male", "female"]
+                          "enum": ["male", "female"],
+                          "nullable": true
                         },
                         "email": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "address": {
                           "type": "object",
@@ -3378,10 +3932,12 @@
                               "type": "string"
                             },
                             "line2": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "recipient": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "city": {
                               "type": "string"
@@ -3416,10 +3972,12 @@
                           "type": "string"
                         },
                         "member_id": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "ssn_last_four": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "first_name": {
                           "type": "string"
@@ -3433,10 +3991,12 @@
                         },
                         "sex": {
                           "type": "string",
-                          "enum": ["male", "female"]
+                          "enum": ["male", "female"],
+                          "nullable": true
                         },
                         "email": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "address": {
                           "type": "object",
@@ -3446,10 +4006,12 @@
                               "type": "string"
                             },
                             "line2": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "recipient": {
-                              "type": "string"
+                              "type": "string",
+                              "nullable": true
                             },
                             "city": {
                               "type": "string"
@@ -3463,13 +4025,150 @@
                           }
                         },
                         "phone": {
-                          "type": "string"
+                          "type": "string",
+                          "nullable": true
                         },
                         "account_number": {
                           "type": "string"
                         }
                       }
                     }
+                  }
+                },
+                "examples": {
+                  "Created claim": {
+                    "value": {
+                      "code": "CLM21T",
+                      "patient": {
+                        "address": {
+                          "city": "City",
+                          "line1": "String name",
+                          "line2": null,
+                          "recipient": null,
+                          "state": "CA",
+                          "zipcode": "12332"
+                        },
+                        "dob": "1998-02-11",
+                        "email": null,
+                        "first_name": "Max",
+                        "last_name": "Smith",
+                        "member_id": null,
+                        "phone": null,
+                        "sex": null,
+                        "ssn_last_four": null,
+                        "type": "child"
+                      },
+                      "primary_member": {
+                        "address": {
+                          "city": "City",
+                          "line1": "String name",
+                          "line2": null,
+                          "recipient": null,
+                          "state": "CA",
+                          "zipcode": "12332"
+                        },
+                        "dob": "1988-10-11",
+                        "email": null,
+                        "first_name": "John",
+                        "insurer_code": "insurer:demo:vision",
+                        "last_name": "Smith",
+                        "member_id": "A123455",
+                        "phone": "0987654321",
+                        "sex": null,
+                        "ssn_last_four": "1242"
+                      },
+                      "services": [
+                        {
+                          "codes": ["S0504"],
+                          "cost": "12.2200",
+                          "date": "2022-02-11",
+                          "quantity": 2,
+                          "diagnosis_codes": ["H52.10"]
+                        },
+                        {
+                          "codes": ["V2781"],
+                          "cost": "44.2100",
+                          "date": "2022-02-11",
+                          "quantity": 1,
+                          "diagnosis_codes": []
+                        }
+                      ],
+                      "status": "ready",
+                      "paid_amount": "68.6500"
+                    },
+                    "summary": "Claim created successfully"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Claim validation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown insurer": {
+                    "value": {
+                      "errors": {
+                        "primary_member": {
+                          "insurer_code": {
+                            "$": ["Unknown code"]
+                          }
+                        }
+                      }
+                    },
+                    "summary": "Unknown insurer"
+                  },
+                  "Unknown service type": {
+                    "value": {
+                      "errors": {
+                        "services": {
+                          "0": {
+                            "codes": {
+                              "$": ["Unknown code"]
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "summary": "Unknown service type"
+                  },
+                  "Missing primary member details": {
+                    "value": {
+                      "errors": {
+                        "primary_member": {
+                          "$": [
+                            "Either member ID or SSN last four are required",
+                            "Member ID or SSN last four are required"
+                          ],
+                          "dob": {
+                            "$": ["This field cannot be null."]
+                          },
+                          "first_name": {
+                            "$": ["This field cannot be null."]
+                          },
+                          "insurer_code": {
+                            "$": ["This field cannot be null."]
+                          },
+                          "insurer_id": {
+                            "$": ["This field cannot be null."]
+                          },
+                          "last_name": {
+                            "$": ["This field cannot be null."]
+                          }
+                        }
+                      }
+                    },
+                    "summary": "Missing primary member details"
                   }
                 }
               }
@@ -3746,11 +4445,163 @@
                     "description": "Identifies the location that the claim will be linked to. When this field is empty, the claim will be linked with the default location. Example: LOC4242B"
                   }
                 }
+              },
+              "examples": {
+                "Create claim": {
+                    "value": {
+                      "patient": {
+                        "dob": "1998-02-11",
+                        "first_name": "Max",
+                        "last_name": "Smith",
+                        "type": "child",
+                        "address": {
+                          "line1": "String name",
+                          "city": "City",
+                          "zipcode": "12332",
+                          "state": "CA"
+                        }
+                      },
+                      "primary_member": {
+                        "address": {
+                          "city": "City",
+                          "line1": "String name",
+                          "state": "CA",
+                          "zipcode": "12332"
+                        },
+                        "dob": "1988-10-11",
+                        "first_name": "John",
+                        "insurer_code": "insurer:demo:vision",
+                        "last_name": "Smith",
+                        "member_id": "A123455",
+                        "phone": "0987654321",
+                        "ssn_last_four": "1242"
+                      },
+                      "services": [
+                        {
+                          "codes": ["S0504"],
+                          "cost": "12.22",
+                          "date": "2022-02-11",
+                          "quantity": 2,
+                          "diagnosis_codes": ["H52.10"]
+                        },
+                        {
+                          "codes": ["V2781"],
+                          "cost": "44.21",
+                          "date": "2022-02-11",
+                          "quantity": 1
+                        }
+                      ],
+                      "paid_amount": "68.65"
+                    },
+                  "summary": "Create a claim"
+                }
               }
             }
           }
         }
       }
+    },
+    "/api/auth/v1/claims/{claim_code}/notify-customer/": {
+      "post": {
+        "summary": "Send Claim Notification",
+        "description": "Sends a claim submission notification email to a customer.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address that will receive the claim submission notification"
+                  }
+                }
+              },
+              "examples": {
+                "Notification request": {
+                  "value": {
+                    "email": "customer@example.com"
+                  },
+                  "summary": "Send a claim notification"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notification sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "Notification sent": {
+                    "value": {},
+                    "summary": "Notification sent successfully"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data or claim cannot be notified",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Claim not found, claim code is invalid, or the claim belongs to another provider",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Unknown claim": {
+                    "value": {
+                      "detail": "Claim not found (CLM5691R)"
+                    },
+                    "summary": "Unknown or inaccessible claim code"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "claim_code",
+          "in": "path",
+          "required": true,
+          "allowEmptyValue": false,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Claim code returned by the Create Claim endpoint"
+        }
+      ]
     },
     "/api/auth/v1/locations/": {
       "get": {
@@ -3938,7 +4789,7 @@
     {
       "name": "public-auth_Eligibility Request",
       "x-displayName": "Eligibility Request",
-      "description": "Requesting patient's eligibility uses the following parameters:\n\n- First name (required)\n- Last name (required)\n- Date of birth (required)\n- Last four digits from SSN (optional)\n- Zip code (optional)\n- Insurer Member ID (optional)\n- Request UID (optional)\n\nThis call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request.\nThe result will be returned in two ways:\n- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred.\nRequest UID will be included in payload.\n- By calling the \"Eligibility Result\" endpoint - only to be used as fallback. Request UID is required.\n\nIf specifying a UID, ensure it is unique. If omitted one will be generated automatically\nand included in the response for this API call.\n\nAuthentication is required for this endpoint. Access token can be obtained\nin [provider app](https://provider.anagram.care/). Access token must be sent in `Authorization` header,\nprefaced with `API `:\n\n`Authorization: Api <key generated in provider app>`\n\nThe response will contain the request UID or a validation error.\n\nError examples:\n```\n{\n    \"errors\": {\"$\": [\"Wrong insurer code\"]}\n}\n```\n```\n{\n    \"errors\": {\n        \"patient\": {\n            \"first_name\": {\"$\": [\"This field cannot be blank.\"]}\n        }\n    }\n}\n```\n\nFor testing purposes, you can include cheat codes in the request. Cheat codes can be provided in the fields\n`first_name`, `last_name`, and `member_id`. Here are some examples of cheat codes:\n\n- `mark_used`: This cheat code marks all benefits as used.\n\n- `dt_exam_used`: This cheat code marks exam benefit as used.\n\n- `no_oon`: Removes all out-of-network benefits from the plan.\n\n- `no_inn`: Removes all in-network benefits from the plan. You can use both `no_oon` and `no_inn` codes together to\ngenerate a plan without any benefits.\n\n- `delay_10`, `delay_30`: These codes introduce a delay in the response, causing it to wait for either 10 or 30\nseconds before providing an answer.\n\n- `big_family`: This cheat code adds multiple persons to the result.\n\n- `not_found`: Using this cheat code will delete all results.\n\n- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error`."
+      "description": "Requesting patient's eligibility uses the following parameters:\n\n- First name (required)\n- Last name (required)\n- Date of birth (required)\n- Last four digits from SSN (optional)\n- Zip code (required)\n- Insurer Member ID (optional)\n- Request UID (optional)\n\nThis call is asynchronous, it initiates an eligibility search and returns a UID assigned to this request.\nThe result will be returned in two ways:\n- Via active [webhooks](https://provider.anagram.care/webhooks) once available - preferred.\nRequest UID will be included in payload.\n- By calling the \"Eligibility Result\" endpoint - only to be used as fallback. Request UID is required.\n\nIf specifying a UID, ensure it is unique. If omitted one will be generated automatically\nand included in the response for this API call.\n\nAuthentication is required for this endpoint. Access token can be obtained\nin [provider app](https://provider.anagram.care/). Access token must be sent in `Authorization` header,\nprefaced with `API `:\n\n`Authorization: Api <key generated in provider app>`\n\nThe response will contain the request UID or a validation error.\n\nError examples:\n```\n{\n    \"errors\": {\"$\": [\"Wrong insurer code\"]}\n}\n```\n```\n{\n    \"errors\": {\n        \"patient\": {\n            \"first_name\": {\"$\": [\"This field cannot be blank.\"]}\n        }\n    }\n}\n```\n\nFor testing purposes, you can include cheat codes in the request. Cheat codes can be provided in the fields\n`first_name`, `last_name`, and `member_id`. Here are some examples of cheat codes:\n\n- `mark_used`: This cheat code marks all benefits as used.\n\n- `dt_exam_used`: This cheat code marks exam benefit as used.\n\n- `no_oon`: Removes all out-of-network benefits from the plan.\n\n- `no_inn`: Removes all in-network benefits from the plan. You can use both `no_oon` and `no_inn` codes together to\ngenerate a plan without any benefits.\n\n- `delay_10`, `delay_30`: These codes introduce a delay in the response, causing it to wait for either 10 or 30\nseconds before providing an answer.\n\n- `big_family`: This cheat code adds multiple persons to the result.\n\n- `not_found`: Using this cheat code will delete all results.\n\n- `in_err_int`: This cheat code simulates a problem and triggers the `unexpected_error`."
     },
     {
       "name": "public-auth_Eligibility Result",
@@ -3962,7 +4813,8 @@
   "openapi": "3.0.2",
   "servers": [
     {
-      "url": "https://api.anagram.care"
+      "url": "https://api.anagram.care",
+      "description": "Authenticated API"
     }
   ],
   "components": {

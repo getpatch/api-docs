@@ -1,0 +1,9 @@
+---
+title: "Send Claim Notification"
+openapi: "POST /api/auth/v1/claims/{claim_code}/notify-customer/"
+description: "Send a claim submission notification email to a customer"
+---
+
+This endpoint sends a claim submission notification to the specified email address.
+
+Use the claim code returned by the [Create Claim](/api-reference/endpoint/create_claim) endpoint.

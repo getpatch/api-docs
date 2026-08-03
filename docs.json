@@ -39,7 +39,7 @@
             ]
           },
           {
-            "group": "Endpoints",
+            "group": "Authenticated API",
             "pages": [
               "api-reference/endpoint/eligibility_request",
               "api-reference/endpoint/eligibility_result",
@@ -47,6 +47,7 @@
               "api-reference/endpoint/eligibility_result_v2",
               "api-reference/endpoint/eligibility_details_request",
               "api-reference/endpoint/create_claim",
+              "api-reference/endpoint/notify_claim_customer",
               "api-reference/endpoint/create_patient",
               "api-reference/endpoint/list_patients",
               "api-reference/endpoint/patient_details",
@@ -54,6 +55,12 @@
               "api-reference/endpoint/list_patient_eligibility_links",
               "api-reference/endpoint/locations",
               "api-reference/endpoint/start_iframe_session"
+            ]
+          },
+          {
+            "group": "Public API",
+            "pages": [
+              "api-reference/endpoint/list_insurers"
             ]
           }
         ]
