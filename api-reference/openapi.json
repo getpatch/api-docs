@@ -512,6 +512,19 @@
                                   "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
+                                "plan_token": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "example": "VSP-123456789",
+                                  "description": "Plan authorization number. Omitted unless plan.insurer_state is inn."
+                                },
+                                "plan_token_expired_at": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "nullable": true,
+                                  "example": "2030-03-05",
+                                  "description": "Plan authorization expiration date. Omitted unless plan.insurer_state is inn."
+                                },
                                 "plan": {
                                   "type": "object",
                                   "required": ["insurer_state", "items"],
@@ -714,6 +727,8 @@
                               "id": 0,
                               "full_name": "DAN L CAMPUS",
                               "is_active": null,
+                              "plan_token": "VSP-123456789",
+                              "plan_token_expired_at": "2030-03-05",
                               "plan": {
                                 "refresh_date": null,
                                 "insurer_state": "oon",
@@ -1736,6 +1751,19 @@
                                   "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
+                                "plan_token": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "example": "VSP-123456789",
+                                  "description": "Plan authorization number. Omitted unless plan.insurer_state is inn."
+                                },
+                                "plan_token_expired_at": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "nullable": true,
+                                  "example": "2030-03-05",
+                                  "description": "Plan authorization expiration date. Omitted unless plan.insurer_state is inn."
+                                },
                                 "plan": {
                                   "type": "object",
                                   "required": ["insurer_state", "items"],
@@ -1843,6 +1871,8 @@
                               "id": 0,
                               "full_name": "DAN L CAMPUS",
                               "is_active": null,
+                              "plan_token": "VSP-123456789",
+                              "plan_token_expired_at": "2030-03-05",
                               "plan": {
                                 "insurer_state": "oon",
                                 "begin_date": "2026-01-01",
