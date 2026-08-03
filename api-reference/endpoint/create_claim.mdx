@@ -22,5 +22,6 @@ The main fields of claim are:
 - `patient`: JSON object, representing patient details
 - `primary_member`: JSON object, representing primary patient member
 - `services`: list of JSON objects, representing services that can be reimbursed
+- `status`: Claim status - `draft` or `ready` (default). Use `draft` to create a claim for manual review in the Anagram web app and manual submission.
 
 Both `patient` and `primary_member` must be provided even if the claim is created for a primary member. In this case, both the `patient` object and `primary_member` object must contain the same data.
