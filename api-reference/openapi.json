@@ -4218,6 +4218,12 @@
                   "patient"
                 ],
                 "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["draft", "ready"],
+                    "default": "ready",
+                    "description": "Claim status. Use `draft` to create a claim for manual review in the Anagram web app and manual submission."
+                  },
                   "paid_amount": {
                     "type": "number",
                     "format": "double",
@@ -4479,6 +4485,7 @@
               "examples": {
                 "Create claim": {
                     "value": {
+                      "status": "draft",
                       "patient": {
                         "dob": "1998-02-11",
                         "first_name": "Max",
