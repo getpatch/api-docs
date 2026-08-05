@@ -512,6 +512,19 @@
                                   "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
+                                "plan_token": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "example": "Z2HABC123A1",
+                                  "description": "Authorization Number / Eligibility Verification Number / Eligibility Token. Returned only for in-network plans pulled from VersantHealth, 2020source and Anagram Demo Vision."
+                                },
+                                "plan_token_expired_at": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "nullable": true,
+                                  "example": "2030-03-05",
+                                  "description": "Eligibility Verification expiration date. Might be empty even if plan_token is non-empty."
+                                },
                                 "plan": {
                                   "type": "object",
                                   "required": ["insurer_state", "items"],
@@ -714,6 +727,8 @@
                               "id": 0,
                               "full_name": "DAN L CAMPUS",
                               "is_active": null,
+                              "plan_token": "Z2HABC123A1",
+                              "plan_token_expired_at": "2026-12-31",
                               "plan": {
                                 "refresh_date": null,
                                 "insurer_state": "oon",
@@ -1736,6 +1751,19 @@
                                   "nullable": true,
                                   "description": "False is person is inactive, True or None (for compatibility) if person has active plan"
                                 },
+                                "plan_token": {
+                                  "type": "string",
+                                  "nullable": true,
+                                  "example": "Z2HABC123A1",
+                                  "description": "Authorization Number / Eligibility Verification Number / Eligibility Token. Returned only for in-network plans pulled from VersantHealth, 2020source and Anagram Demo Vision."
+                                },
+                                "plan_token_expired_at": {
+                                  "type": "string",
+                                  "format": "date",
+                                  "nullable": true,
+                                  "example": "2030-03-05",
+                                  "description": "Eligibility Verification expiration date. Might be empty even if plan_token is non-empty."
+                                },
                                 "plan": {
                                   "type": "object",
                                   "required": ["insurer_state", "items"],
@@ -1843,6 +1871,8 @@
                               "id": 0,
                               "full_name": "DAN L CAMPUS",
                               "is_active": null,
+                              "plan_token": "Z2HABC123A1",
+                              "plan_token_expired_at": "2026-12-31",
                               "plan": {
                                 "insurer_state": "oon",
                                 "begin_date": "2026-01-01",

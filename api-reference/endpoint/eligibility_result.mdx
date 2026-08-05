@@ -5,6 +5,8 @@ openapi: "GET /api/auth/v1/eligibility/{request_uid}/"
 
 The Eligibility request result will be sent to all active webhooks once available. As a fallback, you may call this endpoint to check result status and obtain the result.
 
+Persons with `plan.insurer_state: inn` include nullable `plan_token` and `plan_token_expired_at`. Other persons omit them. Webhooks use the same rule.
+
 ### Status
 
 The `status` field in the response can have one of the following values:
