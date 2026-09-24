@@ -4199,6 +4199,58 @@
                       }
                     },
                     "summary": "Missing primary member details"
+                  },
+                  "Unavailable receipt template": {
+                    "value": {
+                      "errors": {
+                        "receipt_template": {
+                          "$": ["This receipt template is not available."]
+                        }
+                      }
+                    },
+                    "summary": "Unavailable receipt template"
+                  },
+                  "Unknown, expired or used receipt upload": {
+                    "value": {
+                      "errors": {
+                        "receipt_upload_uid": {
+                          "$": [
+                            "This receipt upload is unknown, expired or already used."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Unknown, expired or used receipt upload"
+                  },
+                  "Both receipt template and upload": {
+                    "value": {
+                      "errors": {
+                        "$": [
+                          "Pass either a receipt template or a receipt upload, not both."
+                        ]
+                      }
+                    },
+                    "summary": "Both receipt template and upload"
+                  },
+                  "Insurer that doesn't take a receipt": {
+                    "value": {
+                      "errors": {
+                        "$": [
+                          "Claims for this insurer don't take a custom receipt."
+                        ]
+                      }
+                    },
+                    "summary": "Insurer that doesn't take a receipt"
+                  },
+                  "Receipt set by Anagram": {
+                    "value": {
+                      "errors": {
+                        "$": [
+                          "The receipt for this customer is set by Anagram and can't be changed."
+                        ]
+                      }
+                    },
+                    "summary": "Receipt set by Anagram"
                   }
                 }
               }
@@ -4479,6 +4531,21 @@
                   "location_code": {
                     "type": "string",
                     "description": "Identifies the location that the claim will be linked to. When this field is empty, the claim will be linked with the default location. Example: LOC4242B"
+                  },
+                  "receipt_template": {
+                    "type": "string",
+                    "enum": [
+                      "revolution_ehr",
+                      "officemate",
+                      "crystal_pm",
+                      "eyecloud_pro"
+                    ],
+                    "description": "Code of the practice management system whose receipt layout to print with the claim: `revolution_ehr` (Revolution EHR), `officemate` (OfficeMate), `crystal_pm` (Crystal PM) or `eyecloud_pro` (EyeCloud Pro). Only for insurers that take an itemized receipt, such as EyeMed. The template also becomes the default of the claim's location. Can't be combined with `receipt_upload_uid`."
+                  },
+                  "receipt_upload_uid": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "description": "The `upload_uid` returned by the Upload Claim Receipt endpoint, to attach the receipt the practice printed for the patient. Only for insurers that take an itemized receipt, such as EyeMed. Can't be combined with `receipt_template`."
                   }
                 }
               },
@@ -4531,6 +4598,332 @@
                       "paid_amount": "68.65"
                     },
                   "summary": "Create a claim"
+                },
+                "Create claim with receipt template": {
+                  "value": {
+                    "status": "draft",
+                    "receipt_template": "officemate",
+                    "patient": {
+                      "dob": "1998-02-11",
+                      "first_name": "Max",
+                      "last_name": "Smith",
+                      "type": "child",
+                      "member_id": "A123455",
+                      "address": {
+                        "line1": "String name",
+                        "city": "City",
+                        "zipcode": "12332",
+                        "state": "CA"
+                      }
+                    },
+                    "primary_member": {
+                      "address": {
+                        "city": "City",
+                        "line1": "String name",
+                        "state": "CA",
+                        "zipcode": "12332"
+                      },
+                      "dob": "1988-10-11",
+                      "first_name": "John",
+                      "insurer_code": "insurer:vision:eye_med",
+                      "last_name": "Smith",
+                      "member_id": "A123455",
+                      "phone": "0987654321"
+                    },
+                    "services": [
+                      {
+                        "codes": ["S0504"],
+                        "cost": "12.22",
+                        "date": "2022-02-11",
+                        "quantity": 2,
+                        "diagnosis_codes": ["H52.10"]
+                      },
+                      {
+                        "codes": ["V2781"],
+                        "cost": "44.21",
+                        "date": "2022-02-11",
+                        "quantity": 1
+                      }
+                    ],
+                    "paid_amount": "68.65"
+                  },
+                  "summary": "Create a claim with a receipt template"
+                },
+                "Create claim with uploaded receipt": {
+                  "value": {
+                    "status": "draft",
+                    "receipt_upload_uid": "c4b1e0d5a9f84e2b8f3d6a7e1c2b9f40",
+                    "patient": {
+                      "dob": "1998-02-11",
+                      "first_name": "Max",
+                      "last_name": "Smith",
+                      "type": "child",
+                      "member_id": "A123455",
+                      "address": {
+                        "line1": "String name",
+                        "city": "City",
+                        "zipcode": "12332",
+                        "state": "CA"
+                      }
+                    },
+                    "primary_member": {
+                      "address": {
+                        "city": "City",
+                        "line1": "String name",
+                        "state": "CA",
+                        "zipcode": "12332"
+                      },
+                      "dob": "1988-10-11",
+                      "first_name": "John",
+                      "insurer_code": "insurer:vision:eye_med",
+                      "last_name": "Smith",
+                      "member_id": "A123455",
+                      "phone": "0987654321"
+                    },
+                    "services": [
+                      {
+                        "codes": ["S0504"],
+                        "cost": "12.22",
+                        "date": "2022-02-11",
+                        "quantity": 2,
+                        "diagnosis_codes": ["H52.10"]
+                      },
+                      {
+                        "codes": ["V2781"],
+                        "cost": "44.21",
+                        "date": "2022-02-11",
+                        "quantity": 1
+                      }
+                    ],
+                    "paid_amount": "68.65"
+                  },
+                  "summary": "Create a claim with an uploaded receipt"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/v1/claims/receipts/": {
+      "post": {
+        "summary": "Upload Claim Receipt",
+        "description": "Uploads the receipt the practice printed for the patient, to attach it to a claim when the claim is created.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["content"],
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "format": "byte",
+                    "description": "The PDF, PNG or JPG file encoded in standard base64, without line breaks. A PDF of up to 10 pages or an image of up to 50 megapixels, 20 MB at most"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "description": "Original name of the file",
+                    "example": "receipt.pdf"
+                  }
+                }
+              },
+              "examples": {
+                "Upload receipt": {
+                  "value": {
+                    "filename": "receipt.png",
+                    "content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+                  },
+                  "summary": "Upload a receipt"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Receipt uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["upload_uid"],
+                  "properties": {
+                    "upload_uid": {
+                      "type": "string",
+                      "description": "Pass it as `receipt_upload_uid` when creating the claim"
+                    }
+                  }
+                },
+                "examples": {
+                  "Uploaded receipt": {
+                    "value": {
+                      "upload_uid": "c4b1e0d5a9f84e2b8f3d6a7e1c2b9f40"
+                    },
+                    "summary": "Receipt uploaded successfully"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The file can't be used as a receipt, or the customer can't upload one",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["errors"],
+                  "properties": {
+                    "errors": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "Content is not base64": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The receipt must be the file encoded in standard base64, without line breaks."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Content is not base64"
+                  },
+                  "Unsupported file type": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The uploaded receipt must be a PDF, PNG or JPG file."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Unsupported file type"
+                  },
+                  "File too large": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The receipt file is too large. The limit is 20 MB."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "File too large"
+                  },
+                  "Too many pages": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The receipt has too many pages. The limit is 10."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Too many pages"
+                  },
+                  "Image too large": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The uploaded receipt image is too large. Upload a smaller photo or scan."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Image too large"
+                  },
+                  "Unreadable file": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The uploaded receipt could not be read. Upload it again as a PDF, PNG or JPG file."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Unreadable file"
+                  },
+                  "Receipt set by Anagram": {
+                    "value": {
+                      "errors": {
+                        "$": [
+                          "The receipt for this customer is set by Anagram and can't be changed."
+                        ]
+                      }
+                    },
+                    "summary": "Receipt set by Anagram"
+                  }
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "The request body is not JSON",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Body is not JSON": {
+                    "value": {
+                      "detail": "The request body must be JSON."
+                    },
+                    "summary": "Body is not JSON"
+                  },
+                  "Wrong content type": {
+                    "value": {
+                      "detail": "expected content types: application/json"
+                    },
+                    "summary": "Wrong content type"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many uploads in a minute, or too many uploads waiting for their claims",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Upload rate limit": {
+                    "value": {
+                      "detail": "Too many receipt uploads. Try again in a minute."
+                    },
+                    "summary": "Upload rate limit"
+                  },
+                  "Too many waiting uploads": {
+                    "value": {
+                      "detail": "Too many uploaded receipts are waiting for their claims. Attach them or try again later."
+                    },
+                    "summary": "Too many waiting uploads"
+                  }
                 }
               }
             }

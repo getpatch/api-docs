@@ -25,3 +25,14 @@ The main fields of claim are:
 - `status`: Claim status - `draft` or `ready` (default). Use `draft` to create a claim for manual review in the Anagram web app and manual submission.
 
 Both `patient` and `primary_member` must be provided even if the claim is created for a primary member. In this case, both the `patient` object and `primary_member` object must contain the same data.
+
+## Receipt
+
+Insurers that take an itemized receipt from the practice, such as EyeMed, get it with the claim. By default, the receipt is printed in the layout of the practice management system set in the Anagram App as the default of the claim's location, or of the whole practice when the location has none. Without a default, the claim carries the invoice Anagram generates.
+
+To choose the receipt for a particular claim, pass one of:
+
+- `receipt_template`: code of the practice management system whose receipt layout to print: `revolution_ehr`, `officemate`, `crystal_pm` or `eyecloud_pro`. The template you pass also becomes the default of the claim's location, so the next claims from that location get it without passing it again.
+- `receipt_upload_uid`: the `upload_uid` of a receipt uploaded to the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint, to attach the receipt the practice printed for the patient.
+
+Pass one of them at most, and only for an insurer that takes a receipt. The receipt can't be changed through the API once the claim is created. Customers whose receipt is set by Anagram can't choose it.
