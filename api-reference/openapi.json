@@ -4538,9 +4538,11 @@
                       "revolution_ehr",
                       "officemate",
                       "crystal_pm",
-                      "eyecloud_pro"
+                      "eyecloud_pro",
+                      "eyefinity_pm",
+                      "maximeyes"
                     ],
-                    "description": "Code of the practice management system whose receipt layout to print with the claim: `revolution_ehr` (Revolution EHR), `officemate` (OfficeMate), `crystal_pm` (Crystal PM) or `eyecloud_pro` (EyeCloud Pro). Only for insurers that take an itemized receipt, such as EyeMed. The template also becomes the default of the claim's location. Can't be combined with `receipt_upload_uid`."
+                    "description": "Code of the practice management system whose receipt layout to print with the claim: `revolution_ehr` (Revolution EHR), `officemate` (OfficeMate), `crystal_pm` (Crystal PM), `eyecloud_pro` (EyeCloud Pro), `eyefinity_pm` (Eyefinity PM) or `maximeyes` (MaximEyes). Only for insurers that take an itemized receipt, such as EyeMed. The template also becomes the default of the claim's location. Can't be combined with `receipt_upload_uid`."
                   },
                   "receipt_upload_uid": {
                     "type": "string",

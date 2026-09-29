@@ -32,7 +32,7 @@ Insurers that take an itemized receipt from the practice, such as EyeMed, get it
 
 To choose the receipt for a particular claim, pass one of:
 
-- `receipt_template`: code of the practice management system whose receipt layout to print: `revolution_ehr`, `officemate`, `crystal_pm` or `eyecloud_pro`. The template you pass also becomes the default of the claim's location, so the next claims from that location get it without passing it again.
+- `receipt_template`: code of the practice management system whose receipt layout to print: `revolution_ehr`, `officemate`, `crystal_pm`, `eyecloud_pro`, `eyefinity_pm` or `maximeyes`. The template you pass also becomes the default of the claim's location, so the next claims from that location get it without passing it again.
 - `receipt_upload_uid`: the `upload_uid` of a receipt uploaded to the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint, to attach the receipt the practice printed for the patient.
 
 Pass one of them at most, and only for an insurer that takes a receipt. The receipt can't be changed through the API once the claim is created. Customers whose receipt is set by Anagram can't choose it.
