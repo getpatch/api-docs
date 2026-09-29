@@ -1,0 +1,20 @@
+---
+title: "Upload Claim Receipt"
+openapi: "POST /api/auth/v1/claims/receipts/"
+description: "Upload the receipt a practice printed for the patient"
+---
+
+Some insurers, such as EyeMed, take an itemized receipt from the practice together with the claim. To send the receipt the practice printed for the patient, upload it with this endpoint before creating the claim, then pass the returned `upload_uid` as `receipt_upload_uid` to the [Create Claim](/api-reference/endpoint/create_claim) endpoint. The claim is created with the receipt already attached.
+
+The request body must be JSON, with the file in the `content` field encoded in standard base64, without line breaks:
+
+- a PDF of up to 10 pages, or a PNG or JPG image of up to 50 megapixels
+- 20 MB at most
+
+The file type is detected from the file itself, not from `filename`. A PDF is attached to the claim as it is, and an image is placed on a letter-size page.
+
+An upload belongs to your practice and can be attached to one claim only. An upload that no claim takes within a day is deleted. If a claim is not created because of a validation error, its upload stays available and can be passed again.
+
+A practice can send up to 60 upload requests a minute and keep up to 100 uploads that no claim has taken yet. Above that, the endpoint responds with `429 Too Many Requests`.
+
+Customers whose receipt is set by Anagram can't upload one.
