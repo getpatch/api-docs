@@ -2,3 +2,10 @@
 title: "List Locations"
 openapi: "GET /api/auth/v1/locations/"
 ---
+
+Each location comes with its `code`, which you pass as `location_code` when creating a claim, and two fields that show how Anagram makes the itemized receipt for insurers that take one, such as EyeMed:
+
+- `practice_management_system`: the practice management system set for the location, with its `code` and `title`. A system that isn't in our catalog comes as `other_practice_management_system`, with the name typed for it as `title`. A location that doesn't use a system comes as `no_practice_management_system`. The field is `null` while the system isn't known.
+- `receipt_template`: the template Anagram builds the receipt from, with its `code` and `title`. The field is `null` when the location has none. Then upload the receipt with the claim. Without an upload the claim carries the invoice Anagram generates, unless its insurer requires the receipt.
+
+To set or change the system of a location, contact Anagram support. See [Receipt](/api-reference/endpoint/create_claim#receipt) for how the receipt of a new claim is chosen.

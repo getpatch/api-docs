@@ -28,11 +28,10 @@ Both `patient` and `primary_member` must be provided even if the claim is create
 
 ## Receipt
 
-Insurers that take an itemized receipt from the practice, such as EyeMed, get it with the claim. By default, the receipt is printed in the layout of the practice management system set in the Anagram App as the default of the claim's location, or of the whole practice when the location has none. Without a default, the claim carries the invoice Anagram generates.
+Insurers that take an itemized receipt from the practice, such as EyeMed, get it with the claim. Anagram builds the receipt from the claim's details with the receipt template of the claim's location: the layout of the practice management system set for the location, or a template Anagram has set up for your organization. The [List Locations](/api-reference/endpoint/locations) endpoint shows the system and the template of each location. When the location has no template, the claim carries the invoice Anagram generates.
 
-To choose the receipt for a particular claim, pass one of:
+To send the receipt the practice printed for the patient instead, upload it with the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint and pass the returned `upload_uid` as `receipt_upload_uid`. An uploaded receipt always goes instead of the template. Pass it only for an insurer that takes a receipt.
 
-- `receipt_template`: code of the practice management system whose receipt layout to print: `revolution_ehr`, `officemate`, `crystal_pm`, `eyecloud_pro`, `eyefinity_pm` or `maximeyes`. The template you pass also becomes the default of the claim's location, so the next claims from that location get it without passing it again.
-- `receipt_upload_uid`: the `upload_uid` of a receipt uploaded to the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint, to attach the receipt the practice printed for the patient.
+An insurer can require the receipt. A claim for such an insurer from a location without a template can be created as `ready` only with an uploaded receipt. Without one, the API rejects it with `This insurer needs the itemized receipt you give the patient. Upload it to send this claim.` Create the claim as a `draft` instead, and the practice can finish it in the Anagram web app. A draft that isn't finished within a week is deleted.
 
-Pass one of them at most, and only for an insurer that takes a receipt. The receipt can't be changed through the API once the claim is created. Customers whose receipt is set by Anagram can't choose it.
+The receipt can't be changed through the API once the claim is created.

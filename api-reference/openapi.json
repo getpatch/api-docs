@@ -4200,16 +4200,6 @@
                     },
                     "summary": "Missing primary member details"
                   },
-                  "Unavailable receipt template": {
-                    "value": {
-                      "errors": {
-                        "receipt_template": {
-                          "$": ["This receipt template is not available."]
-                        }
-                      }
-                    },
-                    "summary": "Unavailable receipt template"
-                  },
                   "Unknown, expired or used receipt upload": {
                     "value": {
                       "errors": {
@@ -4222,16 +4212,6 @@
                     },
                     "summary": "Unknown, expired or used receipt upload"
                   },
-                  "Both receipt template and upload": {
-                    "value": {
-                      "errors": {
-                        "$": [
-                          "Pass either a receipt template or a receipt upload, not both."
-                        ]
-                      }
-                    },
-                    "summary": "Both receipt template and upload"
-                  },
                   "Insurer that doesn't take a receipt": {
                     "value": {
                       "errors": {
@@ -4242,15 +4222,15 @@
                     },
                     "summary": "Insurer that doesn't take a receipt"
                   },
-                  "Receipt set by Anagram": {
+                  "Missing required receipt": {
                     "value": {
                       "errors": {
                         "$": [
-                          "The receipt for this customer is set by Anagram and can't be changed."
+                          "This insurer needs the itemized receipt you give the patient. Upload it to send this claim."
                         ]
                       }
                     },
-                    "summary": "Receipt set by Anagram"
+                    "summary": "Missing required receipt"
                   }
                 }
               }
@@ -4532,22 +4512,10 @@
                     "type": "string",
                     "description": "Identifies the location that the claim will be linked to. When this field is empty, the claim will be linked with the default location. Example: LOC4242B"
                   },
-                  "receipt_template": {
-                    "type": "string",
-                    "enum": [
-                      "revolution_ehr",
-                      "officemate",
-                      "crystal_pm",
-                      "eyecloud_pro",
-                      "eyefinity_pm",
-                      "maximeyes"
-                    ],
-                    "description": "Code of the practice management system whose receipt layout to print with the claim: `revolution_ehr` (Revolution EHR), `officemate` (OfficeMate), `crystal_pm` (Crystal PM), `eyecloud_pro` (EyeCloud Pro), `eyefinity_pm` (Eyefinity PM) or `maximeyes` (MaximEyes). Only for insurers that take an itemized receipt, such as EyeMed. The template also becomes the default of the claim's location. Can't be combined with `receipt_upload_uid`."
-                  },
                   "receipt_upload_uid": {
                     "type": "string",
                     "maxLength": 32,
-                    "description": "The `upload_uid` returned by the Upload Claim Receipt endpoint, to attach the receipt the practice printed for the patient. Only for insurers that take an itemized receipt, such as EyeMed. Can't be combined with `receipt_template`."
+                    "description": "The `upload_uid` returned by the Upload Claim Receipt endpoint, to attach the receipt the practice printed for the patient. It goes instead of the receipt Anagram builds from the template of the claim's location. Only for insurers that take an itemized receipt, such as EyeMed."
                   }
                 }
               },
@@ -4600,56 +4568,6 @@
                       "paid_amount": "68.65"
                     },
                   "summary": "Create a claim"
-                },
-                "Create claim with receipt template": {
-                  "value": {
-                    "status": "draft",
-                    "receipt_template": "officemate",
-                    "patient": {
-                      "dob": "1998-02-11",
-                      "first_name": "Max",
-                      "last_name": "Smith",
-                      "type": "child",
-                      "member_id": "A123455",
-                      "address": {
-                        "line1": "String name",
-                        "city": "City",
-                        "zipcode": "12332",
-                        "state": "CA"
-                      }
-                    },
-                    "primary_member": {
-                      "address": {
-                        "city": "City",
-                        "line1": "String name",
-                        "state": "CA",
-                        "zipcode": "12332"
-                      },
-                      "dob": "1988-10-11",
-                      "first_name": "John",
-                      "insurer_code": "insurer:vision:eye_med",
-                      "last_name": "Smith",
-                      "member_id": "A123455",
-                      "phone": "0987654321"
-                    },
-                    "services": [
-                      {
-                        "codes": ["S0504"],
-                        "cost": "12.22",
-                        "date": "2022-02-11",
-                        "quantity": 2,
-                        "diagnosis_codes": ["H52.10"]
-                      },
-                      {
-                        "codes": ["V2781"],
-                        "cost": "44.21",
-                        "date": "2022-02-11",
-                        "quantity": 1
-                      }
-                    ],
-                    "paid_amount": "68.65"
-                  },
-                  "summary": "Create a claim with a receipt template"
                 },
                 "Create claim with uploaded receipt": {
                   "value": {
@@ -4771,7 +4689,7 @@
             }
           },
           "400": {
-            "description": "The file can't be used as a receipt, or the customer can't upload one",
+            "description": "The file can't be used as a receipt",
             "content": {
               "application/json": {
                 "schema": {
@@ -4855,16 +4773,6 @@
                       }
                     },
                     "summary": "Unreadable file"
-                  },
-                  "Receipt set by Anagram": {
-                    "value": {
-                      "errors": {
-                        "$": [
-                          "The receipt for this customer is set by Anagram and can't be changed."
-                        ]
-                      }
-                    },
-                    "summary": "Receipt set by Anagram"
                   }
                 }
               }
@@ -5072,13 +4980,45 @@
                       "type": "array",
                       "items": {
                         "type": "object",
-                        "required": ["title", "code"],
+                        "required": ["title", "code", "practice_management_system", "receipt_template"],
                         "properties": {
                           "title": {
                             "type": "string"
                           },
                           "code": {
                             "type": "string"
+                          },
+                          "practice_management_system": {
+                            "type": "object",
+                            "nullable": true,
+                            "description": "The practice management system set for the location, null while it isn't known",
+                            "required": ["code", "title"],
+                            "properties": {
+                              "code": {
+                                "type": "string",
+                                "description": "Code of the system in our catalog. A system that isn't in the catalog comes as `other_practice_management_system`, a location without a system as `no_practice_management_system`"
+                              },
+                              "title": {
+                                "type": "string",
+                                "description": "Name of the system, or the name typed for a system that isn't in our catalog"
+                              }
+                            }
+                          },
+                          "receipt_template": {
+                            "type": "object",
+                            "nullable": true,
+                            "description": "Template Anagram builds the itemized receipt from for insurers that take one. Null when the location has none: then upload the receipt with the claim. Without an upload the claim goes with the invoice Anagram generates, unless its insurer requires the receipt",
+                            "required": ["code", "title"],
+                            "properties": {
+                              "code": {
+                                "type": "string",
+                                "description": "Code of the receipt template"
+                              },
+                              "title": {
+                                "type": "string",
+                                "description": "Name of the receipt template"
+                              }
+                            }
                           }
                         }
                       }
@@ -5100,11 +5040,30 @@
                       "result": [
                         {
                           "title": "Westwood Store #542",
-                          "code": "LOC4242B"
+                          "code": "LOC4242B",
+                          "practice_management_system": {
+                            "code": "crystal",
+                            "title": "Crystal PM"
+                          },
+                          "receipt_template": {
+                            "code": "crystal",
+                            "title": "Crystal PM"
+                          }
                         },
                         {
                           "title": "Main st Store #634",
-                          "code": "LOC75634B"
+                          "code": "LOC75634B",
+                          "practice_management_system": {
+                            "code": "other_practice_management_system",
+                            "title": "Liquid EHR"
+                          },
+                          "receipt_template": null
+                        },
+                        {
+                          "title": "Downtown Store #118",
+                          "code": "LOC11818B",
+                          "practice_management_system": null,
+                          "receipt_template": null
                         }
                       ]
                     },

@@ -23,4 +23,4 @@ For testing purposes, you can include cheat codes in the **Eligibility Request**
 
 ## Receipts
 
-The demo payer doesn't take an itemized receipt, so a claim for it with `receipt_template` or `receipt_upload_uid` is rejected with `Claims for this insurer don't take a custom receipt.` You can try the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint with any PDF, PNG or JPG file: an upload that no claim takes is deleted after a day.
+The demo payer doesn't take an itemized receipt, so a claim for it with `receipt_upload_uid` is rejected with `Claims for this insurer don't take a custom receipt.` You can try the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint with any PDF, PNG or JPG file: an upload that no claim takes expires after a day.
