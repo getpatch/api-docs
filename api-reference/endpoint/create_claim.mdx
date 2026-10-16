@@ -32,6 +32,6 @@ Insurers that take an itemized receipt from the practice, such as EyeMed, get it
 
 To send the receipt the practice printed for the patient instead, upload it with the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint and pass the returned `upload_uid` as `receipt_upload_uid`. An uploaded receipt always goes instead of the template. Pass it only for an insurer that takes a receipt.
 
-An insurer can require the receipt. A claim for such an insurer from a location without a template can be created as `ready` only with an uploaded receipt. Without one, the API rejects it with `This insurer needs the itemized receipt you give the patient. Upload it to send this claim.` Create the claim as a `draft` instead, and the practice can finish it in the Anagram web app. A draft that isn't finished within a week is deleted.
+An insurer can require the receipt. A claim for such an insurer from a location without a template can be created as `ready` only with an uploaded receipt. Without one, the API rejects it with `This insurer needs the itemized receipt you gave the patient. Upload it to send this claim.` Create the claim as a `draft` instead, and the practice can finish it in the Anagram web app. A draft that isn't finished within a week is deleted.
 
 The receipt can't be changed through the API once the claim is created.

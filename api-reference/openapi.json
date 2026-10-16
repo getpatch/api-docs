@@ -4226,7 +4226,7 @@
                     "value": {
                       "errors": {
                         "$": [
-                          "This insurer needs the itemized receipt you give the patient. Upload it to send this claim."
+                          "This insurer needs the itemized receipt you gave the patient. Upload it to send this claim."
                         ]
                       }
                     },
@@ -4996,7 +4996,7 @@
                             "properties": {
                               "code": {
                                 "type": "string",
-                                "description": "Code of the system in our catalog. A system that isn't in the catalog comes as `other_practice_management_system`, a location without a system as `no_practice_management_system`"
+                                "description": "Code of the system in our catalog. A system that isn't in the catalog comes as `other_practice_management_system`"
                               },
                               "title": {
                                 "type": "string",
