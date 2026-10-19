@@ -25,7 +25,7 @@ Actual reimbursement may vary slightly from the initial estimate provided. We re
 
 Some insurers, such as EyeMed, want an itemized receipt from the practice together with the claim. It can come from one of two sources:
 
-- **A receipt template.** Anagram builds the receipt from the claim's details in the layout of the practice management system set for the claim's location: Revolution EHR, OfficeMate, Crystal PM, EyeCloud Pro, Eyefinity PM or MaximEyes. If Anagram has set up a template made for your organization, that template is used instead.
+- **A receipt template.** Anagram builds the receipt from the claim's details in the layout of the practice management system set for the claim's location: Revolution EHR, OfficeMate, Crystal PM, EyeCloud Pro, Eyefinity PM, MaximEyes, FlexOptical, Barti, Square or Compulink. If Anagram has set up a template made for your organization, that template is used instead.
 - **The practice's own receipt.** Upload the receipt the practice printed for the patient with the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint and pass it when creating the claim. An uploaded receipt always goes instead of the template.
 
 The [List Locations](/api-reference/endpoint/locations) endpoint shows the system and the receipt template of each location. To set or change the system of a location, contact Anagram support. When the location has no template and no receipt is uploaded, the claim carries the invoice Anagram generates.
