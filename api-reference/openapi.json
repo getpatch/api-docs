@@ -4215,9 +4215,11 @@
                   "Insurer that doesn't take a receipt": {
                     "value": {
                       "errors": {
-                        "$": [
-                          "Claims for this insurer don't take a custom receipt."
-                        ]
+                        "receipt_upload_uid": {
+                          "$": [
+                            "Claims for this insurer don't take a custom receipt."
+                          ]
+                        }
                       }
                     },
                     "summary": "Insurer that doesn't take a receipt"
