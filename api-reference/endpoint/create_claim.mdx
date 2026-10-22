@@ -32,7 +32,7 @@ Insurers that take an itemized receipt from the practice, such as EyeMed, get it
 
 To send the receipt the practice printed for the patient instead, upload its files with the [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) endpoint, one file per request, and pass the returned `upload_uid` values in `receipt_upload_uids`. An uploaded receipt always goes instead of the template. Pass it only for an insurer that takes a receipt.
 
-The files go into the claim in the order of the list: a PDF with all its pages, an image as a page of its own. A claim takes up to 5 files, with up to 15 MB and 20 pages in total. An image counts as one page, and as 2 MB at most toward the total size. Each file has its own limits too, see [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt).
+The files go into the claim in the order of the list: a PDF with all its pages, an image as a page of its own. A claim takes up to 5 files, with up to 15 MB and 20 pages in total. An image counts as one page and as 2 MB, whatever its size. Each file has its own limits too, see [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt).
 
 For a receipt of one file, you can pass its `upload_uid` as `receipt_upload_uid` instead of the list. Pass one of the two fields, not both. Passing `null` or an empty list is the same as passing no receipt.
 
@@ -50,7 +50,7 @@ An error about one of the listed files comes under its position in `receipt_uplo
 An error about the list as a whole comes under `$` in `receipt_upload_uids`:
 
 - `A claim can have up to 5 receipt files.`
-- `The receipt files are too large together. The limit is 15 MB.`
+- `The receipt files are too large together. The limit is 15 MB, and an image counts as 2 MB.`
 - `The receipt files have too many pages together. The limit is 20.`
 - `Claims for this insurer don't take a custom receipt.`
 - `Pass the receipt files as a list.` when `receipt_upload_uids` isn't a list

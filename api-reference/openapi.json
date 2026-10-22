@@ -4874,7 +4874,7 @@
             }
           },
           "429": {
-            "description": "Too many files uploaded in a minute, or too many uploads waiting for their claims",
+            "description": "Too many upload requests in a minute, or too many uploads waiting for their claims",
             "content": {
               "application/json": {
                 "schema": {
