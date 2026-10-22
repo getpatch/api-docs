@@ -4203,19 +4203,57 @@
                   "Unknown, expired or used receipt upload": {
                     "value": {
                       "errors": {
-                        "receipt_upload_uid": {
-                          "$": [
-                            "This receipt upload is unknown, expired or already used."
-                          ]
+                        "receipt_upload_uids": {
+                          "1": {
+                            "$": [
+                              "This receipt upload is unknown, expired or already used."
+                            ]
+                          }
                         }
                       }
                     },
                     "summary": "Unknown, expired or used receipt upload"
                   },
+                  "Receipt file listed twice": {
+                    "value": {
+                      "errors": {
+                        "receipt_upload_uids": {
+                          "2": {
+                            "$": [
+                              "The same file is listed twice."
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "summary": "Receipt file listed twice"
+                  },
+                  "Receipt files over a claim limit": {
+                    "value": {
+                      "errors": {
+                        "receipt_upload_uids": {
+                          "$": [
+                            "The receipt files have too many pages together. The limit is 20."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Receipt files over a claim limit"
+                  },
+                  "Both receipt fields": {
+                    "value": {
+                      "errors": {
+                        "$": [
+                          "Pass receipt_upload_uid or receipt_upload_uids, not both."
+                        ]
+                      }
+                    },
+                    "summary": "Both receipt_upload_uid and receipt_upload_uids passed"
+                  },
                   "Insurer that doesn't take a receipt": {
                     "value": {
                       "errors": {
-                        "receipt_upload_uid": {
+                        "receipt_upload_uids": {
                           "$": [
                             "Claims for this insurer don't take a custom receipt."
                           ]
@@ -4514,10 +4552,20 @@
                     "type": "string",
                     "description": "Identifies the location that the claim will be linked to. When this field is empty, the claim will be linked with the default location. Example: LOC4242B"
                   },
+                  "receipt_upload_uids": {
+                    "type": "array",
+                    "nullable": true,
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string",
+                      "maxLength": 32
+                    },
+                    "description": "The `upload_uid` values returned by the Upload Claim Receipt endpoint, to attach the receipt the practice printed for the patient. The files go into the claim in the order of the list. Up to 5 files, with up to 15 MB and 20 pages in total. The receipt goes instead of the one Anagram builds from the template of the claim's location. Only for insurers that take an itemized receipt, such as EyeMed."
+                  },
                   "receipt_upload_uid": {
                     "type": "string",
                     "maxLength": 32,
-                    "description": "The `upload_uid` returned by the Upload Claim Receipt endpoint, to attach the receipt the practice printed for the patient. It goes instead of the receipt Anagram builds from the template of the claim's location. Only for insurers that take an itemized receipt, such as EyeMed."
+                    "description": "The `upload_uid` of a receipt of one file, a shortcut for `receipt_upload_uids` with a single item. Pass one of the two fields, not both."
                   }
                 }
               },
@@ -4574,7 +4622,10 @@
                 "Create claim with uploaded receipt": {
                   "value": {
                     "status": "draft",
-                    "receipt_upload_uid": "c4b1e0d5a9f84e2b8f3d6a7e1c2b9f40",
+                    "receipt_upload_uids": [
+                      "c4b1e0d5a9f84e2b8f3d6a7e1c2b9f40",
+                      "8e2d7f1a6b3c4e9d0a5f2b7c1e8d3a64"
+                    ],
                     "patient": {
                       "dob": "1998-02-11",
                       "first_name": "Max",
@@ -4619,7 +4670,7 @@
                     ],
                     "paid_amount": "68.65"
                   },
-                  "summary": "Create a claim with an uploaded receipt"
+                  "summary": "Create a claim with an uploaded receipt of two files"
                 }
               }
             }
@@ -4630,7 +4681,7 @@
     "/api/auth/v1/claims/receipts/": {
       "post": {
         "summary": "Upload Claim Receipt",
-        "description": "Uploads the receipt the practice printed for the patient, to attach it to a claim when the claim is created.",
+        "description": "Uploads a file of the receipt the practice printed for the patient, to attach it to a claim when the claim is created.",
         "requestBody": {
           "required": true,
           "content": {
@@ -4642,7 +4693,7 @@
                   "content": {
                     "type": "string",
                     "format": "byte",
-                    "description": "The PDF, PNG or JPG file encoded in standard base64, without line breaks. A PDF of up to 10 pages or an image of up to 50 megapixels, 20 MB at most"
+                    "description": "The PDF, PNG or JPG file encoded in standard base64, without line breaks. A PDF of up to 10 pages or an image of up to 50 megapixels, 15 MB at most"
                   },
                   "filename": {
                     "type": "string",
@@ -4675,7 +4726,7 @@
                   "properties": {
                     "upload_uid": {
                       "type": "string",
-                      "description": "Pass it as `receipt_upload_uid` when creating the claim"
+                      "description": "Pass it in `receipt_upload_uids` when creating the claim"
                     }
                   }
                 },
@@ -4733,7 +4784,7 @@
                       "errors": {
                         "content": {
                           "$": [
-                            "The receipt file is too large. The limit is 20 MB."
+                            "The receipt file is too large. The limit is 15 MB."
                           ]
                         }
                       }
@@ -4775,6 +4826,18 @@
                       }
                     },
                     "summary": "Unreadable file"
+                  },
+                  "Password protected PDF": {
+                    "value": {
+                      "errors": {
+                        "content": {
+                          "$": [
+                            "The uploaded receipt is password protected. Upload a copy without a password."
+                          ]
+                        }
+                      }
+                    },
+                    "summary": "Password protected PDF"
                   }
                 }
               }
@@ -4811,7 +4874,7 @@
             }
           },
           "429": {
-            "description": "Too many uploads in a minute, or too many uploads waiting for their claims",
+            "description": "Too many files uploaded in a minute, or too many uploads waiting for their claims",
             "content": {
               "application/json": {
                 "schema": {
