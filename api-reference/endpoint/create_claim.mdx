@@ -34,7 +34,7 @@ To send the receipt the practice printed for the patient instead, upload its fil
 
 The files go into the claim in the order of the list: a PDF with all its pages, an image as a page of its own. A claim takes up to 5 files, with up to 15 MB and 20 pages in total. An image counts as one page and as 2 MB, whatever its size. Each file has its own limits too, see [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt).
 
-For a receipt of one file, you can pass its `upload_uid` as `receipt_upload_uid` instead of the list. Pass one of the two fields, not both. Passing `null` or an empty list is the same as passing no receipt.
+The older `receipt_upload_uid` field with one `upload_uid` still works, so existing integrations don't need to change. Pass one of the two fields, not both. Passing `null` or an empty list is the same as passing no receipt.
 
 An insurer can require the receipt. A claim for such an insurer from a location without a template can be created as `ready` only with an uploaded receipt. Without one, the API rejects it with `This insurer needs the itemized receipt you gave the patient. Upload it to send this claim.` Create the claim as a `draft` instead, and the practice can finish it in the Anagram web app. A draft that isn't finished within a week is deleted.
 

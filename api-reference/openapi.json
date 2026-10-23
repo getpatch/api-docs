@@ -4565,7 +4565,7 @@
                   "receipt_upload_uid": {
                     "type": "string",
                     "maxLength": 32,
-                    "description": "The `upload_uid` of a receipt of one file, a shortcut for `receipt_upload_uids` with a single item. Pass one of the two fields, not both."
+                    "description": "The older field for a single `upload_uid`, kept so existing integrations don't need to change. Use `receipt_upload_uids` instead. Pass one of the two fields, not both."
                   }
                 }
               },
