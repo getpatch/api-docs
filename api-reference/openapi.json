@@ -5072,16 +5072,16 @@
                           "receipt_template": {
                             "type": "object",
                             "nullable": true,
-                            "description": "Template Anagram builds the itemized receipt from for insurers that take one. Null when the location has none: then upload the receipt with the claim. Without an upload the claim goes with the invoice Anagram generates, unless its insurer requires the receipt",
+                            "description": "Template Anagram builds the itemized receipt from for insurers that take one: the template of the location's system, one Anagram set up for your organization, or the default template. Null when the location has none: then upload the receipt with the claim. Without an upload the claim goes with the invoice Anagram generates, unless its insurer requires the receipt",
                             "required": ["code", "title"],
                             "properties": {
                               "code": {
                                 "type": "string",
-                                "description": "Code of the receipt template"
+                                "description": "Code of the receipt template, `default` for the default template"
                               },
                               "title": {
                                 "type": "string",
-                                "description": "Name of the receipt template"
+                                "description": "Name of the receipt template, `Default template` for the default one"
                               }
                             }
                           }
