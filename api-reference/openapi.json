@@ -498,7 +498,8 @@
                                   "nullable": true
                                 },
                                 "phone": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "id": {
                                   "type": "integer"
@@ -1737,7 +1738,8 @@
                                   "nullable": true
                                 },
                                 "phone": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "id": {
                                   "type": "integer"
