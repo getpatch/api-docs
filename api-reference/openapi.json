@@ -459,7 +459,8 @@
                                   "format": "date"
                                 },
                                 "sex": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "member_id": {
                                   "type": "string",
@@ -474,6 +475,7 @@
                                 },
                                 "address": {
                                   "type": "object",
+                                  "nullable": true,
                                   "properties": {
                                     "line1": {
                                       "type": "string"
@@ -528,6 +530,7 @@
                                 },
                                 "plan": {
                                   "type": "object",
+                                  "nullable": true,
                                   "required": ["insurer_state", "items"],
                                   "properties": {
                                     "refresh_date": {
@@ -1699,7 +1702,8 @@
                                   "format": "date"
                                 },
                                 "sex": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "nullable": true
                                 },
                                 "member_id": {
                                   "type": "string",
@@ -1714,6 +1718,7 @@
                                 },
                                 "address": {
                                   "type": "object",
+                                  "nullable": true,
                                   "properties": {
                                     "line1": {
                                       "type": "string"
@@ -1768,6 +1773,7 @@
                                 },
                                 "plan": {
                                   "type": "object",
+                                  "nullable": true,
                                   "required": ["insurer_state", "items"],
                                   "properties": {
                                     "refresh_date": {
