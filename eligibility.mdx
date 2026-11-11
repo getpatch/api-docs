@@ -21,6 +21,10 @@ description: "The Eligibility section of the Anagram API provides tools for veri
 
 The API supports both webhooks and polling to notify you of eligibility check results. If webhooks are configured, the result is automatically sent to the configured endpoint once the eligibility check is complete. Otherwise, polling must be used to check for updates to the eligibility request.
 
+## Rate limits
+
+By default, a practice can start up to 15 eligibility requests and 15 details requests a minute, all its API keys together. Above that, the endpoint responds with `429 Too Many Requests` and the `Retry-After` header with the number of seconds to wait. Getting results is not limited. See [Rate Limits](/api-reference/rate-limits).
+
 # Universal Search
 
 ## Overview
@@ -29,7 +33,7 @@ Universal Search allows you to efficiently perform eligibility checks across mul
 
 ## How it Works
 
-With Universal Search, the API will simultaneously query all insurers specified in your request. It returns comprehensive eligibility results for each insurer, consolidating the responses into a single, organized response payload.
+With Universal Search, the API will simultaneously query all insurers specified in your request. It returns comprehensive eligibility results for each insurer, consolidating the responses into a single, organized response payload. A universal search counts as one request toward the [rate limit](/api-reference/rate-limits), however many insurers it searches.
 
 ## Request Parameters
 

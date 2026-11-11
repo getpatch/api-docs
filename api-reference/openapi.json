@@ -261,6 +261,38 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many eligibility requests from the practice in the last minute",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the practice can send the request again, from 1 to 60",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Rate limit": {
+                    "value": {
+                      "detail": "Too many initial eligibility requests. Try again in a minute."
+                    },
+                    "summary": "Rate limit"
+                  }
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -2362,6 +2394,38 @@
                       "detail": "Eligibility not found (unknown-id)"
                     },
                     "summary": "Initial eligibility request not found"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many details requests from the practice in the last minute",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the practice can send the request again, from 1 to 60",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["detail"],
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Rate limit": {
+                    "value": {
+                      "detail": "Too many detail eligibility requests. Try again in a minute."
+                    },
+                    "summary": "Rate limit"
                   }
                 }
               }
@@ -4882,7 +4946,15 @@
             }
           },
           "429": {
-            "description": "Too many upload requests in a minute, or too many uploads waiting for their claims",
+            "description": "Too many upload requests in the last minute, or too many uploads waiting for their claims",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds until the practice can upload again, from 1 to 60. Sent only when the upload requests are over the limit, not for too many waiting uploads",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {

@@ -1,0 +1,67 @@
+---
+title: "Rate Limits"
+description: "How many requests a practice can send and how to handle 429"
+---
+
+Some endpoints limit how many requests a practice can send in a minute. A limit covers the whole practice: all its API keys and all its locations share it.
+
+| Endpoint | Limit per practice |
+| --- | --- |
+| [Eligibility Request](/api-reference/endpoint/eligibility_request) | 15 requests a minute |
+| [Eligibility Details Request](/api-reference/endpoint/eligibility_details_request) | 15 requests a minute, counted separately from eligibility requests |
+| [Upload Claim Receipt](/api-reference/endpoint/upload_claim_receipt) | 60 requests a minute, and up to 100 uploads waiting for a claim |
+
+The eligibility and details limits above are the defaults. If your practice needs a different limit, contact [Anagram support](mailto:support@anagram.care). Other endpoints, such as getting eligibility results, are not limited.
+
+## How requests are counted
+
+A minute is any 60 seconds, not a calendar minute: a request counts toward the limit for 60 seconds after it was sent, and its place frees up right after that. Twice the limit can't get through at the turn of a minute.
+
+For eligibility and details requests, only the requests that started a check count:
+
+- A universal search is one request, however many insurers it searches.
+- A request that failed, for example with a validation error, doesn't count.
+- A request refused with `429` doesn't count, so retrying doesn't lock you out.
+- Eligibility checks run in the Anagram App don't count.
+
+For receipt uploads, every request counts toward the 60 requests a minute, refused uploads included, except the ones refused by this limit itself. Uploads in the Anagram App count too.
+
+## When a practice is over the limit
+
+The endpoint responds with `429 Too Many Requests` and creates nothing. The `Retry-After` header holds the number of seconds, from 1 to 60, until the practice can send the request again.
+
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 23
+Content-Type: application/json
+
+{"detail": "Too many initial eligibility requests. Try again in a minute."}
+```
+
+Wait that many seconds and send the same request again. Nothing was created, so a `request_uid` you set is still free.
+
+| Endpoint | `detail` |
+| --- | --- |
+| Eligibility Request | `Too many initial eligibility requests. Try again in a minute.` |
+| Eligibility Details Request | `Too many detail eligibility requests. Try again in a minute.` |
+| Upload Claim Receipt | `Too many receipt uploads. Try again in a minute.` |
+
+When a practice already has 100 uploads that no claim has taken, Upload Claim Receipt responds with `429` and `Too many uploaded receipts are waiting for their claims. Attach them or try again later.` This response has no `Retry-After`: a place frees up only when an upload is attached to a claim or expires after a day.
+
+## Sending many requests
+
+When you check many patients at once, for example from the PM schedule before appointments, spread the requests over time or wait for `Retry-After` when you get `429`. For example, in Python:
+
+```python
+import time
+
+import requests
+
+
+def post_with_retry(url: str, payload: dict, api_key: str) -> requests.Response:
+    while True:
+        response = requests.post(url, json=payload, headers={"Authorization": f"Api {api_key}"}, timeout=30)
+        if response.status_code != 429 or "Retry-After" not in response.headers:
+            return response
+        time.sleep(int(response.headers["Retry-After"]))
+```

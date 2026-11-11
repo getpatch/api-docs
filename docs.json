@@ -35,7 +35,8 @@
               "api-reference/authentication",
               "api-reference/testing",
               "api-reference/ids-and-types",
-              "api-reference/errors"
+              "api-reference/errors",
+              "api-reference/rate-limits"
             ]
           },
           {
