@@ -22,6 +22,18 @@ Example:
 }
 ```
 
+### Too many requests
+
+Some endpoints limit how many requests a practice can send in a minute. Above the limit, they respond with `429 Too Many Requests`, a general error with the field `detail`, and the `Retry-After` header with the number of seconds to wait before sending the request again. See [Rate Limits](/api-reference/rate-limits).
+
+Example:
+
+```json
+{
+    "detail": "Too many initial eligibility requests. Try again in a minute."
+}
+```
+
 ### Validation error (error object in field "errors")
 
 Errors related to the request body object itself are validation errors with a status code `400 BAD_REQUEST`.

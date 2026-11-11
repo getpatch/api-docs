@@ -12,3 +12,7 @@ This call is asynchronous, it initiates an eligibility search and returns a UID 
 If specifying a UID, ensure it is unique. If omitted, one will be generated automatically and included in the response for this API call.
 
 The response will contain the request UID or a validation error.
+
+## Rate limit
+
+By default, a practice can start up to 15 eligibility requests a minute, all its API keys together. Only requests that started a check count: a universal search is one request, and a request that failed or was refused doesn't count. Above the limit, the endpoint responds with `429 Too Many Requests` and starts nothing. Send the request again after the number of seconds in the `Retry-After` header. See [Rate Limits](/api-reference/rate-limits).

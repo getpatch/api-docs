@@ -5,3 +5,7 @@ description: "Requesting a detailed insurance plan from a successful eligibility
 ---
 
 This endpoint is used upon the initial eligibiltiy request's success.
+
+## Rate limit
+
+By default, a practice can start up to 15 details requests a minute, all its API keys together, counted separately from eligibility requests. Only requests that started a details check count. Above the limit, the endpoint responds with `429 Too Many Requests` and starts nothing. Send the request again after the number of seconds in the `Retry-After` header. See [Rate Limits](/api-reference/rate-limits).
